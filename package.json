@@ -3,17 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.1.3",
     "@angular/cdk": "^14.1.3",
     "@angular/common": "^14.1.0",
+    "@angular/cli": "~14.1.3",
     "@angular/compiler": "^14.1.0",
     "@angular/compiler-cli": "^14.1.0",
     "@angular/core": "^14.1.0",
