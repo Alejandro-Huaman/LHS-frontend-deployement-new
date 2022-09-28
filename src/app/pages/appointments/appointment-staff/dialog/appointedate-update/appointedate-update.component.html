@@ -1,0 +1,18 @@
+
+<h1 mat-dialog-title class="text-center">Actualizar Fecha de Cita</h1>
+<div mat-dialog-content>  
+<form [formGroup]="userupdateform">
+  <mat-form-field appearance="outline" class="w-96">
+    <mat-label>Ingrese fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="date" placeholder="Ingrese su fecha" required [(ngModel)]="UpdateAppointmentResource.scheduledAt">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>Es requerido este campo!</mat-error>
+  </mat-form-field>
+  <div class="text-center">
+    <button matDialogClose color = "primary" mat-raised-button [disabled]="userupdateform.invalid" (click)="Update()">Actualizar</button>
+  </div>  
+</form>
+
+
+</div>

@@ -1,3 +1,4 @@
+import { AppointedateUpdateComponent } from './pages/appointments/appointment-staff/dialog/appointedate-update/appointedate-update.component';
 import { DiagnosticComponent } from './pages/report/diagnostic/diagnostic.component';
 import { HealthIndicatorComponent } from './pages/report/health-indicator/health-indicator.component';
 import { MonitorTreatmentComponent } from './pages/report/monitor-treatment/monitor-treatment.component';
@@ -102,6 +103,7 @@ import { MedicalScheduleStaffComponent } from './pages/appointments/appointment-
       UpdateTreatmentDialogComponent,
       AppointmentRegisterStaffComponent,
       MedicalScheduleStaffComponent,
+      AppointedateUpdateComponent
 
    ],
   imports: [

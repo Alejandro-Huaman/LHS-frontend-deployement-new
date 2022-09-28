@@ -10,6 +10,21 @@ export class EfficiencyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+
+
   }
 
 }

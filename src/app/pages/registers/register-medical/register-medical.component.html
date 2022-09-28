@@ -68,7 +68,7 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Especialidad</mat-label>
-              <mat-select formControlName="speciality" [(ngModel)]="shiftselected">
+              <mat-select formControlName="speciality" [(ngModel)]="specailityselected">
                 <div *ngFor="let specialvariable of specialities">
                   <mat-option [value]="specialvariable.id">{{specialvariable.name}}</mat-option>
                 </div>
@@ -78,7 +78,7 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Turno</mat-label>
-              <mat-select formControlName="shift" [(ngModel)]="specailityselected">
+              <mat-select formControlName="shift" [(ngModel)]="shiftselected">
                 <div *ngFor="let shift of shifts">
                   <mat-option [value]="shift.id">{{shift.name}}</mat-option>
                 </div>

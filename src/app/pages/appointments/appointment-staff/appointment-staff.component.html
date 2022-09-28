@@ -39,8 +39,8 @@
           <div class="ml-auto mr-auto pb-20">
             <form class="text-left">
               <mat-form-field appearance="outline">
-                <mat-label>DNI</mat-label>
-                <input matInput placeholder="Ingrese DNI" [formControl]="dnisearch">
+                <mat-label>Usuario del doctor</mat-label>
+                <input matInput placeholder="nombre de usuario del doctor" [formControl]="dnisearch">
               </mat-form-field>
             </form>
             <div class="text-left">
@@ -69,7 +69,7 @@
               
                 <ng-container matColumnDef="date">
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Fecha cita</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.scheduledAt}} </td>
+                  <td mat-cell *matCellDef="let element"> {{getformaldate(element.scheduledAt)}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="status">
@@ -78,9 +78,13 @@
                 </ng-container>
 
                 <ng-container matColumnDef="button">
-                  <th mat-header-cell *matHeaderCellDef></th>
+                  <th mat-header-cell *matHeaderCellDef><h1 class="text-center font-bold">Acciones</h1></th>
                   <td mat-cell *matCellDef="let element"> 
                     <button mat-raised-button color="primary" (click)="AppointmentForm(element.patient.id)">Ver</button> 
+              
+                    <button mat-raised-button color="accent" (click)="UpdateFecha(element)">Actualizar</button> 
+             
+                    <button mat-raised-button color="warn" (click)="AppointmentForm(element.patient.id)">Eliminar</button> 
                   </td>
                 </ng-container>
               

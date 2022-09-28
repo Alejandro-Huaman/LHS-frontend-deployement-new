@@ -1,7 +1,7 @@
 
 import { Status } from './../enum/Status.enum';
 export interface UpdateAppointmentResource {
-    notes:string;
+      notes:string;
 
     
       scheduledAt:Date;

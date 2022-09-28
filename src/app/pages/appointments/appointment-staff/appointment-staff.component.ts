@@ -1,3 +1,4 @@
+import { AppointedateUpdateComponent } from './dialog/appointedate-update/appointedate-update.component';
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -12,7 +13,7 @@ import { AppointmentService } from 'src/app/services/appoinment/Appointment.serv
 import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StaffService } from 'src/app/services/staff/staff.service';
-
+import { MatDialog } from '@angular/material/dialog';
 export interface Appointment {
   dni: string;
   patient: string;
@@ -41,7 +42,7 @@ export class AppointmentStaffComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!:MatPaginator;
 
   constructor(private appointmentservice:AppointmentService, private route:Router,private activeroute:ActivatedRoute, private patientservice:PatientService, 
-              private staffservice:StaffService, private doctorservice:DoctorService) {
+              private staffservice:StaffService, private doctorservice:DoctorService,public dialog:MatDialog) {
               }
   
   ngOnInit() {
@@ -51,6 +52,8 @@ export class AppointmentStaffComponent implements OnInit {
     this.urlid = urlvariable
     console.log(this.urlid)
     this.getStaffById(this.urlid)
+    this.getallappoiments()
+   
   }
 
   SearchAppointmentDoctor(event:Event){
@@ -69,6 +72,35 @@ export class AppointmentStaffComponent implements OnInit {
       })
   }
   
+
+  getallappoiments(){
+    this.appointmentservice.getAll().subscribe((response:any)=>{
+      this.dataSource.data=response
+      
+
+    })
+  }
+
+  UpdateFecha(elemnt:any){
+    const dialogRef=  this.dialog.open(AppointedateUpdateComponent,{
+      data:elemnt 
+    })
+
+  }
+getformaldate(date:any){
+  let dateformatselected = formatDate(date,'YYYY-MM-dd HH:mm:ss','en_US')
+  return dateformatselected
+}
+deleteappoint(id:number){
+  this.appointmentservice.deleteAppointment(id).subscribe((response:any)=>{
+
+  })
+}
+
+
+
+
+
   getDoctorandAllAppointments(){
       this.doctorservice.getDoctorByUserName(this.doctorusername.value).subscribe((response:any)=>{
         this.doctorobject = response
@@ -102,27 +134,16 @@ export class AppointmentStaffComponent implements OnInit {
 
   GetPatientByDNI(){
         console.log(this.dnisearch.value)
-        this.patientservice.getPatientByDocumentNumber(this.dnisearch.value).subscribe((response:any)=>{
-          this.patientobject=response;
-          console.log(this.patientobject)
-          
-          this.appointmentservice.getAppointmentsByPatientId(this.patientobject.id).subscribe((response:any)=>{
-              this.dataSource.data = response;
-              console.log(this.dataSource.data)
-
-              for(var oneappointment of this.dataSource.data){
-                console.log(oneappointment)
-                let dateformatselected = formatDate(oneappointment.scheduledAt,'YYYY-MM-dd HH:mm:ss','en_US')
-                console.log(dateformatselected)
-                
-                oneappointment.scheduledAt = dateformatselected
-                console.log(oneappointment)
-              }
-              
-            })
+        this.doctorservice.getDoctorByUserName(this.dnisearch.value).subscribe((response:any)=>{
+              let id=response.id;
+              this.appointmentservice.getAppointmentsByDoctorId(id).subscribe((response:any)=>{
+                this.dataSource.data = response;
+               
+              })
         },err=>{
-          alert("DNI inexistente pruebe denuevo")
-        }
-    )
+          alert("docotr inexistente")
+        })
+
+       
   }
 }
