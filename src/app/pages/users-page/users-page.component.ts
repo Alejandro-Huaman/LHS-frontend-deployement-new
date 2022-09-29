@@ -74,32 +74,35 @@ export class UsersPageComponent implements OnInit {
 
 
   DeleteDoctor(select:DoctorResource){
-    var index = this.doctors.indexOf(select)
-    console.log(index)
-    this.staffs.splice(index,1)
-    console.log(index+1)
-     this.DoctorService.deleteDoctor(index+1).subscribe((response:any)=>{
-
-     })
+    this.DoctorService.deleteDoctor(select.id).subscribe((response:any)=>{
+      var index = this.doctors.indexOf(select)
+      console.log(index)
+      this.doctors.splice(index,1)
+      console.log(index+1)
+     },err =>{
+      alert("No se pudo eliminar debido a que tiene citas pendientes")
+     }
+     )
   }
   DeleteStaff(select:StaffResource){
 
-    var index = this.staffs.indexOf(select)
-    console.log(index)
-    this.staffs.splice(index,1)
-    console.log(index+1)
-    this.StaffService.deleteStaff(index+1).subscribe((response:any)=>{
-     
+    this.StaffService.deleteStaff(select.id).subscribe((response:any)=>{
+      var index = this.staffs.indexOf(select)
+      console.log(index)
+      this.staffs.splice(index,1)
+      console.log(index+1)
     })
  }
  DeletePatient(select:PatientResource){
-  var index = this.patients.indexOf(select)
-   console.log(index)
-  this.staffs.splice(index,1)
-  console.log(index+1)
-  this.PatientService.deletePatient(index+1).subscribe((response:any)=>{
-   
-  })
+  this.PatientService.deletePatient(select.id).subscribe((response:any)=>{
+    var index = this.patients.indexOf(select)
+    console.log(index)
+    this.patients.splice(index,1)
+    console.log(index+1)
+  },err =>{
+    alert("No se pudo eliminar debido a que tiene citas pendientes")
+   }
+  )
 }
   UpdateStaff(staff:StaffResource){
    const dialogRef=  this.dialog.open(UpdateStaffComponent,{
