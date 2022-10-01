@@ -36,13 +36,14 @@ export class AppointmentStaffComponent implements OnInit {
   patients:string[] = ["Alayo Zavaleta, Alessandro Fabián","Almonacid Garrido, Viviana", "Benavides Castillo, Daniela"] 
   urlid!:number
   displayedColumns: string[] = ['id','dni' ,'patient', 'date', 'status','button'];
-  dataSource = new MatTableDataSource<any>();
+    dataSource !:MatTableDataSource<any>;
   staffobject!:StaffResource
 
   @ViewChild(MatPaginator) paginator!:MatPaginator;
 
   constructor(private appointmentservice:AppointmentService, private route:Router,private activeroute:ActivatedRoute, private patientservice:PatientService, 
               private staffservice:StaffService, private doctorservice:DoctorService,public dialog:MatDialog) {
+                this.dataSource = new MatTableDataSource<any>();
               }
   
   ngOnInit() {
@@ -85,15 +86,27 @@ export class AppointmentStaffComponent implements OnInit {
     const dialogRef=  this.dialog.open(AppointedateUpdateComponent,{
       data:elemnt 
     })
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result)
+      elemnt.scheduledAt=result.scheduledAt
+      console.log(elemnt)
+      let itemIndex = this.dataSource.data.findIndex(item => item.id == elemnt.id);
+      console.log(itemIndex)
+      this.dataSource.data[itemIndex] = elemnt
+      console.log(this.dataSource.data[itemIndex])
+    })
   }
 getformaldate(date:any){
   let dateformatselected = formatDate(date,'YYYY-MM-dd HH:mm:ss','en_US')
   return dateformatselected
 }
 deleteappoint(id:number){
+  
   this.appointmentservice.deleteAppointment(id).subscribe((response:any)=>{
-
+    this.dataSource.data = this.dataSource.data.filter((o: any) => {
+      return o.id !== id ? o : false;
+    });
   })
 }
 
@@ -123,9 +136,9 @@ deleteappoint(id:number){
 
   }
 
-  AppointmentForm(patientid:number){
+  AppointmentForm(patientid:number,appoint:number){
 
-    this.route.navigate([`staff/${this.staffobject.id}/staff-appointment-form/patient/${patientid}`]);
+    this.route.navigate([`staff/${this.staffobject.id}/staff-appointment-form/patient/${patientid}/appoint/${appoint}`]);
   }
 
   GotoStaffHome(id:number){

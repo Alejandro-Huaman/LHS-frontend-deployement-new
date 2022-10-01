@@ -22,8 +22,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>DNI</mat-label>
-              <input matInput placeholder="Ingrese sun DNI" formControlName="dni" required [(ngModel)]="CreateStaffResource.dni">
-              <mat-error *ngIf="staffregisterform.controls['dni'].dirty && staffregisterform.hasError('required') || staffregisterform.controls['dni'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese sun DNI" formControlName="dni" required [(ngModel)]="CreateStaffResource.dni" minlength="8" maxlength="8">
+              <mat-error *ngIf="staffregisterform.controls['dni'].touched && staffregisterform.controls['dni'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!staffregisterform.controls['dni'].hasError('required')">Requiere un numero de dni minimo de 8 caracteres y maximo 8 caracteres</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field appearance="outline" class="w-full">
@@ -66,8 +67,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Contraseña</mat-label>
-              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateStaffResource.password">
-              <mat-error *ngIf="staffregisterform.controls['password'].dirty && staffregisterform.hasError('required') || staffregisterform.controls['password'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateStaffResource.password" minlength="8">
+              <mat-error *ngIf="staffregisterform.controls['password'].touched && staffregisterform.controls['password'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!staffregisterform.controls['password'].hasError('required')">Requiere una contraseña minimo de 8 caracteres</mat-error>
             </mat-form-field>
             
             <div class="text-center">

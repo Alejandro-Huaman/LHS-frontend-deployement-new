@@ -54,4 +54,7 @@ export class AppointmentComponent implements OnInit {
     this.route.navigate([`patient/${this.patientobject.id}/home-patient`]);
   }
 
+  GoToAppointmentsPatient(){
+    this.route.navigate([`patient/${this.patientobject.id}/appointment-history`]);
+  }
 }

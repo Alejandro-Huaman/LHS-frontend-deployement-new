@@ -6,7 +6,7 @@ import { StaffService } from './../../services/staff/staff.service';
 import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientService } from './../../services/patient/patient.service';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MatDialogRef } from '@angular/material/dialog';
 import { UpdateDoctorComponent } from './update-dialogs/update-doctor/update-doctor.component';
 import { UpdatePatientComponent } from './update-dialogs/update-patient/update-patient.component';
 import { UpdateStaffComponent } from './update-dialogs/update-staff/update-staff.component';
@@ -74,11 +74,12 @@ export class UsersPageComponent implements OnInit {
 
 
   DeleteDoctor(select:DoctorResource){
-    this.DoctorService.deleteDoctor(select.id).subscribe((response:any)=>{
+     this.DoctorService.deleteDoctor(select.id).subscribe((response:any)=>{
       var index = this.doctors.indexOf(select)
       console.log(index)
       this.doctors.splice(index,1)
       console.log(index+1)
+      this.openDialog()
      },err =>{
       alert("No se pudo eliminar debido a que tiene citas pendientes")
      }
@@ -86,19 +87,24 @@ export class UsersPageComponent implements OnInit {
   }
   DeleteStaff(select:StaffResource){
 
+    
     this.StaffService.deleteStaff(select.id).subscribe((response:any)=>{
       var index = this.staffs.indexOf(select)
       console.log(index)
       this.staffs.splice(index,1)
       console.log(index+1)
+      this.openDialog()
     })
  }
  DeletePatient(select:PatientResource){
+  
+  
   this.PatientService.deletePatient(select.id).subscribe((response:any)=>{
     var index = this.patients.indexOf(select)
     console.log(index)
     this.patients.splice(index,1)
     console.log(index+1)
+    this.openDialog()
   },err =>{
     alert("No se pudo eliminar debido a que tiene citas pendientes")
    }
@@ -140,8 +146,38 @@ export class UsersPageComponent implements OnInit {
       console.log(result)
       let itemIndex = this.staffs.findIndex(item => item.id == result.id-1);
       this.staffs[itemIndex] = result
+
       console.log(this.staffs)
     });
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(deleteAccept, {
+      width: '250px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+
+    });
+  }
+
+}
+@Component({
+  selector: 'deleteAccept',
+  templateUrl: './confirm-dialogs/deleteAccept.html',
+})
+export class deleteAccept{
+  constructor(
+    public dialogRef: MatDialogRef<deleteAccept>,
+    
+  ) {}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+
 
 }

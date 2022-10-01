@@ -80,11 +80,11 @@
                 <ng-container matColumnDef="button">
                   <th mat-header-cell *matHeaderCellDef><h1 class="text-center font-bold">Acciones</h1></th>
                   <td mat-cell *matCellDef="let element"> 
-                    <button mat-raised-button color="primary" (click)="AppointmentForm(element.patient.id)">Ver</button> 
+                    <button mat-raised-button color="primary" (click)="AppointmentForm(element.patient.id,element.id)">Ver</button> 
               
                     <button mat-raised-button color="accent" (click)="UpdateFecha(element)">Actualizar</button> 
              
-                    <button mat-raised-button color="warn" (click)="AppointmentForm(element.patient.id)">Eliminar</button> 
+                    <button mat-raised-button color="warn" (click)="deleteappoint(element.id)">Eliminar</button> 
                   </td>
                 </ng-container>
               

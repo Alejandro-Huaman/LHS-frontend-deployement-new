@@ -31,8 +31,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>DNI</mat-label>
-              <input matInput placeholder="Ingrese numero de DNI" formControlName="dni" required [(ngModel)]="CreateDoctorResource.dni">
-              <mat-error *ngIf="medicalregisterform.controls['dni'].dirty && medicalregisterform.hasError('required') || medicalregisterform.controls['dni'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese numero de DNI" formControlName="dni" required [(ngModel)]="CreateDoctorResource.dni" minlength="8" maxlength="8">
+              <mat-error *ngIf="medicalregisterform.controls['dni'].touched && medicalregisterform.controls['dni'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!medicalregisterform.controls['dni'].hasError('required')">Requiere un numero de dni minimo de 8 caracteres y maximo 8 caracteres</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field appearance="outline" class="w-full">
@@ -62,8 +63,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Contraseña</mat-label>
-              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateDoctorResource.password">
-              <mat-error *ngIf="medicalregisterform.controls['password'].dirty && medicalregisterform.hasError('required') || medicalregisterform.controls['password'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateDoctorResource.password" minlength="8">
+              <mat-error *ngIf="medicalregisterform.controls['password'].touched && medicalregisterform.controls['password'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!medicalregisterform.controls['password'].hasError('required')">Requiere una contraseña minimo de 8 caracteres</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field appearance="outline" class="w-full">

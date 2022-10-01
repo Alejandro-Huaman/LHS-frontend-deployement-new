@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <header>
   <mat-toolbar class="bg-white">
-    <button (click)="GotoDoctorHome(doctorobject.id)">
+    <button (click)="GotoBookAppointmentsPatient()">
       <img src="../../assets/images/back-arrow-2.png" class="w-10 h-10">
     </button>
     <span class="pr-5"></span>
     <h1 class="text-slate-800">Clinica de salud</h1>
     <span class="flex-auto"></span>
-    <h1 class="text-slate-800">CITAS PROGRAMADAS</h1>
+    <h1 class="text-slate-800">Historial de Citas de {{patientobject.name}}</h1>
     <span class="flex-auto"></span>
     <img src="../../assets/images/profile.png" class="w-10 h-10">
     <button>
@@ -19,37 +19,24 @@
 <mat-divider class="bg-cyan-400"></mat-divider>
 <body class="bg-white">
   <div class="pt-10"></div>
-  <div class="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 pl-20 pr-20 pt-10">
-
-          <div class="ml-auto mr-auto pb-20">
-            <form class="text-left">
-              <mat-form-field appearance="outline">
-                <mat-label>DNI</mat-label>
-                <input matInput placeholder="Ingrese DNI" [formControl]="dnisearch">
-              </mat-form-field>
-            </form>
-            <div class="text-left">
-              <button mat-raised-button color="primary" (click)="GetPatientByDNI()">Buscar</button>
-            </div>
-          </div>
-          <div>
+  <div class="grid xl:grid-cols-1 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1 pl-20 pr-20 pt-10 pb-10">
               <table mat-table [dataSource]="dataSource" class="w-full border-2">
 
                 <ng-container matColumnDef="id">
                   
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Id</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.patient.id}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element.doctor.id}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dni">
                   
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">DNI</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.patient.documentNumber}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element.doctor.dni}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="patient">
-                  <th mat-header-cell *matHeaderCellDef><h1 class="text-center font-bold">Paciente</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.patient.name}} </td>
+                <ng-container matColumnDef="doctor">
+                  <th mat-header-cell *matHeaderCellDef><h1 class="text-center font-bold">Doctor</h1> </th>
+                  <td mat-cell *matCellDef="let element"> {{element.doctor.name}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="date">
@@ -61,18 +48,17 @@
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Estado</h1> </th>
                   <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                 </ng-container>
-
-                <ng-container matColumnDef="button">
-                  <th mat-header-cell *matHeaderCellDef></th>
-                  <td mat-cell *matCellDef="let element"> 
-                    <button mat-raised-button color="primary" (click)="AppointmentForm(element.doctor.id,element.patient.id,element.id)">Ver</button> 
+                
+                <ng-container matColumnDef="puntuacion">
+                  <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Puntuación</h1> </th>
+                  <td mat-cell *matCellDef="let element">
+                      <app-appointment-rating></app-appointment-rating>
                   </td>
                 </ng-container>
-              
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-blue-100"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns" class="text-center"></tr>
               
               </table>
-            </div>
   </div>
 </body>

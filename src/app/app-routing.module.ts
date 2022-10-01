@@ -1,3 +1,5 @@
+import { SetPasswordComponent } from './pages/password/SetPassword/SetPassword.component';
+import { SetEmailComponent } from './pages/password/SetEmail/SetEmail.component';
 import { DiagnosticComponent } from './pages/report/diagnostic/diagnostic.component';
 import { HealthIndicatorComponent } from './pages/report/health-indicator/health-indicator.component';
 import { MonitorTreatmentComponent } from './pages/report/monitor-treatment/monitor-treatment.component';
@@ -30,6 +32,7 @@ import { AppointmentStaffComponent } from './pages/appointments/appointment-staf
 import { MedicalScheduleStaffComponent } from './pages/appointments/appointment-register-staff/medical-schedule-staff/medical-schedule-staff.component';
 import { StaffAppointmentFormComponent } from './pages/appointments/appointment-staff/staff-appointment-form/staff-appointment-form.component';
 import { AppointmentRegisterStaffComponent } from './pages/appointments/appointment-register-staff/appointment-register-staff.component';
+import { AppointmentHistoryComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-history.component';
 
 const routes: Routes = [
   {path: "register-user",component: RegisterUserComponent},
@@ -44,10 +47,11 @@ const routes: Routes = [
   {path: "patient/:id/appointment-patient",component: AppointmentComponent},
   {path: "patient/:patientid/medical-schedule/doctor/:doctorid",component: MedicalScheduleComponent},
   {path: "patient/:id/home-patient",component: HomePatientComponent},
+  {path: "patient/:id/appointment-history",component: AppointmentHistoryComponent},
 
   //Personal (Staff)
   {path: "staff/:staffid/medical-schedule/doctor/:doctorid",component: MedicalScheduleStaffComponent},
-  {path: "staff/:staffid/staff-appointment-form/patient/:patientid",component: StaffAppointmentFormComponent},
+  {path: "staff/:staffid/staff-appointment-form/patient/:patientid/appoint/:appointid",component: StaffAppointmentFormComponent},
   {path: "staff/:id/appointment-staff",component: AppointmentStaffComponent},
   {path: "staff/:id/appointment-staff-register",component: AppointmentRegisterStaffComponent},
   {path: "staff/:id/home-staff",component: HomeStaffComponent},
@@ -65,7 +69,7 @@ const routes: Routes = [
   {path: "staff/:id/staff-users",component: UsersPageComponent},
 
   //Doctor
-  {path: "doctor/:doctorid/appointment-form/patient/:patientid",component: RecordFormComponent},
+  {path: "doctor/:doctorid/appointment-form/patient/:patientid/appoint/:appointid",component: RecordFormComponent},
   {path: "doctor/:id/appointment-doctor",component: AppointmentDoctorComponent},
   {path: "doctor/:id/home-doctor",component: HomeComponent},
   {path: "doctor/:id/vigilant",component:VigilantComponent},
@@ -79,6 +83,11 @@ const routes: Routes = [
   {path: "doctor/:id/reporter-general-diagnostic",component:GeneralDiagnosticComponent},
   {path: "doctor/:id/reporter-diagnostic",component:DiagnosticComponent},
   {path: "doctor/:id/reporter-efficiency",component:EfficiencyComponent},
+
+
+
+  {path:"recoverpassword",component:SetEmailComponent},
+  {path:"changepassword",component:SetPasswordComponent}
 ];
 
 @NgModule({

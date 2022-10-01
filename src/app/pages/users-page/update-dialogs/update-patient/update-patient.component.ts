@@ -3,7 +3,8 @@ import { CreatePatientResource } from './../../../../models/patient/CreatePatien
 import { PatientService } from './../../../../services/patient/patient.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { updateAccept } from './../../confirm-dialogs/updateAccept';
 
 @Component({
   selector: 'app-update-patient',
@@ -14,7 +15,7 @@ export class UpdatePatientComponent implements OnInit {
 
   userupdateform!:FormGroup;
   CreatePatientResource!:CreatePatientResource
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public editpatientdata:any,private PatientService:PatientService) {
+  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public editpatientdata:any,private PatientService:PatientService,public dialog:MatDialog) {
 
 
     this.CreatePatientResource={} as CreatePatientResource
@@ -49,6 +50,18 @@ export class UpdatePatientComponent implements OnInit {
       this.userupdateform.controls['password'].setValue(this.editpatientdata.password);
     }
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(updateAccept, {
+      width: '250px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+
+    });
+  }
   Update(){
 
   this.CreatePatientResource.name = this.userupdateform.controls['name'].value;
@@ -75,7 +88,7 @@ this.editpatientdata.documentNumber=this.CreatePatientResource.documentNumber
   this.editpatientdata.password= this.CreatePatientResource.password;
 
   this.PatientService.updatePatient(this.editpatientdata.id,this.CreatePatientResource).subscribe((response:any)=>{
-
+          this.openDialog()
   })
 
 

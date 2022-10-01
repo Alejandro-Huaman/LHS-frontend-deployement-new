@@ -83,17 +83,17 @@ export class AppointmentDoctorComponent implements OnInit {
     )
   }
 
-  AppointmentForm(doctorid:number,patientid:number){
+  AppointmentForm(doctorid:number,patientid:number,appointid:number){
     console.log(doctorid)
     console.log(patientid)
 
-    this.route.navigate([`doctor/${doctorid}/appointment-form/patient/${patientid}`]);
+    this.route.navigate([`doctor/${doctorid}/appointment-form/patient/${patientid}/appoint/${appointid}`]);
   }
 
   GotoDoctorHome(id:number){
       this.route.navigate(['doctor',id,'home-doctor'])
   }
-
+ 
   GetPatientByDNI(){
     console.log(this.dnisearch.value)
     this.patientservice.getPatientByDocumentNumber(this.dnisearch.value).subscribe((response:any)=>{

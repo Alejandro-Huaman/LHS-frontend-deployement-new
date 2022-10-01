@@ -31,8 +31,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Numero de Documento</mat-label>
-              <input matInput placeholder="Ingrese Numero de documento" formControlName="numberdocument" required [(ngModel)]="CreatePatientResource.documentNumber">
-              <mat-error *ngIf="userregisterform.controls['numberdocument'].dirty && userregisterform.hasError('required') || userregisterform.controls['numberdocument'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese Numero de documento" formControlName="numberdocument" required [(ngModel)]="CreatePatientResource.documentNumber" minlength="8">
+              <mat-error *ngIf="userregisterform.controls['numberdocument'].touched && userregisterform.controls['numberdocument'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!userregisterform.controls['numberdocument'].hasError('required')">Requiere un numero de documento minimo de 8 caracteres</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field appearance="outline" class="w-full">
@@ -73,8 +74,9 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Contraseña</mat-label>
-              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreatePatientResource.password">
-              <mat-error *ngIf="userregisterform.controls['password'].dirty && userregisterform.hasError('required') || userregisterform.controls['password'].invalid">Complete este campo es requerido!</mat-error>
+              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreatePatientResource.password" minlength="8">
+              <mat-error *ngIf="userregisterform.controls['password'].touched && userregisterform.controls['password'].hasError('required')">Complete este campo es requerido!</mat-error>
+              <mat-error *ngIf="!userregisterform.controls['password'].hasError('required')">Requiere una contraseña minimo de 8 caracteres</mat-error>
             </mat-form-field>
             
             <div class="text-center">

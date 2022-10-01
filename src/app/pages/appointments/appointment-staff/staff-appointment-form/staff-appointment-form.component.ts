@@ -1,3 +1,5 @@
+import { UpdateAppointmentResource } from './../../../../models/appointment/UpdateAppointmentResource';
+import { AppointmentService } from './../../../../services/appoinment/Appointment.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultDialogRecordComponent } from '../../../dialogs/result-dialog-record/result-dialog-record.component';
@@ -56,6 +58,8 @@ export class StaffAppointmentFormComponent implements OnInit {
   backrecordform!:FormGroup
   diagnosticform!:FormGroup
   treatmentform!:FormGroup
+  setstatfrom!:FormGroup
+  UpdateAppointmentResource!:UpdateAppointmentResource
   treatmenttype!:String;
   treatmenttypes:TreatmentResource[] = []
   diagnostictypes:DiagnosisResource[] = []
@@ -80,8 +84,10 @@ export class StaffAppointmentFormComponent implements OnInit {
   displayedColumnsancient: string[] = ['id', 'description', 'diseasetype', 'date'];
   displayedColumnsdiagnostic: string[] = ['code', 'description', 'diagnostic', 'initdate','finishdate','update'];
   displayedColumnstreatment: string[] = ['code', 'typetreatment', 'medicine', 'doses','description','initdate','finishdate','update'];
-  
-
+  stat!:string;
+  notes!:string
+  shecdule!:Date
+  status:string[] = ["SCHEDULED","FINISHED","CANCELED"]
   constructor(public dialog:MatDialog, private formBuilder:FormBuilder, 
     private patientservice:PatientService,private activeroute:ActivatedRoute, private route:Router, 
     private surveillanceservice:SurveillanceService,
@@ -91,7 +97,8 @@ export class StaffAppointmentFormComponent implements OnInit {
     private patienttreatmentservice:PatientTreatmentService,
     private treatmentservice:TreatmentService,
     private medicineservice:MedicineService,
-    private staffservice:StaffService
+    private staffservice:StaffService,
+    private AppointmentService:AppointmentService
     ) { 
       this.ancientpatient = {} as IllnessRecordResource,
       this.patientdiagnostic = {} as CreatePatientDiagnosisResource,
@@ -101,6 +108,7 @@ export class StaffAppointmentFormComponent implements OnInit {
       this.patientmedicine = {} as MedicineResource
       this.patientobject = {} as PatientResource
       this.surveillancepatient = {} as SurveillanceResource
+      this.UpdateAppointmentResource={}as UpdateAppointmentResource
     }
 
   ngOnInit() {
@@ -127,12 +135,17 @@ export class StaffAppointmentFormComponent implements OnInit {
       type:['',Validators.required],
       medicine:['',Validators.required],
      })
-     
+     this.setstatfrom = this.formBuilder.group({
+
+      stat:['',Validators.required]
+
+     })
      this.displayvigilancy = false;
      this.todaydate = this.pipedate.transform(this.fechaactual, 'dd/MM/yyyy');
 
      let urlpatientvariable = parseInt(this.activeroute.snapshot.paramMap.get('patientid')!);
      let urlstaffvariable = parseInt(this.activeroute.snapshot.paramMap.get('staffid')!);
+     let urlstaffstatus = parseInt(this.activeroute.snapshot.paramMap.get('appointid')!);
      this.idpatienturl = urlpatientvariable
      this.idstaffurl = urlstaffvariable
      console.log(this.idpatienturl)
@@ -149,12 +162,20 @@ export class StaffAppointmentFormComponent implements OnInit {
      this.getDiagnosis()
      this.getTreatments()
      this.getMedicines()
+     this.getappoint(urlstaffstatus)
   }
 
   RegisterMethod(){
     const dialogRef = this.dialog.open(ResultDialogRecordComponent)
   }
+  getappoint(id:number){
+    this.AppointmentService.getAppointmentById(id).subscribe((response:any)=>{
+      this.setstatfrom.controls["stat"].setValue(response.status)
+      this.notes=response.notes
+      this.shecdule=response.scheduledAt
 
+    })
+  }
   SaveAncient(id:number){
     this.illnesservice.createIllnessRecord(this.ancientpatient,id).subscribe( (response:any) =>{
       this.dataSourceancient2.data.push( {...response});
@@ -164,7 +185,16 @@ export class StaffAppointmentFormComponent implements OnInit {
     });
     
   }
+  cambiarstat(){
+        let urlstaffstatus = parseInt(this.activeroute.snapshot.paramMap.get('appointid')!);
+        this.UpdateAppointmentResource.status= this.setstatfrom.controls["stat"].value
+        this.UpdateAppointmentResource.notes=this.notes
+        this.UpdateAppointmentResource.scheduledAt=this.shecdule
+        this.AppointmentService.updateAppointment(urlstaffstatus,this.UpdateAppointmentResource).subscribe((response:any)=>{
+                    
+        })
 
+  }
   getDiagnosis(){
     this.diagnosisservice.getAllDiagnosis().subscribe( (response:any) =>{
         this.diagnostictypes = response

@@ -3,7 +3,7 @@ import { DoctorResource } from './../doctor/DoctorResource';
 import { PatientResource } from './../patient/PatientResource';
 export interface AppointmentResource {
 
-     id:number;
+      id:number;
       notes:string;
       scheduledAt:Date;
       status:Status;

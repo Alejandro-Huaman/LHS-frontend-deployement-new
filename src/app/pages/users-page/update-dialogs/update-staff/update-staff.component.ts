@@ -1,10 +1,11 @@
+
 import { StaffResource } from 'src/app/models/staff/StaffResource';
 import { CreateStaffResource } from './../../../../models/staff/CreateStaffResource';
 import { StaffService } from './../../../../services/staff/staff.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { updateAccept } from './../../confirm-dialogs/updateAccept';
 @Component({
   selector: 'app-update-staff',
   templateUrl: './update-staff.component.html',
@@ -16,7 +17,7 @@ export class UpdateStaffComponent implements OnInit {
   role!:string;
   rolelist:string[] = ["ADMIN","NURSE"]
   CreateStaffResource!:CreateStaffResource
-  constructor(private formBuilder:FormBuilder, @Inject(MAT_DIALOG_DATA) public editstaffdata:any,private StaffService:StaffService) {
+  constructor(private formBuilder:FormBuilder, @Inject(MAT_DIALOG_DATA) public editstaffdata:any,private StaffService:StaffService,public dialog:MatDialog) {
       this.CreateStaffResource={}as CreateStaffResource
    }
 
@@ -47,6 +48,18 @@ export class UpdateStaffComponent implements OnInit {
         this.staffeditform.controls['password'].setValue(this.editstaffdata.password);
      }
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(updateAccept, {
+      width: '250px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+
+    });
+  }
   Update(){
         this.CreateStaffResource.name= this.staffeditform.controls['name'].value
         this.CreateStaffResource.lastname= this.staffeditform.controls['lastname'].value
@@ -72,7 +85,7 @@ export class UpdateStaffComponent implements OnInit {
 
         console.log(this.CreateStaffResource)
         this.StaffService.updateStaff(this.editstaffdata.id,this.CreateStaffResource).subscribe((response:any)=>{
-
+                      this.openDialog()
         })
 
   }

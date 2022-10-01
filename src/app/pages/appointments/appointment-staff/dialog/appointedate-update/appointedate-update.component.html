@@ -4,13 +4,18 @@
 <form [formGroup]="userupdateform">
   <mat-form-field appearance="outline" class="w-96">
     <mat-label>Ingrese fecha</mat-label>
-    <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="date" placeholder="Ingrese su fecha" required [(ngModel)]="UpdateAppointmentResource.scheduledAt">
+    <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="date" placeholder="Ingrese su fecha" required [(ngModel)]="topdate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error>Es requerido este campo!</mat-error>
   </mat-form-field>
+  <mat-form-field appearance="outline" class="w-96">
+    <mat-label>Ingresar Hora</mat-label>
+    <input matInput type="number" placeholder="Ex. 4" formControlName="hour" [min]="start1" [max]="end-1">
+    <mat-error *ngIf="userupdateform.controls['hour'].dirty && userupdateform.hasError('required','hour')">Campo requerido</mat-error>
+  </mat-form-field>
   <div class="text-center">
-    <button matDialogClose color = "primary" mat-raised-button [disabled]="userupdateform.invalid" (click)="Update()">Actualizar</button>
+    <button [matDialogClose]="UpdateAppointmentResource" color = "primary" mat-raised-button [disabled]="userupdateform.invalid" (click)="Update()">Actualizar</button>
   </div>  
 </form>
 

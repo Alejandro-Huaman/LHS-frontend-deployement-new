@@ -1,0 +1,22 @@
+
+
+
+<div class="grid place-items-center h-screen">
+  <mat-card>
+    <form [formGroup]="emailform">
+      <label>Te enviaremos un correo para recuperar su contraseña</label>
+    <div>
+      
+      <mat-form-field  appearance="fill">
+        <input matInput #input maxlength="50" placeholder="Ingrese Correo" formControlName="email" required [(ngModel)]="email">
+        <mat-error *ngIf="emailform.controls['email'].dirty && emailform.hasError('required','email')">Campo requerido</mat-error>
+        <mat-error *ngIf="emailform.controls['email'].dirty && emailform.hasError('email','email')">Debe ser Email</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+       <button mat-raised-button color="primary" [disabled]="emailform.invalid" (click)="SendEmail()">Enviar Correo</button>
+    </div>
+  </form>
+
+  </mat-card>
+</div>
