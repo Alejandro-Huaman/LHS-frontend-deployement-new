@@ -27,7 +27,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
 import { ViewChild,ElementRef  } from '@angular/core';
-
+import { DatePipe } from '@angular/common';
 export interface dataclinical {
   Hematologicos: string;
   Urologicos:string
@@ -100,7 +100,8 @@ paciente_id:paciente[1]
 @Component({
   selector: 'app-clinical-histories',
   templateUrl: './clinical-histories.component.html',
-  styleUrls: ['./clinical-histories.component.css']
+  styleUrls: ['./clinical-histories.component.css'],
+  providers: [DatePipe]
 })
 
 export class ClinicalHistoriesComponent implements OnInit {
@@ -141,7 +142,7 @@ export class ClinicalHistoriesComponent implements OnInit {
   displayedColumns5: string[] = ['Hematologicos','Urologicos',"Nutrición"];
   constructor(public dialog: MatDialog,private formBuilder:FormBuilder,private PATIENTSERVICE:PatientService,private IllnessRecordService:IllnessRecordService
     ,private PatientTreatmentService:PatientTreatmentService,private PatientDiagnosticService:PatientDiagnosticService,private AppointmentService:AppointmentService,private SurveillanceService:SurveillanceService
-    ,private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute,private Router:Router) { 
+    ,private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute,private Router:Router,private datePipe: DatePipe) { 
     this.dataSource1 = new MatTableDataSource<any>();
     this.dataSource2 = new MatTableDataSource<any>();
     this.dataSource3 = new MatTableDataSource<any>();
@@ -207,7 +208,7 @@ downloadAsPDF(){
     if(height == "" || height===null){
         return "Ninguna"
     }else{
-      return height
+      return height + " m"
     }
   }
 
@@ -311,16 +312,16 @@ downloadAsPDF(){
 
   arrayflow(){
     this.arrayclinical=[
-      {Hematologicos:`Hemoglobina ${this.SurveillanceResource1.hemoglobin}`,Urologicos:`Urea:${this.SurveillanceResource1.urea}`,Nutricion:`Cantidad de calorias:${this.SurveillanceResource1.planCalories}`},
-      {Hematologicos:`Segmentados ${this.SurveillanceResource1.segmented}`,Urologicos:`Proteinas:${this.SurveillanceResource1.protein}`,Nutricion:`imc:${this.SurveillanceResource1.imc}`},
-      {Hematologicos:`VCM ${this.SurveillanceResource1.mvc}`,Urologicos:`Nitrito:${this.SurveillanceResource1.nitrite}`,Nutricion:`Calorias consumidas:${this.SurveillanceResource1.consumedCalories}`},
-      {Hematologicos:`Linfoncitos ${this.SurveillanceResource1.lymphocytes}`,Urologicos:`Creatinina:${this.SurveillanceResource1.creatinine}`,Nutricion:`Dolor:${this.SurveillanceResource1.pain}`},
-      {Hematologicos:`Monocitos ${this.SurveillanceResource1.monocytes}`,Urologicos:`Cetonas:${this.SurveillanceResource1.ketone}`,Nutricion:`Apetito:${this.SurveillanceResource1.appetite}`},
-      {Hematologicos:`Leucocitos ${this.SurveillanceResource1.leukocytes}`,Urologicos:`Cristales:${this.SurveillanceResource1.crystals}`,Nutricion:`Otros simtomas:${this.SurveillanceResource1.otherSymptoms}`},
-      {Hematologicos:`Glucosa ${this.SurveillanceResource1.glucose}`,Urologicos:`Densidad de Orina:${this.SurveillanceResource1.density}`,Nutricion:``},
-      {Hematologicos:`Colesterol ${this.SurveillanceResource1.cholesterol}`,Urologicos:`Urobilinogeno:${this.SurveillanceResource1.urobilinogen}`,Nutricion:``},
-      {Hematologicos:`Hematies ${this.SurveillanceResource1.erythrocytes}`,Urologicos:`Azucar:${this.SurveillanceResource1.sugar}`,Nutricion:``},
-      {Hematologicos:`trigliceridos ${this.SurveillanceResource1.triglycerides}`,Urologicos:`PH:${this.SurveillanceResource1.ph}`,Nutricion:``},
+      {Hematologicos:`Hemoglobina: ${this.SurveillanceResource1.hemoglobin} g/dL`,Urologicos:`Urea:${this.SurveillanceResource1.urea} mg/ml`,Nutricion:`Cantidad de calorias:${this.SurveillanceResource1.planCalories}`},
+      {Hematologicos:`Segmentados: ${this.SurveillanceResource1.segmented} %`,Urologicos:`Proteinas:${this.SurveillanceResource1.protein} mg/dL`,Nutricion:`imc:${this.SurveillanceResource1.imc}`},
+      {Hematologicos:`VCM: ${this.SurveillanceResource1.mvc} fl`,Urologicos:`Nitrito:${this.SurveillanceResource1.nitrite}`,Nutricion:`Calorias consumidas:${this.SurveillanceResource1.consumedCalories}`},
+      {Hematologicos:`Linfoncitos: ${this.SurveillanceResource1.lymphocytes} %`,Urologicos:`Creatinina:${this.SurveillanceResource1.creatinine}  mg/dL`,Nutricion:`Dolor:${this.SurveillanceResource1.pain}`},
+      {Hematologicos:`Monocitos: ${this.SurveillanceResource1.monocytes} /L`,Urologicos:`Cetonas:${this.SurveillanceResource1.ketone}`,Nutricion:`Apetito:${this.SurveillanceResource1.appetite}`},
+      {Hematologicos:`Leucocitos: ${this.SurveillanceResource1.leukocytes} mg/ml`,Urologicos:`Cristales:${this.SurveillanceResource1.crystals}`,Nutricion:`Otros simtomas:${this.SurveillanceResource1.otherSymptoms}`},
+      {Hematologicos:`Glucosa: ${this.SurveillanceResource1.glucose} mg/dl`,Urologicos:`Densidad de Orina:${this.SurveillanceResource1.density}`,Nutricion:``},
+      {Hematologicos:`Colesterol: ${this.SurveillanceResource1.cholesterol} mg/dL`,Urologicos:`Urobilinogeno:${this.SurveillanceResource1.urobilinogen}  mg/dL`,Nutricion:``},
+      {Hematologicos:`Hematies: ${this.SurveillanceResource1.erythrocytes} células/mcL`,Urologicos:`Azucar:${this.SurveillanceResource1.sugar} mmol/l`,Nutricion:``},
+      {Hematologicos:`trigliceridos: ${this.SurveillanceResource1.triglycerides} células/mcL`,Urologicos:`PH:${this.SurveillanceResource1.ph}`,Nutricion:``},
       {Hematologicos:``,Urologicos:`Billirubina:${this.SurveillanceResource1.bilirubin}`,Nutricion:``},
       {Hematologicos:``,Urologicos:`Aspecto de Orina:${this.SurveillanceResource1.urineAppearance}`,Nutricion:``},
       {Hematologicos:``,Urologicos:`Color de Orina:${this.SurveillanceResource1.urineColor}`,Nutricion:``}
@@ -461,6 +462,19 @@ downloadAsPDF(){
       this.downloadAsPDF()
     });
   }
+  getfecha(date:any){
+
+
+
+
+    let datform=this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    
+    
+    
+    
+    return datform
+    
+    }
 }
 @Component({
   selector: 'clinicalhistoryaccept',
@@ -475,7 +489,7 @@ export class clinicalHisotory{
     this.dialogRef.close();
   }
 
-
+  
 
 
 }

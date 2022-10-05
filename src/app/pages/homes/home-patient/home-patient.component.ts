@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token/token.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientResource } from 'src/app/models/patient/PatientResource';
@@ -12,7 +13,7 @@ export class HomePatientComponent implements OnInit {
   idpatient!:number
   PatientResource!:PatientResource
 
-  constructor(private route:Router,private activeroute:ActivatedRoute,private patientservice:PatientService) { }
+  constructor(private route:Router,private activeroute:ActivatedRoute,private patientservice:PatientService,private TokenService:TokenService) { }
 
   ngOnInit() {
 
@@ -29,5 +30,9 @@ export class HomePatientComponent implements OnInit {
 
   GoToAppointmentPatient(){
     this.route.navigate(['patient',this.PatientResource.id,'appointment-patient']);
+  }
+  GoOut(){
+    this.TokenService.logOut();
+    this.route.navigate(['login']);
   }
 }

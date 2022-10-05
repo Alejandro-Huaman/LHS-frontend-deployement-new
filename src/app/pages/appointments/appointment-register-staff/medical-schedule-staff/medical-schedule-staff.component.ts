@@ -190,5 +190,15 @@ export class MedicalScheduleStaffComponent implements OnInit {
     this.nombredia = dias[numeroDia];
     console.log("Nombre de día de la semana: ", this.nombredia);
   }
+  getpatientname(name:string,lastname:string){
+    if(name==undefined && lastname==undefined){
+      name="nombre"
+      lastname="apellido"
+    }
+    let complete=`${name}  ${lastname}`
+    
+    return complete
+  }
+
 
 }

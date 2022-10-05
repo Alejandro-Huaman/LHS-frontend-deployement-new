@@ -8,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultDialogComponent } from '../../dialogs/result-dialog/result-dialog.component';
 import {FormBuilder, ReactiveFormsModule, FormGroup, Validators} from '@angular/forms';
-
+import { StaffService } from 'src/app/services/staff/staff.service';
+import { ActivatedRoute } from '@angular/router';
+import { StaffResource } from 'src/app/models/staff/StaffResource';
 @Component({
   selector: 'app-register-medical',
   templateUrl: './register-medical.component.html',
@@ -30,7 +32,9 @@ export class RegisterMedicalComponent implements OnInit {
   specailityselected!:number
   shifts:ShiftResource[]=[]
   specialities:SpecialtyResource[]=[]
-  constructor(public dialog:MatDialog, private formBuilder: FormBuilder,private DoctorService:DoctorService,private ShiftService:ShiftService,private SpecialityService:SpecialityService) {
+  urlid!:number
+  staffobject!:StaffResource
+  constructor(public dialog:MatDialog, private formBuilder: FormBuilder,private DoctorService:DoctorService,private ShiftService:ShiftService,private SpecialityService:SpecialityService, private StaffService:StaffService, private ActivatedRoute:ActivatedRoute) {
     this.CreateDoctorResource={}as CreateDoctorResource;
     this.SpecialtyResource={}as SpecialtyResource;
     this.ShiftResource={}as ShiftResource;
@@ -52,12 +56,24 @@ export class RegisterMedicalComponent implements OnInit {
      })
      this.GetShift()
      this.GetSpeciality()
+     let urlvariable = parseInt(this.ActivatedRoute.snapshot.paramMap.get('id')!);
+     this.urlid = urlvariable
+     console.log(this.urlid)
+     this.getStaffById(this.urlid) 
+
+  }
+  getStaffById(id:number){
+    this.StaffService.getStaffById(id).subscribe((response:any)=>{
+      this.staffobject = response           
+    })
   }
 
   RegisterMethod(){
  
    this.DoctorService.createDoctor(this.CreateDoctorResource,this.specailityselected,this.shiftselected).subscribe((response:any)=>{
-        const dialogRef = this.dialog.open(ResultDialogComponent)
+        const dialogRef = this.dialog.open(ResultDialogComponent,{
+          data: this.staffobject
+        })
    })
 
     

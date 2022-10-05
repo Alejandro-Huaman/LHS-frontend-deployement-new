@@ -44,14 +44,14 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Email</mat-label>
-              <input matInput placeholder="Ingrese email" formControlName="email" required [(ngModel)]="CreateDoctorResource.email">
+              <input matInput placeholder="Ingrese email" formControlName="email" required [(ngModel)]="CreateDoctorResource.email" maxlength="50">
               <mat-error *ngIf="medicalregisterform.controls['email'].touched && medicalregisterform.controls['email'].hasError('required')">Complete este campo es requerido!</mat-error>
               <mat-error *ngIf="medicalregisterform.controls['email'].dirty && medicalregisterform.controls['email'].hasError('email')">Email invalido complete con un email!</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Telefono</mat-label>
-              <input matInput placeholder="Ingrese telefono" formControlName="phone" required [(ngModel)]="CreateDoctorResource.phone">
+              <input matInput placeholder="Ingrese telefono" formControlName="phone" required [(ngModel)]="CreateDoctorResource.phone" maxlength="9">
               <mat-error *ngIf="medicalregisterform.controls['phone'].dirty && medicalregisterform.hasError('required') || medicalregisterform.controls['phone'].invalid">Complete este campo es requerido!</mat-error>
             </mat-form-field>
             <br>
@@ -63,7 +63,7 @@
             <br>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Contraseña</mat-label>
-              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateDoctorResource.password" minlength="8">
+              <input matInput placeholder="Ingrese contraseña" formControlName="password" required [(ngModel)]="CreateDoctorResource.password" minlength="8" maxlength="20">
               <mat-error *ngIf="medicalregisterform.controls['password'].touched && medicalregisterform.controls['password'].hasError('required')">Complete este campo es requerido!</mat-error>
               <mat-error *ngIf="!medicalregisterform.controls['password'].hasError('required')">Requiere una contraseña minimo de 8 caracteres</mat-error>
             </mat-form-field>
@@ -89,7 +89,7 @@
             </mat-form-field>
 
             <div class="text-center">
-              <button color = "primary" mat-raised-button (click)="RegisterMethod()" [disabled]="medicalregisterform.invalid">Registrarse</button>
+              <button class="bg-[#15558D] text-white" mat-raised-button (click)="RegisterMethod()" [disabled]="medicalregisterform.invalid">Registrarse</button>
             </div>  
           </form>
           </mat-card>

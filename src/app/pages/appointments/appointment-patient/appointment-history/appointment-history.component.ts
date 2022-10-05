@@ -9,11 +9,12 @@ import { AppointmentService } from 'src/app/services/appoinment/Appointment.serv
 import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { AppointmentRatingComponent } from './appointment-rating/appointment-rating.component';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-appointment-history',
   templateUrl: './appointment-history.component.html',
-  styleUrls: ['./appointment-history.component.css']
+  styleUrls: ['./appointment-history.component.css'],
+  providers: [DatePipe]
 })
 export class AppointmentHistoryComponent implements OnInit {
   
@@ -27,7 +28,7 @@ export class AppointmentHistoryComponent implements OnInit {
   ratingArr: boolean[]
   AllratingArrays = []
   constructor(private appointmentservice:AppointmentService, private doctorservice:DoctorService, private patientservice:PatientService, private activeroute:ActivatedRoute,
-              private route:Router) { 
+              private route:Router,private datePipe: DatePipe) { 
                 this.ratingArr = Array(this.startcount).fill(false)
                 this.AllratingArrays = []
               }
@@ -93,4 +94,17 @@ export class AppointmentHistoryComponent implements OnInit {
     )
     
   }
+  getfecha(date:any){
+
+
+
+
+    let datform=this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    let dataframe=this.datePipe.transform(date, 'HH:mm')!;
+    let contat=`${datform}  ${dataframe}`
+    
+    
+    return contat
+    
+    }
 }

@@ -35,7 +35,7 @@
           <h1 class="pt-3">{{patientobject.name}}</h1>
         <div class="pr-96"></div>
         <div class="pt-4">
-          <button mat-raised-button color="primary" (click)="GetDay()" class="h-10" [disabled]="scheduleform.invalid">Buscar</button>
+          <button mat-raised-button (click)="GetDay()" class="h-10 bg-[#15558D] text-white" [disabled]="scheduleform.invalid">Buscar</button>
         </div>
         <div class="pr-5"></div>
         <form [formGroup]="scheduleform">

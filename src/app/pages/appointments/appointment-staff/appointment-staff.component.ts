@@ -14,6 +14,7 @@ import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StaffService } from 'src/app/services/staff/staff.service';
 import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 export interface Appointment {
   dni: string;
   patient: string;
@@ -24,7 +25,8 @@ export interface Appointment {
 @Component({
   selector: 'app-appointment-staff',
   templateUrl: './appointment-staff.component.html',
-  styleUrls: ['./appointment-staff.component.css']
+  styleUrls: ['./appointment-staff.component.css'],
+  providers: [DatePipe]
 })
 export class AppointmentStaffComponent implements OnInit {
   selecteddate !: Date;
@@ -35,14 +37,14 @@ export class AppointmentStaffComponent implements OnInit {
   doctorobject!:DoctorResource
   patients:string[] = ["Alayo Zavaleta, Alessandro Fabián","Almonacid Garrido, Viviana", "Benavides Castillo, Daniela"] 
   urlid!:number
-  displayedColumns: string[] = ['id','dni' ,'patient', 'date', 'status','button'];
+  displayedColumns: string[] = ['id','dni' ,'patient', 'date', 'status','doctor','button'];
     dataSource !:MatTableDataSource<any>;
   staffobject!:StaffResource
 
   @ViewChild(MatPaginator) paginator!:MatPaginator;
 
   constructor(private appointmentservice:AppointmentService, private route:Router,private activeroute:ActivatedRoute, private patientservice:PatientService, 
-              private staffservice:StaffService, private doctorservice:DoctorService,public dialog:MatDialog) {
+              private staffservice:StaffService, private doctorservice:DoctorService,public dialog:MatDialog,private datePipe: DatePipe) {
                 this.dataSource = new MatTableDataSource<any>();
               }
   
@@ -159,4 +161,24 @@ deleteappoint(id:number){
 
        
   }
+  getdocotorname(name:string,lastname:string){
+    let complete=`${name}  ${lastname}`
+    return complete
+  }
+  getfecha(date:any){
+
+
+
+
+    let datform=this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    let dataframe=this.datePipe.transform(date, 'HH:mm')!;
+    let contat=`${datform}  ${dataframe}`
+    
+    
+    return contat
+    
+    }
+
+
+
 }

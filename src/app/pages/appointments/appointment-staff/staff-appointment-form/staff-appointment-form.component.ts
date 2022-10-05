@@ -33,6 +33,8 @@ import { PatientDiagnosisResource } from 'src/app/models/patient-diagnostic/Pati
 import { UpdateDiagnosticDialogComponent } from '../../update-dialog/update-diagnostic-dialog/update-diagnostic-dialog.component';
 import { UpdateTreatmentDialogComponent } from '../../update-dialog/update-treatment-dialog/update-treatment-dialog.component';
 import { StaffResource } from 'src/app/models/staff/StaffResource';
+import { RenalDiseaseResource } from 'src/app/models/renal-disease/RenalDiseaseResource';
+import { RenalDiseaseService } from 'src/app/services/patient/renal-disease.service';
 
 @Component({
   selector: 'staff-appointment-form',
@@ -50,6 +52,7 @@ export class StaffAppointmentFormComponent implements OnInit {
   ancientpatient!:IllnessRecordResource
   patientdiagnostic!:CreatePatientDiagnosisResource
   diagnosis!:DiagnosisResource
+  renal!:RenalDiseaseResource
   patienttreatment!:PatientTreatmentResource
   treatment!:TreatmentResource
   patientmedicine!:MedicineResource
@@ -63,6 +66,7 @@ export class StaffAppointmentFormComponent implements OnInit {
   treatmenttype!:String;
   treatmenttypes:TreatmentResource[] = []
   diagnostictypes:DiagnosisResource[] = []
+  renaltypes:RenalDiseaseResource[] = []
   medicinetypes:MedicineResource[] = []
   fechaactual:Date = new Date()
   pipedate:DatePipe = new DatePipe("en-US")
@@ -98,7 +102,8 @@ export class StaffAppointmentFormComponent implements OnInit {
     private treatmentservice:TreatmentService,
     private medicineservice:MedicineService,
     private staffservice:StaffService,
-    private AppointmentService:AppointmentService
+    private AppointmentService:AppointmentService,
+    private renaldiseaseservice:RenalDiseaseService
     ) { 
       this.ancientpatient = {} as IllnessRecordResource,
       this.patientdiagnostic = {} as CreatePatientDiagnosisResource,
@@ -162,6 +167,7 @@ export class StaffAppointmentFormComponent implements OnInit {
      this.getDiagnosis()
      this.getTreatments()
      this.getMedicines()
+     this.getRenalDiseases()
      this.getappoint(urlstaffstatus)
   }
 
@@ -203,6 +209,13 @@ export class StaffAppointmentFormComponent implements OnInit {
     )
   }
 
+  getRenalDiseases(){
+    this.renaldiseaseservice.getAllRenalDisease().subscribe( (response:any) =>{
+      this.renaltypes = response
+      console.log(this.renaltypes)
+    })
+  }
+
   getTreatments(){
     this.treatmentservice.getAllTreatments().subscribe( (response:any) =>{
         this.treatmenttypes = response
@@ -222,6 +235,15 @@ export class StaffAppointmentFormComponent implements OnInit {
   getDiagnosticbyName(diagnosticselected:any){
     console.log(diagnosticselected)
     this.diagnosisservice.getDiagnosisByName(diagnosticselected).subscribe( (response:any) =>{
+      this.dataSourcediagnostic.data = response
+      console.log(this.dataSourcediagnostic.data)
+      this.diagnosis = this.dataSourcediagnostic.data[0]
+    })
+  }
+
+  getRenalbyName(renalselected:any){
+    console.log(renalselected)
+    this.renaldiseaseservice.getRenalDiseaseById(renalselected).subscribe( (response:any) =>{
       this.dataSourcediagnostic.data = response
       console.log(this.dataSourcediagnostic.data)
       this.diagnosis = this.dataSourcediagnostic.data[0]

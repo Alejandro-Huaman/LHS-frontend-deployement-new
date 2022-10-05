@@ -67,6 +67,9 @@ const routes: Routes = [
   {path: "staff/:id/reporter-diagnostic",component:DiagnosticComponent},
   {path: "staff/:id/reporter-efficiency",component:EfficiencyComponent},
   {path: "staff/:id/staff-users",component: UsersPageComponent},
+  {path: "staff/:id/register-user",component: RegisterUserComponent},
+  {path: "staff/:id/register-medical",component: RegisterMedicalComponent},
+  {path: "staff/:id/register-staff",component: RegisterStaffComponent},
 
   //Doctor
   {path: "doctor/:doctorid/appointment-form/patient/:patientid/appoint/:appointid",component: RecordFormComponent},

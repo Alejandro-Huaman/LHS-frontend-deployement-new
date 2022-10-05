@@ -72,32 +72,32 @@ export class VigilantComponent implements OnInit {
 
      this.hematologyform=this.formBuilder.group({
 
-      hemoglobina:[0,Validators.required],
-      linfocitos:[0,Validators.required],
-      segmentados:[0,Validators.required],
-      monocitos:[0,Validators.required],
-      vcm:[0,Validators.required],
-      hcm:[0,Validators.required],
-      leucocitos:[0,Validators.required],
-      hematies:[0,Validators.required],
-      glucosa:[0,Validators.required],
-      colesterol:[0,Validators.required],
-      trigliceridos:[0,Validators.required],
+      hemoglobina:[0,[Validators.required,Validators.min(13.2),Validators.max(16.6)]],
+      linfocitos:[0,[Validators.required,Validators.min(20),Validators.max(40)]],
+      segmentados:[0,[Validators.required,Validators.min(38.3),Validators.max(48.6)]],
+      monocitos:[0,[Validators.required,Validators.min(4500),Validators.max(11000)]],
+      vcm:[0,[Validators.required,Validators.min(80),Validators.max(100)]],
+      hcm:[0,[Validators.required,Validators.min(27),Validators.max(31)]],
+      leucocitos:[0,[Validators.required,Validators.min(6),Validators.max(24)]],
+      hematies:[0,[Validators.required,Validators.min(4),Validators.max(5.9)]],
+      glucosa:[0,[Validators.required,Validators.min(70),Validators.max(140)]],
+      colesterol:[0,[Validators.required,Validators.min(0),Validators.max(170)]],
+      trigliceridos:[0,[Validators.required,Validators.min(4.7),Validators.max(6.1)]],
 
      })
      this.urologyform=this.formBuilder.group({
 
-     urea:[0,Validators.required],
-     creatinina:[0,Validators.required],
-     densidadOrina: [0,Validators.required],
-     pH:[0,Validators.required],
-     proteinas:[0,Validators.required],
-     cetonas:[0,Validators.required],
-     urobilinogeno:[0,Validators.required],
-     bilirrubina :[0,Validators.required],
-     nitrito :[0,Validators.required],
-     cristales :[0,Validators.required],
-     azucar :[0,Validators.required],
+     urea:[0,[Validators.required,Validators.min(0),Validators.max(40)]],
+     creatinina:[0,[Validators.required,Validators.min(0.59),Validators.max(1.04)]],
+     densidadOrina: [0,[Validators.required,Validators.min(1.005),Validators.max(1.03)]],
+     pH:[0,[Validators.required,Validators.min(4.6),Validators.max(8)]],
+     proteinas:[0,[Validators.required,Validators.min(0),Validators.max(14)]],
+     cetonas:[0,[Validators.required,Validators.min(0),Validators.max(1)]],
+     urobilinogeno:[0,[Validators.required,Validators.min(0),Validators.max(1)]],
+     bilirrubina :[0,[Validators.required,Validators.min(0),Validators.max(1.2)]],
+     nitrito :[0,[Validators.required,Validators.min(0),Validators.max(1)]],
+     cristales :[0,[Validators.required,Validators.min(0),Validators.max(1)]],
+     azucar :[0,[Validators.required,Validators.min(0),Validators.max(0.8)]],
      aspectoOrina:[0,Validators.required],
      colorOrina:[0,Validators.required],
 
@@ -161,9 +161,27 @@ export class VigilantComponent implements OnInit {
     this.hematologyform.controls["colesterol"].value==undefined &&
     this.hematologyform.controls["trigliceridos"].value==undefined){
      this.checkhematology=true;
+     
 
-    }else{
+    }
+    else if(this.hematologyform.controls["hemoglobina"].value==null && 
+    this.hematologyform.controls["linfocitos"].value==null && 
+    this.hematologyform.controls["segmentados"].value==null &&
+    this.hematologyform.controls["monocitos"].value==null &&
+    this.hematologyform.controls["vcm"].value==null &&
+    this.hematologyform.controls["hcm"].value==null &&
+    this.hematologyform.controls["leucocitos"].value==null && 
+    this.hematologyform.controls["hematies"].value==null &&
+    this.hematologyform.controls["glucosa"].value==null &&
+    this.hematologyform.controls["colesterol"].value==null &&
+    this.hematologyform.controls["trigliceridos"].value==null){
+     this.checkhematology=true;
+     
+
+    }
+     else{
       this.checkhematology=false;
+      
     }
   }
   urologynull(){
@@ -181,9 +199,45 @@ export class VigilantComponent implements OnInit {
     this.urologyform.controls["azucar"].value==undefined &&
     this.urologyform.controls["aspectoOrina"].value==undefined &&
     this.urologyform.controls["colorOrina"].value==undefined){
+      console.log("pinrp")
       this.checkneurology=true;
 
-    }else{
+    }
+    else if(this.urologyform.controls["urea"].value==null && 
+    this.urologyform.controls["creatinina"].value==null && 
+    this.urologyform.controls["densidadOrina"].value==null &&
+    this.urologyform.controls["pH"].value==null &&
+    this.urologyform.controls["proteinas"].value==null &&
+    this.urologyform.controls["cetonas"].value==null &&
+    this.urologyform.controls["urobilinogeno"].value==null && 
+    this.urologyform.controls["bilirrubina"].value==null &&
+    this.urologyform.controls["nitrito"].value==null &&
+    this.urologyform.controls["cristales"].value==null &&
+    this.urologyform.controls["azucar"].value==null &&
+    this.urologyform.controls["aspectoOrina"].value=="" &&
+    this.urologyform.controls["colorOrina"].value==""){
+
+
+    
+
+      this.checkneurology=true;
+
+    }
+    
+    else{
+      /*console.log(this.urologyform.controls["urea"].value)
+      console.log(this.urologyform.controls["creatinina"].value)
+      console.log(this.urologyform.controls["densidadOrina"].value)
+      console.log(this.urologyform.controls["pH"].value)
+      console.log(this.urologyform.controls["proteinas"].value)
+      console.log(this.urologyform.controls["cetonas"].value)
+      console.log(this.urologyform.controls["urobilinogeno"].value)
+      console.log(this.urologyform.controls["bilirrubina"].value)
+      console.log(this.urologyform.controls["nitrito"].value)
+      console.log(this.urologyform.controls["cristales"].value)
+      console.log(this.urologyform.controls["azucar"].value)
+      console.log(this.urologyform.controls["aspectoOrina"].value)
+      console.log(this.urologyform.controls["colorOrina"].value)*/
       this.checkneurology=false;
     }
 
@@ -199,10 +253,21 @@ export class VigilantComponent implements OnInit {
     this.nutricionalform.controls["otroSintoma"].value==undefined &&
     this.nutricionalform.controls["imc"].value==undefined 
     ){
+     
       this.checknutricional=true
 
-    }else{
+    }
+    else if(this.nutricionalform.controls["caloriasPlan"].value==null && 
+    this.nutricionalform.controls["caloriasConsum"].value==null && 
+    this.nutricionalform.controls["apetito"].value=="" &&
+    this.nutricionalform.controls["dolores"].value=="" &&
+    this.nutricionalform.controls["otroSintoma"].value=="" &&
+    this.nutricionalform.controls["imc"].value==null ){
      
+      this.checknutricional=true
+    }
+    else{
+      
       this.checknutricional=false
     }
 
@@ -217,6 +282,8 @@ export class VigilantComponent implements OnInit {
       this.nutricionnull()
       this.urologynull()
       this.hematologynull()
+     console.log(this.urologyform.valid)
+     console.log(this.checkneurology)
       if(this.vigilantform.valid){
          
           validatevigilant=true
@@ -227,7 +294,7 @@ export class VigilantComponent implements OnInit {
         validatenutricinal=true
       }
       if(this.checkneurology || this.urologyform.valid){
-       
+        console.log("validado urologia")
         validateurology=true
       }
       if(this.checkhematology || this.hematologyform.valid){
@@ -284,6 +351,14 @@ export class VigilantComponent implements OnInit {
       this.router.navigate(['/doctor',this.DoctorResource.id,'home-doctor'])
 
     });
+  }
+  checkheight(height:string){
+     if(height!="altura"){
+      let complete=`${height} m`
+      return complete;
+     }
+     return height
+
   }
 
 }

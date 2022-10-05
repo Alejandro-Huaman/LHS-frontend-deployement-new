@@ -6,9 +6,11 @@
     <span class="pr-5"></span>
     <h1 class="text-slate-800">Clinica de salud</h1>
     <span class="flex-auto"></span>
-    <h1 class="text-slate-800">{{patientobject.name}}</h1>
+    <h1 class="text-slate-800">Estado de Cita del Paciente:</h1>
+    <div class="pr-4"></div>
     <div class="filed">
       <form [formGroup]="setstatfrom">
+      <div class="flex space-x-4">
        <mat-form-field appearance="fill" >
          <mat-select formControlName="stat">
            <div *ngFor="let stat of status">
@@ -16,9 +18,10 @@
            </div>
          </mat-select>
        </mat-form-field>
-       <button mat-raised-button (click)="cambiarstat()" color="primary"> Cambiar Estado de cita</button>
-     </form> 
-     </div>
+       <button mat-raised-button (click)="cambiarstat()" class="butonnchange bg-[#15558D] text-white"> Cambiar Estado de cita</button>
+      </div>
+    </form> 
+    </div>
     <span class="flex-auto"></span>
     <img src="../../assets/images/profile.png" class="w-10 h-10">
     <button>
@@ -97,10 +100,47 @@
           </form>
         </div>
         <div>
-          <button mat-raised-button color="primary" class="w-40" (click)="UpdatePatient(patientobject.id)" [disabled]="patientrecordform.invalid">Guardar</button>
+          <button mat-raised-button class="w-40 bg-[#15558D] text-white" (click)="UpdatePatient(patientobject.id)" [disabled]="patientrecordform.invalid">Guardar</button>
         </div>
       </th>
     </tr>
+    </table>
+    <br>
+    <!--Enfermedad Renal-->
+    <div class="pt-10"></div>
+    <div class="pl-10 pr-10">
+        <mat-toolbar class="bg-[#15558D] text-white">
+          <div class="text-[26px] italic">
+            Enfermedad Renal
+          </div>
+      </mat-toolbar>
+    </div>
+    <div class="pb-10"></div>
+    <table class="w-11/12">
+      <tr>
+        <th>
+          <div class="inline-flex">
+            <h1 class="pt-5">Enfermedad renal:</h1>
+            <span class="pr-10"></span>
+            <form>
+              <mat-form-field appearance="outline" class="w-96">
+                <mat-label>Su Etapa</mat-label>
+                <mat-select [(ngModel)]="renal" (selectionChange)="getRenalbyName($event.value)">
+                  <mat-option *ngFor="let renaltype of renaltypes" [value]="renaltype.name">{{renaltype.name}}</mat-option>
+                </mat-select>
+                <mat-error>Es requerido este campo!</mat-error>
+              </mat-form-field>
+            </form>
+          </div>
+        </th>
+        <th>
+          <div class="inline-flex w-full">
+            <h1 class="pb-4 pl-48">Descripción:</h1>
+            <div class="pr-20"></div>
+              Descripcion
+          </div>
+        </th>
+      </tr>
     </table>
     <br>
     <!--Vigilancia-->
@@ -597,7 +637,7 @@
       </table>
     <br>
     <div class="text-right pr-20">
-      <button mat-raised-button color="primary" class="w-40" [disabled]="backrecordform.invalid" (click)="SaveAncient(patientobject.id)">Guardar</button>
+      <button mat-raised-button class="w-40 bg-[#15558D] text-white" [disabled]="backrecordform.invalid" (click)="SaveAncient(patientobject.id)">Guardar</button>
     </div>
     <!--Diagnostico-->
     <div class="pt-10"></div>
@@ -713,7 +753,7 @@
       </table>
     <br>
       <div class="text-right pr-20">
-        <button mat-raised-button color="primary" class="w-40" [disabled]="diagnosticform.invalid" (click)="SaveDiagnostic(patientobject.id)">Guardar</button>
+        <button mat-raised-button class="w-40 bg-[#15558D] text-white" [disabled]="diagnosticform.invalid" (click)="SaveDiagnostic(patientobject.id)">Guardar</button>
       </div>
     <!--Tratamiento-->
     <div class="pt-10"></div>
@@ -858,7 +898,7 @@
       </table>
     <br>
       <div class="text-right pr-20">
-        <button mat-raised-button color="primary" class="w-40" [disabled]="treatmentform.invalid" (click)="SaveTreatment(patientobject.id)">Guardar</button>
+        <button mat-raised-button class="w-40 bg-[#15558D] text-white" [disabled]="treatmentform.invalid" (click)="SaveTreatment(patientobject.id)">Guardar</button>
       </div>
     <br>
 </body>

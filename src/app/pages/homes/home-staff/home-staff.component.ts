@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token/token.service';
 import { StaffResource } from './../../../models/staff/StaffResource';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StaffService } from './../../../services/staff/staff.service';
@@ -12,7 +13,7 @@ import { DialogReportsComponent } from '../../dialogs/dialog-reports/dialog-repo
 })
 export class HomeStaffComponent implements OnInit {
   StaffResource!:StaffResource
-  constructor(public dialog:MatDialog,private StaffService:StaffService,private ActivatedRoute:ActivatedRoute,private Router:Router) {
+  constructor(public dialog:MatDialog,private StaffService:StaffService,private ActivatedRoute:ActivatedRoute,private Router:Router,private TokenService:TokenService) {
     this.StaffResource={}as StaffResource
    
    }
@@ -49,6 +50,10 @@ export class HomeStaffComponent implements OnInit {
   
   GotoStaffAppointmentRegister(){
     this.Router.navigate(['/staff',this.StaffResource.id,'appointment-staff-register'])
+  }
+  GoOut(){
+    this.TokenService.logOut();
+    this.Router.navigate(['login']);
   }
 
 }

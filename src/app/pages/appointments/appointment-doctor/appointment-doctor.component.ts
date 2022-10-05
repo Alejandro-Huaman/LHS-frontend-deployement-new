@@ -10,7 +10,7 @@ import { PatientResource } from 'src/app/models/patient/PatientResource';
 import { AppointmentService } from 'src/app/services/appoinment/Appointment.service';
 import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
-
+import { DatePipe } from '@angular/common';
 export interface Appointment {
   dni: string;
   patient: string;
@@ -21,7 +21,8 @@ export interface Appointment {
 @Component({
   selector: 'app-appointment-doctor',
   templateUrl: './appointment-doctor.component.html',
-  styleUrls: ['./appointment-doctor.component.css']
+  styleUrls: ['./appointment-doctor.component.css'],
+  providers: [DatePipe]
 })
 export class AppointmentDoctorComponent implements OnInit {
   selecteddate !: Date;
@@ -36,7 +37,7 @@ export class AppointmentDoctorComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!:MatPaginator;
 
-  constructor(private appointmentservice:AppointmentService, private route:Router,private activeroute:ActivatedRoute, private patientservice:PatientService, 
+  constructor(private appointmentservice:AppointmentService, private route:Router,private activeroute:ActivatedRoute, private datePipe: DatePipe,private patientservice:PatientService, 
               private doctorservice:DoctorService) {}
   
   ngOnInit() {
@@ -129,5 +130,18 @@ export class AppointmentDoctorComponent implements OnInit {
     }
     )
   }
+  getfecha(date:any){
+
+
+
+
+    let datform=this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    let dataframe=this.datePipe.transform(date, 'HH:mm')!;
+    let contat=`${datform}  ${dataframe}`
+    
+    
+    return contat
+    
+    }
 
 }

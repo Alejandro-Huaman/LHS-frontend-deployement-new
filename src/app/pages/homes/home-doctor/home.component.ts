@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token/token.service';
 import { DoctorResource } from './../../../models/doctor/DoctorResource';
 import { DoctorService } from 'src/app/services/doctor/doctor.service';
 import { PatientResource } from 'src/app/models/patient/PatientResource';
@@ -14,7 +15,7 @@ import { DialogReportsComponent } from '../../dialogs/dialog-reports/dialog-repo
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public dialog:MatDialog,private Router:Router,private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute) { 
+  constructor(public dialog:MatDialog,private Router:Router,private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute,private TokenService:TokenService) { 
     this.DoctorResource={}as DoctorResource
   }
   DoctorResource!:DoctorResource
@@ -43,6 +44,10 @@ export class HomeComponent implements OnInit {
 }
   GoToAppointmentDoctor(){
     this.Router.navigate(['doctor',this.DoctorResource.id,'appointment-doctor']);
+  }
+  GoOut(){
+    this.TokenService.logOut();
+    this.Router.navigate(['login']);
   }
 
 }

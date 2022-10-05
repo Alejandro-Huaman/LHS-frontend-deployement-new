@@ -14,14 +14,14 @@
     </button>
       <div class="pr-5"></div> 
       <input type="text" class="form-control 
-      block   w-20 md:w-40 md:px-3
+      block  w-20 md:w-2/12  md:px-3
       py-1.5
       text-base
       font-normal
       text-gray-700
       bg-white bg-clip-padding
       border border-solid border-gray-900
-      rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Ingrese su DNI" [formControl]="documentnumber"
+      rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Ingrese DNI del paciente" [formControl]="documentnumber"
       maxlength="8"> 
     <span class="pr-10"></span>
     <img src="../../assets/images/profile.png" class="w-10 h-10">
@@ -47,10 +47,10 @@
         <div class="inline-flex pr-80">
           <h1 class="font-bold pt-3">Paciente:</h1>
           <div class="pr-10"></div>
-          <h1 class="pt-3">{{patientobject.name}}</h1>
+          <h1 class="pt-3">{{getpatientname(patientobject.name,patientobject.lastname)}}</h1>
         <div class="pr-96"></div>
         <div class="pt-4">
-          <button mat-raised-button color="primary" (click)="GetDay()" class="h-10" [disabled]="scheduleform.invalid">Buscar</button>
+          <button mat-raised-button (click)="GetDay()" class="h-10 bg-[#15558D] text-white" [disabled]="scheduleform.invalid">Buscar</button>
         </div>
         <div class="pr-5"></div>
         <form [formGroup]="scheduleform">

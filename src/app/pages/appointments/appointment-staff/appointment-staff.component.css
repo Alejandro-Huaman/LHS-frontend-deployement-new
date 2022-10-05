@@ -1,36 +1,48 @@
 .mat-column-id {
-    width: 32px;
-    border-right: 1px solid currentColor;
-    padding-right: 24px;
-    text-align: center;
-  }
-  .mat-column-dni {
-    
-    border-right: 1px solid currentColor;
-    text-align: center;
-  }
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+.mat-column-dni {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: center;
+}
+.mat-column-patient {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: center;
+}
 
- 
-  .mat-column-patient {
-   
-    border-right: 1px solid currentColor;
-   
-    text-align: center;
-  }
-  .mat-column-date {
-    
-    border-right: 1px solid currentColor;
-    
-    text-align: center;
-  }
-  .mat-column-status {
-   
-    border-right: 1px solid currentColor;
-    
-    text-align: center;
-  }
-  .mat-column-button {
- 
-    border-right: 1px solid currentColor;
-    text-align: center;
-  }
+.mat-column-date {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: center;
+}
+.mat-column-status {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: center;
+}
+.mat-column-doctor {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: center;
+}
+.mat-column-button {
+  
+  
+  padding-right: 24px;
+  padding-left: 24px;
+}

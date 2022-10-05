@@ -25,11 +25,11 @@
             <form class="text-left">
               <mat-form-field appearance="outline">
                 <mat-label>DNI</mat-label>
-                <input matInput placeholder="Ingrese DNI" [formControl]="dnisearch">
+                <input matInput placeholder="Ingrese DNI Paciente" [formControl]="dnisearch">
               </mat-form-field>
             </form>
             <div class="text-left">
-              <button mat-raised-button color="primary" (click)="GetPatientByDNI()">Buscar</button>
+              <button mat-raised-button class="bg-[#15558D] text-white" (click)="GetPatientByDNI()">Buscar</button>
             </div>
           </div>
           <div>
@@ -38,7 +38,7 @@
                 <ng-container matColumnDef="id">
                   
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Id</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.patient.id}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dni">
@@ -54,7 +54,7 @@
               
                 <ng-container matColumnDef="date">
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Fecha cita</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.scheduledAt}} </td>
+                  <td mat-cell *matCellDef="let element"> {{getfecha(element.scheduledAt)}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="status">
@@ -65,7 +65,7 @@
                 <ng-container matColumnDef="button">
                   <th mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let element"> 
-                    <button mat-raised-button color="primary" (click)="AppointmentForm(element.doctor.id,element.patient.id,element.id)">Ver</button> 
+                    <button mat-raised-button class="bg-[#15558D] text-white" (click)="AppointmentForm(element.doctor.id,element.patient.id,element.id)">Ver</button> 
                   </td>
                 </ng-container>
               

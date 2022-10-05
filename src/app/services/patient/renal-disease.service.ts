@@ -48,6 +48,14 @@ export class RenalDiseaseService {
         catchError(this.handleError)
       );
   }
+  getRenalDiseaseByName(name:string) : Observable<RenalDiseaseResource>{
+    return this.http.get<RenalDiseaseResource>(`${this.basePath}/${name}`,this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      );
+  }
+
 
   createRenalDisease(item:any) : Observable<CreateRenalDiseaseResource>{
     return this.http.post<CreateRenalDiseaseResource>(this.basePath,JSON.stringify(item),this.httpOptions)

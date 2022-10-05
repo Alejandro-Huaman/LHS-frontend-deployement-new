@@ -58,6 +58,7 @@ import { MedicalScheduleStaffComponent } from './pages/appointments/appointment-
 import { SetPasswordComponent } from './pages/password/SetPassword/SetPassword.component';
 import { AppointmentHistoryComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-history.component';
 import { AppointmentRatingComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-rating/appointment-rating.component';
+import { ResultDialogLoginComponent } from './pages/dialogs/result-dialog-login/result-dialog-login.component';
 
 @NgModule({
   declarations: [									
@@ -111,7 +112,8 @@ import { AppointmentRatingComponent } from './pages/appointments/appointment-pat
       SetEmailComponent,
       SetPasswordComponent,
       AppointmentHistoryComponent,
-      AppointmentRatingComponent
+      AppointmentRatingComponent,
+      ResultDialogLoginComponent
 
    ],
   imports: [

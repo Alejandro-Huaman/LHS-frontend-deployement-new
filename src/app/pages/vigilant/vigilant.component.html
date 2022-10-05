@@ -50,9 +50,12 @@
    <p class="text-[26px]">Fecha: {{getfecha()}}</p>
 </div>
 
-    
-      <mat-card class="text-[26px] text-white italic bg-[#15558D]">Datos</mat-card>
-      <mat-card>
+      <div class="flex justify-center">
+        <mat-card class="text-[26px] text-white italic bg-[#15558D] w-11/12">Datos</mat-card>
+      
+      </div>
+      <div class="flex justify-center">
+      <mat-card class="w-11/12">
       
         
         <form [formGroup]="vigilantform">
@@ -81,7 +84,7 @@
                 text-gray-700
                 bg-white bg-clip-padding
                 border border-solid border-gray-900
-                rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su peso"
+                rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Kilos"
                 [(ngModel)]="CreateSurveillanceResource.weight"   formControlName="peso" min="0">
                 
               </div>
@@ -120,7 +123,7 @@
   
          
             <b class="text-[20px]">Altura:</b>
-            <p class="text-[20px]">{{Patient.height}}</p>
+            <p class="text-[20px]">{{checkheight(Patient.height)}}  </p>
         
   
          
@@ -136,9 +139,13 @@
 
 
       </mat-card>
-
-      <mat-card  class="text-[26px] text-white italic bg-[#15558D]">Datos Hematologicos</mat-card>
-      <mat-card>
+      </div>
+      <div class="flex justify-center">
+        <mat-card class="text-[26px] text-white italic bg-[#15558D] w-11/12">Datos Hematologicos</mat-card>
+      
+      </div>
+      <div class="flex justify-center">
+      <mat-card class="w-11/12">
         <form [formGroup]="hematologyform">
         <div class="flex flex-col space-y-8">
 
@@ -154,8 +161,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Hemoglobina"
-              [(ngModel)]="CreateSurveillanceResource.hemoglobin"   formControlName="hemoglobina" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="g/dL"
+              [(ngModel)]="CreateSurveillanceResource.hemoglobin"   formControlName="hemoglobina" min="13.2" max="16.6" required>
               
               
               </div>
@@ -168,8 +175,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Segmentados"
-              [(ngModel)]="CreateSurveillanceResource.segmented"   formControlName="segmentados" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="%"
+              [(ngModel)]="CreateSurveillanceResource.segmented"   formControlName="segmentados" min="20" max="48.6" required>
            
             
               <b class="text-[20px]">VCM:</b>
@@ -181,14 +188,20 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su VCM"
-              [(ngModel)]="CreateSurveillanceResource.mvc"   formControlName="vcm" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="fl"
+              [(ngModel)]="CreateSurveillanceResource.mvc"   formControlName="vcm" min="80" max="100" required>
          
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="hematologyform.controls['hemoglobina'].dirty && hematologyform.hasError('required','hemoglobina')">Es requerido la Hemoglobina</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hemoglobina'].dirty && hematologyform.hasError('min','hemoglobina')">Hemoglobina:menor al minimo 13.2</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hemoglobina'].dirty && hematologyform.hasError('max','hemoglobina')">Hemoglobina:mayor al maximo 16.6</mat-error>
             <mat-error *ngIf="hematologyform.controls['segmentados'].dirty && hematologyform.hasError('required','segmentados')">Es requerido los segmentados</mat-error>
+            <mat-error *ngIf="hematologyform.controls['segmentados'].dirty && hematologyform.hasError('min','segmentados')">segmentados:menor al minimo 38.3</mat-error>
+            <mat-error *ngIf="hematologyform.controls['segmentados'].dirty && hematologyform.hasError('max','segmentados')">segmentados:mayor al maximo 48.6</mat-error>
             <mat-error *ngIf="hematologyform.controls['vcm'].dirty && hematologyform.hasError('required','vcm')">Es requerido el vcm</mat-error>
+            <mat-error *ngIf="hematologyform.controls['vcm'].dirty && hematologyform.hasError('min','vcm')">vcm:menor al minimo 80</mat-error>
+            <mat-error *ngIf="hematologyform.controls['vcm'].dirty && hematologyform.hasError('max','vcm')">vcm:mayor al maximo 100</mat-error>
           </div>
 
           <div class="columns-3 md:columns-6">
@@ -202,8 +215,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Linfocitos"
-              [(ngModel)]="CreateSurveillanceResource.lymphocytes"   formControlName="linfocitos" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="%"
+              [(ngModel)]="CreateSurveillanceResource.lymphocytes"   formControlName="linfocitos" min="20" required>
            
             
               <b class="text-[20px]">Monocitos:</b>
@@ -215,8 +228,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Monocitos"
-              [(ngModel)]="CreateSurveillanceResource.monocytes"   formControlName="monocitos" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="/L"
+              [(ngModel)]="CreateSurveillanceResource.monocytes"   formControlName="monocitos" min="4500" required>
          
            
               <b class="text-[20px]">HCM:</b>
@@ -228,15 +241,21 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su HCM"
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="pg"
               [(ngModel)]="CreateSurveillanceResource.mch"   formControlName="hcm" min="0" required>
         
 
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="hematologyform.controls['linfocitos'].dirty && hematologyform.hasError('required','linfocitos')">Es requerido los linfocitos</mat-error>
+            <mat-error *ngIf="hematologyform.controls['linfocitos'].dirty && hematologyform.hasError('min','linfocitos')">linfocitos:menor al minimo 20</mat-error>
+            <mat-error *ngIf="hematologyform.controls['linfocitos'].dirty && hematologyform.hasError('max','linfocitos')">linfocitos:mayor al maximo 40</mat-error>
             <mat-error *ngIf="hematologyform.controls['monocitos'].dirty && hematologyform.hasError('required','monocitos')">Es requerido los monocitos</mat-error>
+            <mat-error *ngIf="hematologyform.controls['monocitos'].dirty && hematologyform.hasError('min','monocitos')">monocitos:menor al minimo 4500</mat-error>
+            <mat-error *ngIf="hematologyform.controls['monocitos'].dirty && hematologyform.hasError('max','monocitos')">monocitos:mayor al maximo 11000</mat-error>
             <mat-error *ngIf="hematologyform.controls['hcm'].dirty && hematologyform.hasError('required','hcm')">Es requerido el hcm</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hcm'].dirty && hematologyform.hasError('min','hcm')">hcm:menor al minimo 27</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hcm'].dirty && hematologyform.hasError('max','hcm')">hcm:mayor al maximo 31</mat-error>
           </div>
           <div class="columns-3 md:columns-6">
             <b class="text-[20px]">Leucocitos:</b>
@@ -248,8 +267,8 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Leucocitos"
-            [(ngModel)]="CreateSurveillanceResource.leukocytes"   formControlName="leucocitos" min="0" required>
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dL"
+            [(ngModel)]="CreateSurveillanceResource.leukocytes"   formControlName="leucocitos" min="6" max="24" required>
             <b class="text-[20px]">Glucosa:</b>
             <input type="number" class="form-control
             block w-full   px-3
@@ -259,8 +278,8 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Glucosa"
-            [(ngModel)]="CreateSurveillanceResource.glucose"   formControlName="glucosa" min="0" required>
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dL"
+            [(ngModel)]="CreateSurveillanceResource.glucose"   formControlName="glucosa" min="70" max="140" required>
             <b class="text-[20px]">Colesterol:</b>
             <input type="number" class="form-control
             block w-full   px-3
@@ -270,14 +289,20 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Colesterol"
-            [(ngModel)]="CreateSurveillanceResource.cholesterol"   formControlName="colesterol" min="0" required>
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dL"
+            [(ngModel)]="CreateSurveillanceResource.cholesterol"   formControlName="colesterol" min="0" max="170" required>
 
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="hematologyform.controls['leucocitos'].dirty && hematologyform.hasError('required','leucocitos')">Es requerido los leucocitos</mat-error>
+            <mat-error *ngIf="hematologyform.controls['leucocitos'].dirty && hematologyform.hasError('min','leucocitos')">leucocitos:menor al minimo 6 </mat-error>
+            <mat-error *ngIf="hematologyform.controls['leucocitos'].dirty && hematologyform.hasError('max','leucocitos')">leucocitos:mayor al maximo 24</mat-error>
             <mat-error *ngIf="hematologyform.controls['glucosa'].dirty && hematologyform.hasError('required','glucosa')">Es requerido la glucosa</mat-error>
+            <mat-error *ngIf="hematologyform.controls['glucosa'].dirty && hematologyform.hasError('min','glucosa')">glucosa:menor al minimo 70</mat-error>
+            <mat-error *ngIf="hematologyform.controls['glucosa'].dirty && hematologyform.hasError('max','glucosa')">glucosa:mayor al maximo 140</mat-error>
             <mat-error *ngIf="hematologyform.controls['colesterol'].dirty && hematologyform.hasError('required','colesterol')">Es requerido el colesterol</mat-error>
+            <mat-error *ngIf="hematologyform.controls['colesterol'].dirty && hematologyform.hasError('min','colesterol')">colesterol:menor al minimo 0</mat-error>
+            <mat-error *ngIf="hematologyform.controls['colesterol'].dirty && hematologyform.hasError('max','colesterol')">colesterol:mayor al maximo 170</mat-error>
           </div>
           <div class="columns-3 md:columns-6">
             <b class="text-[20px]">Hematies:</b>
@@ -289,8 +314,8 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Hematies"
-            [(ngModel)]="CreateSurveillanceResource.erythrocytes"   formControlName="hematies" min="0" required>
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="celulas/mcL"
+            [(ngModel)]="CreateSurveillanceResource.erythrocytes"   formControlName="hematies" min="4" max="5.9" required>
             <b class="text-[20px]">Trigliceridos:</b>
             <input type="number" class="form-control
             block w-full   px-3
@@ -300,22 +325,30 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Trigliceridos"
-            [(ngModel)]="CreateSurveillanceResource.triglycerides"   formControlName="trigliceridos" min="0" required>
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="celulas/mcL"
+            [(ngModel)]="CreateSurveillanceResource.triglycerides"   formControlName="trigliceridos" min="4.7" max="6.1" required>
            
 
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="hematologyform.controls['hematies'].dirty && hematologyform.hasError('required','hematies')">Es requerido los hematies</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hematies'].dirty && hematologyform.hasError('min','hematies')">hematies:menor al minimo 4</mat-error>
+            <mat-error *ngIf="hematologyform.controls['hematies'].dirty && hematologyform.hasError('max','hematies')">hematies:mayor al maximo 5.9</mat-error>
             <mat-error *ngIf="hematologyform.controls['trigliceridos'].dirty && hematologyform.hasError('required','trigliceridos')">Es requerido los trigliceridos</mat-error>
+            <mat-error *ngIf="hematologyform.controls['trigliceridos'].dirty && hematologyform.hasError('min','trigliceridos')">trigliceridos:menor al minimo 4.7</mat-error>
+            <mat-error *ngIf="hematologyform.controls['trigliceridos'].dirty && hematologyform.hasError('max','trigliceridos')">trigliceridos:mayor al maximo 6.1</mat-error>
           </div>
         </div>
         </form>
       </mat-card>
-
-      <mat-card  class="text-[26px] text-white italic bg-[#15558D]">Datos urologicos</mat-card>
-
-      <mat-card>
+      </div>
+      <div class="flex justify-center">
+        <mat-card class="text-[26px] text-white italic bg-[#15558D] w-11/12">Datos urologicos</mat-card>
+      
+      </div>
+      
+     <div class="flex justify-center">
+      <mat-card class="w-11/12">
         <form [formGroup]="urologyform">
         <div class="flex flex-col space-y-8">
           <div class="columns-3 md:columns-6">
@@ -329,8 +362,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Urea"
-              [(ngModel)]="CreateSurveillanceResource.urea"   formControlName="urea" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/ml"
+              [(ngModel)]="CreateSurveillanceResource.urea"   formControlName="urea" min="0" max="40" required>
            
             
               <b class="text-[20px]">Proteinas:</b>
@@ -342,8 +375,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Proteinas"
-              [(ngModel)]="CreateSurveillanceResource.protein"   formControlName="proteinas" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dL"
+              [(ngModel)]="CreateSurveillanceResource.protein"   formControlName="proteinas" min="0" max="14" required>
            
             
               <b class="text-[20px]">Nitrito:</b>
@@ -355,14 +388,20 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Nitrito"
-              [(ngModel)]="CreateSurveillanceResource.nitrite"   formControlName="nitrito" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Nitrito"
+              [(ngModel)]="CreateSurveillanceResource.nitrite"   formControlName="nitrito" min="0" max="1" required>
          
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="urologyform.controls['urea'].dirty && urologyform.hasError('required','urea')">Es requerido la urea</mat-error>
+            <mat-error *ngIf="urologyform.controls['urea'].dirty && urologyform.hasError('min','urea')">urea:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['urea'].dirty && urologyform.hasError('max','urea')">urea:mayor al maximo 40</mat-error>
             <mat-error *ngIf="urologyform.controls['proteinas'].dirty && urologyform.hasError('required','proteinas')">Es requerido las proteinas</mat-error>
+            <mat-error *ngIf="urologyform.controls['proteinas'].dirty && urologyform.hasError('min','proteinas')">proteinas:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['proteinas'].dirty && urologyform.hasError('max','proteinas')">proteinas:mayor al maximo 14</mat-error>
             <mat-error *ngIf="urologyform.controls['nitrito'].dirty && urologyform.hasError('required','nitrito')">Es requerido el nitrito</mat-error>
+            <mat-error *ngIf="urologyform.controls['nitrito'].dirty && urologyform.hasError('min','nitrito')">nitrito:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['nitrito'].dirty && urologyform.hasError('max','nitrito')">nitrito:mayor al maximo 1</mat-error>
           </div>
           <div class="columns-3 md:columns-6">
             
@@ -375,8 +414,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Cretinina"
-              [(ngModel)]="CreateSurveillanceResource.creatinine"   formControlName="creatinina" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dL"
+              [(ngModel)]="CreateSurveillanceResource.creatinine"   formControlName="creatinina" min="0.59" max="1.04" required>
            
             
               <b class="text-[20px]">Cetonas:</b>
@@ -388,8 +427,8 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Cetonas"
-              [(ngModel)]="CreateSurveillanceResource.ketone"   formControlName="cetonas" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Cetonas"
+              [(ngModel)]="CreateSurveillanceResource.ketone"   formControlName="cetonas" min="0" max="1" required>
          
            
               <b class="text-[20px]">Cristales:</b>
@@ -401,15 +440,21 @@
               text-gray-700
               bg-white bg-clip-padding
               border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Sus Cristales"
-              [(ngModel)]="CreateSurveillanceResource.crystals"   formControlName="cristales" min="0" required>
+              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Cristales"
+              [(ngModel)]="CreateSurveillanceResource.crystals"   formControlName="cristales" min="0" max="1" required>
         
 
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="urologyform.controls['creatinina'].dirty && urologyform.hasError('required','creatinina')">Es requerido la creatinina</mat-error>
+            <mat-error *ngIf="urologyform.controls['creatinina'].dirty && urologyform.hasError('min','creatinina')">creatinina:menor al minimo 0.59 </mat-error>
+            <mat-error *ngIf="urologyform.controls['creatinina'].dirty && urologyform.hasError('max','creatinina')">creatinina:mayor al maximo 1.04</mat-error>
             <mat-error *ngIf="urologyform.controls['cetonas'].dirty && urologyform.hasError('required','cetonas')">Es requerido las cetonas</mat-error>
+            <mat-error *ngIf="urologyform.controls['cetonas'].dirty && urologyform.hasError('min','cetonas')">cetonas:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['cetonas'].dirty && urologyform.hasError('max','cetonas')">cetonas:mayor al maximo 1</mat-error>
             <mat-error *ngIf="urologyform.controls['cristales'].dirty && urologyform.hasError('required','cristales')">Es requerido los cristales</mat-error>
+            <mat-error *ngIf="urologyform.controls['cristales'].dirty && urologyform.hasError('min','cristales')">cristales:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['cristales'].dirty && urologyform.hasError('max','cristales')">cristales:mayor al maximo 1</mat-error>
           </div>
           <div class="columns-3 md:columns-6">
             <b class="text-[20px]">Densidad de Orina:</b>
@@ -421,7 +466,7 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Densidad"
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Densidad"
             [(ngModel)]="CreateSurveillanceResource.density"   formControlName="densidadOrina" min="0" required>
             <b class="text-[20px]">Urobilinogeno:</b>
             <input type="number" class="form-control
@@ -432,7 +477,7 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Urobilinogeno"
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mg/dl"
             [(ngModel)]="CreateSurveillanceResource.urobilinogen"   formControlName="urobilinogeno" min="0" required>
             <b class="text-[20px]">Azucar:</b>
             <input type="number" class="form-control
@@ -443,14 +488,20 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Azucar"
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="mmol/l"
             [(ngModel)]="CreateSurveillanceResource.sugar"   formControlName="azucar" min="0" required>
 
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="urologyform.controls['densidadOrina'].dirty && urologyform.hasError('required','densidadOrina')">Es requerido la densidadOrina</mat-error>
+            <mat-error *ngIf="urologyform.controls['densidadOrina'].dirty && urologyform.hasError('min','densidadOrina')">densidadOrina:menor al minimo 1.005 </mat-error>
+            <mat-error *ngIf="urologyform.controls['densidadOrina'].dirty && urologyform.hasError('max','densidadOrina')">densidadOrina:mayor al maximo 1.03</mat-error>
             <mat-error *ngIf="urologyform.controls['urobilinogeno'].dirty && urologyform.hasError('required','urobilinogeno')">Es requerido el urobilinogeno</mat-error>
+            <mat-error *ngIf="urologyform.controls['urobilinogeno'].dirty && urologyform.hasError('min','urobilinogeno')">urobilinogeno:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['urobilinogeno'].dirty && urologyform.hasError('max','urobilinogeno')">urobilinogeno:mayor al maximo 1</mat-error>
             <mat-error *ngIf="urologyform.controls['azucar'].dirty && urologyform.hasError('required','azucar')">Es requerido la azucar</mat-error>
+            <mat-error *ngIf="urologyform.controls['azucar'].dirty && urologyform.hasError('min','azucar')">azucar:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['azucar'].dirty && urologyform.hasError('max','azucar')">azucar:mayor al maximo 0.8</mat-error>
           </div>
 
           <div class="columns-3 md:columns-6">
@@ -463,7 +514,7 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su PH"
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="PH"
             [(ngModel)]="CreateSurveillanceResource.ph"   formControlName="pH" min="0" required>
             <b class="text-[20px]">Billirubina:</b>
             <input type="number" class="form-control
@@ -474,7 +525,7 @@
             text-gray-700
             bg-white bg-clip-padding
             border border-solid border-gray-900
-            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su Billirubina"
+            rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Billirubina"
             [(ngModel)]="CreateSurveillanceResource.bilirubin"   formControlName="bilirrubina" min="0" required
             >
             <b class="text-[20px]">Aspecto de Orina:</b>
@@ -492,7 +543,11 @@
           </div>
           <div class="flex space-x-4">
             <mat-error *ngIf="urologyform.controls['pH'].dirty && urologyform.hasError('required','pH')">Es requerido el pH</mat-error>
+            <mat-error *ngIf="urologyform.controls['pH'].dirty && urologyform.hasError('min','pH')">pH:menor al minimo 4.6 </mat-error>
+            <mat-error *ngIf="urologyform.controls['pH'].dirty && urologyform.hasError('max','pH')">pH:mayor al maximo 8</mat-error>
             <mat-error *ngIf="urologyform.controls['bilirrubina'].dirty && urologyform.hasError('required','bilirrubina')">Es requerido el bilirrubina</mat-error>
+            <mat-error *ngIf="urologyform.controls['bilirrubina'].dirty && urologyform.hasError('min','bilirrubina')">bilirrubina:menor al minimo 0 </mat-error>
+            <mat-error *ngIf="urologyform.controls['bilirrubina'].dirty && urologyform.hasError('max','bilirrubina')">bilirrubina:mayor al maximo 1.2</mat-error>
             <mat-error *ngIf="urologyform.controls['aspectoOrina'].dirty && urologyform.hasError('required','aspectoOrina')">Es requerido el aspectoOrina</mat-error>
           </div>
           <div class="columns-3 md:columns-6">
@@ -516,10 +571,14 @@
         </div>
       </form>
       </mat-card>
-
-      <mat-card  class="text-[26px] text-white italic bg-[#15558D]">Nutrición</mat-card>
-
-      <mat-card>
+    </div>
+    <div class="flex justify-center">
+      <mat-card class="text-[26px] text-white italic bg-[#15558D] w-11/12">Nutrición</mat-card>
+    
+    </div>
+     
+    <div class="flex justify-center">
+      <mat-card  class="w-11/12">
         <form [formGroup]="nutricionalform">
             <div class="flex flex-col space-y-8">
         <div class="columns-2 md:columns-6">
@@ -546,7 +605,7 @@
           text-gray-700
           bg-white bg-clip-padding
           border border-solid border-gray-900
-          rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Su IMC"
+          rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="IMC"
           [(ngModel)]="CreateSurveillanceResource.imc"   formControlName="imc" min="0" required>
         </div>
         <div class="flex space-x-4">
@@ -617,17 +676,17 @@
         </form>
             
        </mat-card>
+    </div>
 
-
-
-    <mat-card >
+    <div class="flex justify-center">
+    <mat-card class="w-11/12">
       <div class="flex  justify-center ">
-        <button mat-flat-button color="primary"  type="submit"  [disabled]="!CanSave()" (click)="onSubmit()">Guardar</button>
+        <button mat-flat-button class="bg-[#15558D] text-white"  type="submit"  [disabled]="!CanSave()" (click)="onSubmit()">Guardar</button>
       </div>
 
     
     </mat-card>
-      
+    </div>
      
 
 

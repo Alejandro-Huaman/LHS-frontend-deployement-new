@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultDialogComponent } from '../../dialogs/result-dialog/result-dialog.component';
 import {FormBuilder, ReactiveFormsModule, FormGroup, Validators} from '@angular/forms';
+import { StaffResource } from 'src/app/models/staff/StaffResource';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register-staff',
@@ -18,7 +20,9 @@ export class RegisterStaffComponent implements OnInit {
   rolany!:any
   rolelist:string[] = ["ADMIN","NURSE"]
   CreateStaffResource!:CreateStaffResource
-  constructor(public dialog:MatDialog, private formBuilder:FormBuilder,private StaffService:StaffService) { 
+  staffobject!:StaffResource
+  urlid!:number
+  constructor(public dialog:MatDialog, private formBuilder:FormBuilder,private StaffService:StaffService, private ActivatedRoute:ActivatedRoute) { 
     this.CreateStaffResource={}as CreateStaffResource
   }
 
@@ -35,6 +39,17 @@ export class RegisterStaffComponent implements OnInit {
       password:['',Validators.required],
      })
      console.log(this.GetRole("ADMIN"))
+
+     let urlvariable = parseInt(this.ActivatedRoute.snapshot.paramMap.get('id')!);
+     this.urlid = urlvariable
+     console.log(this.urlid)
+     this.getStaffById(this.urlid) 
+  }
+
+  getStaffById(id:number){
+    this.StaffService.getStaffById(id).subscribe((response:any)=>{
+      this.staffobject = response           
+    })
   }
 
   RegisterMethod(){
@@ -43,7 +58,9 @@ export class RegisterStaffComponent implements OnInit {
    this.CreateStaffResource.role=this.rolany
     console.log(this.CreateStaffResource)
     this.StaffService.createStaff(this.CreateStaffResource).subscribe((response:any)=>{
-      const dialogRef = this.dialog.open(ResultDialogComponent)
+      const dialogRef = this.dialog.open(ResultDialogComponent,{
+        data: this.staffobject
+      })
     })
     
   }

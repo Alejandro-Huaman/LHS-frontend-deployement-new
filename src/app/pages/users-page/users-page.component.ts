@@ -163,6 +163,18 @@ export class UsersPageComponent implements OnInit {
     });
   }
 
+  GoToRegisterPatient(){
+    this.Router.navigate(['staff',this.id,'register-user']);
+  }
+
+  GoToRegisterMedical(){
+    this.Router.navigate(['staff',this.id,'register-medical']);
+  }
+
+  GoToRegisterStaff(){
+    this.Router.navigate(['staff',this.id,'register-staff']);
+  }
+
 }
 @Component({
   selector: 'deleteAccept',
