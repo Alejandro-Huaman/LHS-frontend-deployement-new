@@ -34,14 +34,16 @@ public importDataFromCSV(csvText: string): Array<any> {
 }
 
 public importDataFromCSVByType(csvText: string, obj: any): Array<any> {
-  const propertyNames = csvText.slice(0, csvText.indexOf('\n')).split(',');
+  const propertyNames = csvText.slice(0, csvText.indexOf('\n')).split(';');
   const dataRows = csvText.slice(csvText.indexOf('\n') + 1).split('\n');
   console.log(dataRows.pop())
   console.log(propertyNames)
+  console.log(dataRows)
   let dataArray: any[] = [];
   dataRows.forEach((row) => {
-    let values = row.split(',');
-
+   
+    let values = row.split(';');
+    console.log(values)
     let dataObj: any = new Object();
     for (let index = 0; index < propertyNames.length; index++) {
       const propertyName: string = propertyNames[index];
@@ -50,12 +52,14 @@ public importDataFromCSVByType(csvText: string, obj: any): Array<any> {
       if (value === '') {
         value = null;
       }
+      console.log(value)
 
 
       if (typeof obj[propertyName] === 'undefined') {
         dataObj[propertyName] = undefined;
       } 
       else if (typeof obj[propertyName] === 'boolean') {
+        
         dataObj[propertyName] = value.toLowerCase() === 'true';
       } 
       else if (typeof obj[propertyName] === 'number') {

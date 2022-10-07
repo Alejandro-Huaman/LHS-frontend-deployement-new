@@ -465,6 +465,13 @@ export class VigilantComponent implements OnInit {
 
     return fileContent;
   }
+  calcularimc(){
+    this.CreateSurveillanceResource.imc = this.CreateSurveillanceResource.initWeight/(Number(this.Patient.height)*Number(this.Patient.height))
+    if(this.CreateSurveillanceResource.initWeight ==null||this.Patient.height==null){
+      this.CreateSurveillanceResource.imc =0
+    }
+    return  this.CreateSurveillanceResource.imc
+  }
   save(){
     for (let element in this.importedData){
         
@@ -531,6 +538,7 @@ export class VigilantComponent implements OnInit {
              console.log("number")
               number=response.id
               console.log(number)
+              console.log(this.csvvigilant)
               this.surveillance.createSurveillance(number,this.csvvigilant).subscribe((response:any)=>{
                   console.log("enviado")
                })

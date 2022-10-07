@@ -843,16 +843,7 @@
               rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder=""
               [(ngModel)]="CreateSurveillanceResource.consumedCalories"   formControlName="consumedCalories" min="0" required>
               <b class="text-[20px]">imc:</b>
-              <input type="number" class="form-control
-              block w-full   px-3
-              py-1.5
-              text-base
-              font-normal
-              text-gray-700
-              bg-white bg-clip-padding
-              border border-solid border-gray-900
-              rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder=""
-              [(ngModel)]="CreateSurveillanceResource.imc"   formControlName="imc" min="0" required>
+              <p> {{calcularimc()}}</p>
 
 
 
@@ -931,7 +922,7 @@
       </mat-card>
       
       </div>
-  
+    
      
 
 
