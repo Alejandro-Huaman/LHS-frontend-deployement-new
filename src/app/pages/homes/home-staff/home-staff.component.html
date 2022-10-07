@@ -18,8 +18,8 @@
   <div class="pt-20"></div>
   <table class="ml-28 mt-5">
     <tr>
-      <h1 class="text-left font-normal ml-10">Visualización de Citas
-          <button class="ml-52" (click)="GotoStaffAppointmentView()">
+      <h1 class="text-left font-normal ml-10">Visualización de Atenciones
+          <button class="ml-44" (click)="GotoStaffAppointmentView()">
             <img src="../../assets/images/continue-arrow.png" class="w-10 h-10">
           </button>
       </h1>  
@@ -28,9 +28,9 @@
     <mat-divider></mat-divider>
     <br>
     <tr>
-      <h1 class="text-left font-normal ml-10">Registro de Citas
+      <h1 class="text-left font-normal ml-10">Registro de Atención
           <span class="pr-12"></span>
-          <button class="ml-48" (click)="GotoStaffAppointmentRegister()">
+          <button class="ml-44" (click)="GotoStaffAppointmentRegister()">
             <img src="../../assets/images/continue-arrow.png" class="w-10 h-10">
           </button>
       </h1>  
@@ -84,7 +84,19 @@
     <br>
     <mat-divider></mat-divider>
     <br>
-    <div class="pt-40"></div>
+    <tr>
+      <h1 class="text-left font-normal ml-10">Atención
+        <span class="pr-16"></span>
+        <span class="pr-5"></span>
+        <button class="ml-52" (click)="gotoAttention()">
+          <img src="../../assets/images/continue-arrow.png" class="w-10 h-10">
+        </button>
+      </h1>
+    </tr>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    <div class="pt-24"></div>
     <div class="text-center">
         <button mat-raised-button class="w-52 bg-[#15558D] text-white" (click)="GoOut()">
           <span class="inline-flex">

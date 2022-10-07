@@ -50,4 +50,8 @@ export class HomeComponent implements OnInit {
     this.Router.navigate(['login']);
   }
 
+  GoToAttention(){
+    this.Router.navigate(['doctor',this.DoctorResource.id,'attention']);
+  }
+
 }

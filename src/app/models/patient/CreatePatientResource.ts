@@ -1,3 +1,4 @@
+import { Dialysis } from "./DIalysis.enum";
 import { DocumentType } from "./DocumentType.enum";
 export interface CreatePatientResource {
 
@@ -7,7 +8,7 @@ export interface CreatePatientResource {
 
    
       documentType:DocumentType;
-
+      dialysisMaterial:Dialysis;
     
      documentNumber:string;
 

@@ -9,7 +9,8 @@ import {catchError, retry} from "rxjs/operators";
 })
 export class DiagnosticService {
 
-  basePath ="http://lhs-api-363105.ue.r.appspot.com/api/v1/diagnosis"
+  basePath ="http://flash-rope-364617.rj.r.appspot.com/api/v1/diagnosis"
+  //basePath ="http://localhost:8080/api/v1/diagnosis"
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ getAllDiagnosis(): Observable<DiagnosisResource>{
     catchError(this.handleError));
 
 }
-getDoctorById(diagnosisId:number): Observable<DiagnosisResource>{
+getDiagnosisById(diagnosisId:number): Observable<DiagnosisResource>{
 
   return this.http.get<DiagnosisResource>(`${this.basePath}/${diagnosisId}`, this.httpOptions)
   .pipe(

@@ -1,5 +1,6 @@
 import { RenalDiseaseResource } from './../renal-disease/RenalDiseaseResource';
 import { DocumentType } from "./DocumentType.enum";
+import { Dialysis } from './DIalysis.enum'; 
 export interface PatientResource {
     id:number;
     name:string;
@@ -24,7 +25,7 @@ export interface PatientResource {
   
    phone:string;
 
-  
+   dialysisMaterial:Dialysis
   username:string;
 
   

@@ -9,7 +9,8 @@ import { CreatePatientTreatmentResource } from 'src/app/models/patient-treatment
 })
 export class PatientTreatmentService {
 
-  basePath ="http://lhs-api-363105.ue.r.appspot.com/api/v1"
+  basePath ="http://flash-rope-364617.rj.r.appspot.com/api/v1"
+  //basePath ="http://localhost:8080/api/v1"
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

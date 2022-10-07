@@ -56,4 +56,8 @@ export class HomeStaffComponent implements OnInit {
     this.Router.navigate(['login']);
   }
 
+  gotoAttention(){
+    this.Router.navigate(['/staff',this.StaffResource.id,'attention'])
+  }
+
 }

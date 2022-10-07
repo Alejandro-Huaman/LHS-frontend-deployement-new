@@ -9,7 +9,8 @@ import { CreateMedicineResource } from 'src/app/models/medicine/CreateMedicineRe
 })
 export class MedicineService {
 
-  basePath ="http://lhs-api-363105.ue.r.appspot.com/api/v1/medicines"
+  basePath ="http://flash-rope-364617.rj.r.appspot.com/api/v1/medicines"
+  //basePath ="http://localhost:8080/api/v1/medicines"
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

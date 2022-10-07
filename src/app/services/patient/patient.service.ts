@@ -10,8 +10,10 @@ import { UpdatePatientResource } from 'src/app/models/patient/UpdatePatientResou
 })
 export class PatientService {
 
-  basePath =   "http://lhs-api-363105.ue.r.appspot.com/api/v1/patients";
-  basePath2 = "http://lhs-api-363105.ue.r.appspot.com/api/v1/renal-diseases";
+  basePath =   "http://flash-rope-364617.rj.r.appspot.com/api/v1/patients";
+  basePath2 = "http://flash-rope-364617.rj.r.appspot.com/api/v1/renal-diseases";
+  //basePath =   "http://localhost:8080/api/v1/patients";
+  //basePath2 = "http://localhost:8080/api/v1/renal-diseases";
 
   httpOptions = {
     headers: new HttpHeaders({

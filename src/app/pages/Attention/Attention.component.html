@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<header>
+  <mat-toolbar class="bg-white">
+    <button (click)="GotoDoctorStaffHome()">
+      <img src="../../assets/images/back-arrow-2.png" class="w-10 h-10">
+    </button>
+    <span class="pr-5"></span>
+    <h1 class="text-slate-800">Clinica de salud</h1>
+    <span class="flex-auto"></span>
+    <h1 class="text-slate-800">ATENCIÓN</h1>
+    <span class="flex-auto"></span>
+  <button  
+     mat-icon-button 
+     (click)="findbyDNI()"   
+     [disabled]="!validateDni()">
+    <mat-icon  >search</mat-icon>  
+  </button>
+  
+  <div class="pr-5"></div>
+    <input type="text" class="form-control 
+  block   w-20 md:w-40 md:px-3
+  py-1.5
+  text-base
+  font-normal
+  text-gray-700
+  bg-white bg-clip-padding
+  border border-solid border-gray-900
+  rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Ingrese su DNI" [formControl]="documentnumber"
+  maxlength="8"> 
+    <img src="../../assets/images/profile.png" class="w-10 h-10">
+    <button>
+      <img src="../../assets/images/options-arrow.png" class="w-20 h-12">
+    </button>
+    <div class="pr-5"></div>
+</mat-toolbar>
+</header>
+<mat-divider class="bg-cyan-400"></mat-divider>
+<body *ngIf="showform">
+  <table class="ml-auto mr-auto w-4/5">
+  <div class="pt-10"></div>
+  <div class="text-[26px] italic">
+    Datos de Paciente
+  </div>
+  <br>
+  <div class="inline-flex w-full">
+    <div class="inline-flex w-full">
+      <h1 class="pb-4 pl-48">Nombres y apellidos:</h1>
+      <div class="pr-10"></div>
+        {{objpatient.name}} {{objpatient.lastname}}
+    </div>
+
+    <div class="inline-flex w-full">
+      <h1 class="pb-4 pl-48">DNI:</h1>
+      <div class="pr-10"></div>
+        {{objpatient.documentNumber}}
+    </div>
+  </div>
+  <br>
+  <br>
+  <table class="ml-auto mr-auto">
+  <div class="inline-flex">
+    <h1 class="pt-5">Urea Pre:</h1>
+    <span class="pr-16"></span>
+    <span class="pr-2"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Urea Pre</mat-label>
+          <input matInput formControlName="ureapre" placeholder="Ingrese su urea pre" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Urea Post:</h1>
+    <span class="pr-16"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Urea Post</mat-label>
+          <input matInput formControlName="ureapost" placeholder="Ingrese su urea post" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Peso Seco:</h1>
+    <span class="pr-14"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Peso Seco</mat-label>
+          <input matInput formControlName="weight" placeholder="Ingrese su peso seco" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Peso Inicial:</h1>
+    <span class="pr-12"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Peso Inicial</mat-label>
+          <input matInput formControlName="initweight" placeholder="Ingrese su peso inicial" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Peso Final:</h1>
+    <span class="pr-14"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Peso Final</mat-label>
+          <input matInput formControlName="finalweight" placeholder="Ingrese su peso final" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">UF:</h1>
+    <span class="pr-28"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>UF</mat-label>
+          <input matInput formControlName="uf" placeholder="Ingrese su UF" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <div class="max-w-fit">
+    <h1 class="pt-5">Tiempo de Hemodialisis:</h1>
+    </div>
+    <span class="pr-10"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Tiempo de Hemodialisis</mat-label>
+          <input matInput formControlName="time" placeholder="Ingrese su tiempo" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Hemoglobina:</h1>
+    <span class="pr-9"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Hemoglobina</mat-label>
+          <input matInput formControlName="hemoglobine" placeholder="Ingrese su hemoglobina" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">Hematocrito:</h1>
+    <span class="pr-10"></span>
+    <span class="pr-1"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>Hematocrito</mat-label>
+          <input matInput formControlName="hematocrite" placeholder="Ingrese su hematocrito" required>
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <br>
+  <div class="inline-flex">
+    <button mat-raised-button class="butonnchange bg-[#15558D] text-white" [disabled]="attentionform.invalid">Guardar</button>
+    <div class="pr-72"></div>
+    <button mat-raised-button (click)="GotoMedicines()" class="butonnchange bg-[#15558D] text-white">Registrar medicinas</button>
+  </div>
+</table>
+  <div class="pb-10"></div>
+</table>
+</body>

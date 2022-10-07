@@ -1,5 +1,5 @@
+import { AppointmentService } from 'src/app/services/appoinment/Appointment.service';
 import { UpdateAppointmentResource } from './../../../../models/appointment/UpdateAppointmentResource';
-import { AppointmentService } from './../../../../services/appoinment/Appointment.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultDialogRecordComponent } from '../../../dialogs/result-dialog-record/result-dialog-record.component';
@@ -32,10 +32,14 @@ import { StaffService } from 'src/app/services/staff/staff.service';
 import { PatientDiagnosisResource } from 'src/app/models/patient-diagnostic/PatientDiagnosisResource';
 import { UpdateDiagnosticDialogComponent } from '../../update-dialog/update-diagnostic-dialog/update-diagnostic-dialog.component';
 import { UpdateTreatmentDialogComponent } from '../../update-dialog/update-treatment-dialog/update-treatment-dialog.component';
-import { StaffResource } from 'src/app/models/staff/StaffResource';
+import { UpdatePatientResource } from 'src/app/models/patient/UpdatePatientResource';
 import { RenalDiseaseResource } from 'src/app/models/renal-disease/RenalDiseaseResource';
+import { UpdateRenalDiseaseResource } from 'src/app/models/renal-disease/UpdateRenalDiseaseResource';
 import { RenalDiseaseService } from 'src/app/services/patient/renal-disease.service';
-
+import { PredictionService } from 'src/app/services/prediction/prediction.service';
+import { PredictionResource } from 'src/app/models/prediction/PredictionResource';
+import { ResultPrediction } from 'src/app/models/prediction/ResultResource';
+import { StaffResource } from 'src/app/models/staff/StaffResource';
 @Component({
   selector: 'staff-appointment-form',
   templateUrl: './staff-appointment-form.component.html',
@@ -43,16 +47,19 @@ import { RenalDiseaseService } from 'src/app/services/patient/renal-disease.serv
 })
 export class StaffAppointmentFormComponent implements OnInit {
   patientobject!:PatientResource
+  doctorobject!:DoctorResource
   staffobject!:StaffResource
   doctorurlobject!:DoctorResource
   idpatienturl!:number
+  iddoctorurl!:number
   idstaffurl!:number
-  patientupdate!:PatientResource
+  patientupdate!:UpdatePatientResource
   surveillancepatient!:SurveillanceResource
+  surveillancepatientobject!:SurveillanceResource
   ancientpatient!:IllnessRecordResource
   patientdiagnostic!:CreatePatientDiagnosisResource
+  patientdiagnosispredictive!:PatientDiagnosisResource
   diagnosis!:DiagnosisResource
-  renal!:RenalDiseaseResource
   patienttreatment!:PatientTreatmentResource
   treatment!:TreatmentResource
   patientmedicine!:MedicineResource
@@ -61,9 +68,10 @@ export class StaffAppointmentFormComponent implements OnInit {
   backrecordform!:FormGroup
   diagnosticform!:FormGroup
   treatmentform!:FormGroup
-  setstatfrom!:FormGroup
-  UpdateAppointmentResource!:UpdateAppointmentResource
+  renalform!:FormGroup
+  dialisisform!:FormGroup
   treatmenttype!:String;
+  predictionobj!:PredictionResource
   treatmenttypes:TreatmentResource[] = []
   diagnostictypes:DiagnosisResource[] = []
   renaltypes:RenalDiseaseResource[] = []
@@ -71,27 +79,39 @@ export class StaffAppointmentFormComponent implements OnInit {
   fechaactual:Date = new Date()
   pipedate:DatePipe = new DatePipe("en-US")
   todaydate:any
-  enddatediagnosticformatselected:any
+  result!:string
+  diagnosisobjectpredictive:DiagnosisResource
   enddatetreatmentformatselected:any
+  enddatediagnosticformatselected:any
+  renaldiseasetype!:RenalDiseaseResource
   dataSource = new MatTableDataSource<any>();
   dataSourceSurveillance = new MatTableDataSource<any>();
+  dataSourceRenalDisease = new MatTableDataSource<any>();
   dataSourcepatientdiagnostic = new MatTableDataSource<any>()
   dataSourcepatientdiagnostic2 = new MatTableDataSource<any>()
+  dataSourcepatientdiagnostic3 = new MatTableDataSource<any>()
+  dataSourcePrediction = new MatTableDataSource<any>()
   dataSourcediagnostic = new MatTableDataSource<any>()
   dataSourcepatienttreatment = new MatTableDataSource<any>()
   dataSourcepatienttreatment2 = new MatTableDataSource<any>()
   dataSourcetreatment = new MatTableDataSource<any>()
-  dataSourcemedicine = new MatTableDataSource<any>()
-
+  dataSourcemedicine = new MatTableDataSource<any>()  
+  listDiagnosis:PatientDiagnosisResource[] = [] 
+  UpdateAppointmentResource!:UpdateAppointmentResource
   dataSourceancient = new MatTableDataSource<any>()
   dataSourceancient2 = new MatTableDataSource<any>()
+  updaterenaldisease!:UpdateRenalDiseaseResource
   displayedColumnsancient: string[] = ['id', 'description', 'diseasetype', 'date'];
   displayedColumnsdiagnostic: string[] = ['code', 'description', 'diagnostic', 'initdate','finishdate','update'];
   displayedColumnstreatment: string[] = ['code', 'typetreatment', 'medicine', 'doses','description','initdate','finishdate','update'];
   stat!:string;
   notes!:string
+  responseprediction!:ResultPrediction
   shecdule!:Date
   status:string[] = ["SCHEDULED","FINISHED","CANCELED"]
+  dialysislist:string[] = ["SIN_ESPECIFICAR","CATETER","FISTULA"] 
+  setstatfrom!:FormGroup
+  descriptiondialisis!:any
   constructor(public dialog:MatDialog, private formBuilder:FormBuilder, 
     private patientservice:PatientService,private activeroute:ActivatedRoute, private route:Router, 
     private surveillanceservice:SurveillanceService,
@@ -101,9 +121,12 @@ export class StaffAppointmentFormComponent implements OnInit {
     private patienttreatmentservice:PatientTreatmentService,
     private treatmentservice:TreatmentService,
     private medicineservice:MedicineService,
+    private doctorservice:DoctorService,
     private staffservice:StaffService,
     private AppointmentService:AppointmentService,
-    private renaldiseaseservice:RenalDiseaseService
+    private renaldiseaseservice:RenalDiseaseService,
+    private predictionservice:PredictionService,
+
     ) { 
       this.ancientpatient = {} as IllnessRecordResource,
       this.patientdiagnostic = {} as CreatePatientDiagnosisResource,
@@ -113,7 +136,13 @@ export class StaffAppointmentFormComponent implements OnInit {
       this.patientmedicine = {} as MedicineResource
       this.patientobject = {} as PatientResource
       this.surveillancepatient = {} as SurveillanceResource
+      this.patientupdate={}as UpdatePatientResource
       this.UpdateAppointmentResource={}as UpdateAppointmentResource
+      this.renaldiseasetype = {} as RenalDiseaseResource
+      this.surveillancepatientobject = {} as SurveillanceResource
+      this.predictionobj = {} as PredictionResource
+      this.updaterenaldisease = {} as UpdateRenalDiseaseResource
+      this.responseprediction = {} as ResultPrediction
     }
 
   ngOnInit() {
@@ -145,14 +174,23 @@ export class StaffAppointmentFormComponent implements OnInit {
       stat:['',Validators.required]
 
      })
+     this.renalform = this.formBuilder.group({
+      renalname:['',Validators.required]
+     })
+     this.dialisisform = this.formBuilder.group({
+      dialisistype:['']
+     })
+
+     this.dialisisform.controls['dialisistype'].setValue(this.patientobject.dialysisMaterial);
+
      this.displayvigilancy = false;
      this.todaydate = this.pipedate.transform(this.fechaactual, 'dd/MM/yyyy');
 
      let urlpatientvariable = parseInt(this.activeroute.snapshot.paramMap.get('patientid')!);
-     let urlstaffvariable = parseInt(this.activeroute.snapshot.paramMap.get('staffid')!);
+     let urldoctorvariable = parseInt(this.activeroute.snapshot.paramMap.get('staffid')!);
      let urlstaffstatus = parseInt(this.activeroute.snapshot.paramMap.get('appointid')!);
      this.idpatienturl = urlpatientvariable
-     this.idstaffurl = urlstaffvariable
+     this.idstaffurl = urldoctorvariable
      console.log(this.idpatienturl)
      console.log(this.idstaffurl)
      this.GetPatientbyId(this.idpatienturl);
@@ -169,10 +207,20 @@ export class StaffAppointmentFormComponent implements OnInit {
      this.getMedicines()
      this.getRenalDiseases()
      this.getappoint(urlstaffstatus)
+     this.PredictionData(this.idpatienturl)
   }
 
   RegisterMethod(){
     const dialogRef = this.dialog.open(ResultDialogRecordComponent)
+  }
+
+  SaveAncient(id:number){
+    this.illnesservice.createIllnessRecord(this.ancientpatient,id).subscribe( (response:any) =>{
+      this.dataSourceancient2.data.push( {...response});
+      this.dataSourceancient2.data = this.dataSourceancient2.data.map((o: any) => { return o; });
+      const dialogRef = this.dialog.open(ResultDialogAncientComponent)
+      this.getPatientAncients(id)
+    });
   }
   getappoint(id:number){
     this.AppointmentService.getAppointmentById(id).subscribe((response:any)=>{
@@ -181,25 +229,6 @@ export class StaffAppointmentFormComponent implements OnInit {
       this.shecdule=response.scheduledAt
 
     })
-  }
-  SaveAncient(id:number){
-    this.illnesservice.createIllnessRecord(this.ancientpatient,id).subscribe( (response:any) =>{
-      this.dataSourceancient2.data.push( {...response});
-      this.dataSourceancient2.data = this.dataSourceancient2.data.map((o: any) => { return o; });
-      const dialogRef = this.dialog.open(ResultDialogAncientComponent)
-      this.getPatientAncients(id)
-    });
-    
-  }
-  cambiarstat(){
-        let urlstaffstatus = parseInt(this.activeroute.snapshot.paramMap.get('appointid')!);
-        this.UpdateAppointmentResource.status= this.setstatfrom.controls["stat"].value
-        this.UpdateAppointmentResource.notes=this.notes
-        this.UpdateAppointmentResource.scheduledAt=this.shecdule
-        this.AppointmentService.updateAppointment(urlstaffstatus,this.UpdateAppointmentResource).subscribe((response:any)=>{
-                    
-        })
-
   }
   getDiagnosis(){
     this.diagnosisservice.getAllDiagnosis().subscribe( (response:any) =>{
@@ -212,10 +241,22 @@ export class StaffAppointmentFormComponent implements OnInit {
   getRenalDiseases(){
     this.renaldiseaseservice.getAllRenalDisease().subscribe( (response:any) =>{
       this.renaltypes = response
+      this.dataSourceRenalDisease.data = response
       console.log(this.renaltypes)
     })
   }
 
+  cambiarstat(){
+
+    let urlstaffstatus = parseInt(this.activeroute.snapshot.paramMap.get('appointid')!);
+    this.UpdateAppointmentResource.status= this.setstatfrom.controls["stat"].value
+    this.UpdateAppointmentResource.notes=this.notes
+    this.UpdateAppointmentResource.scheduledAt=this.shecdule
+    this.AppointmentService.updateAppointment(urlstaffstatus,this.UpdateAppointmentResource).subscribe((response:any)=>{
+                
+    })
+
+  }
   getTreatments(){
     this.treatmentservice.getAllTreatments().subscribe( (response:any) =>{
         this.treatmenttypes = response
@@ -243,10 +284,9 @@ export class StaffAppointmentFormComponent implements OnInit {
 
   getRenalbyName(renalselected:any){
     console.log(renalselected)
-    this.renaldiseaseservice.getRenalDiseaseById(renalselected).subscribe( (response:any) =>{
-      this.dataSourcediagnostic.data = response
-      console.log(this.dataSourcediagnostic.data)
-      this.diagnosis = this.dataSourcediagnostic.data[0]
+    this.renaldiseaseservice.getRenalDiseaseByName(renalselected).subscribe( (response:any) =>{
+      console.log(response)
+      this.renaldiseasetype = response 
     })
   }
   
@@ -338,13 +378,26 @@ export class StaffAppointmentFormComponent implements OnInit {
 
   UpdatePatient(id:number){
     console.log(this.patientobject.height)
-    
-    this.patientservice.getPatientById(id).subscribe((response:any) =>{
-        this.patientupdate = response
+
+    this.patientservice.getPatientById(id).subscribe((response:PatientResource) =>{
+        console.log(response.birthday)
+        this.patientupdate.birthday = response.birthday
+        this.patientupdate.documentType = response.documentType
+        this.patientupdate.email = response.email
+        this.patientupdate.gender= response.gender
+        this.patientupdate.lastname= response.lastname
+        this.patientupdate.name= response.name
+        this.patientupdate.phone= response.phone
+        this.patientupdate.username= response.username
+        this.patientupdate.password= response.password 
         this.patientupdate.height = this.patientobject.height
+        
+        this.patientupdate.documentNumber = response.documentNumber
+        console.log(this.patientupdate)
 
         this.patientservice.updatePatient(id,this.patientupdate).subscribe( (response:any) =>{
             this.dataSource.data = this.dataSource.data.map((o: PatientResource) => {
+              console.log(response)
               if (o.id === response.id) {
                 o = response;
               }
@@ -352,16 +405,18 @@ export class StaffAppointmentFormComponent implements OnInit {
             });
         });
 
-        console.log(this.patientupdate)
     });
   }
 
   getSurveillanceByPatientId(id:number){
-    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {
+    console.log(this.surveillancepatient)
+    console.log(this.surveillancepatient.planCalories)
+    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {  
         this.dataSourceSurveillance.data = response
         console.log(this.dataSourceSurveillance.data)
         let finalposition = this.dataSourceSurveillance.data.length - 1
         this.surveillancepatient = this.dataSourceSurveillance.data[finalposition]
+        
         console.log(this.surveillancepatient)
       }
     );   
@@ -380,7 +435,7 @@ export class StaffAppointmentFormComponent implements OnInit {
       }
     );
   }
-
+  
   getPatientAncientssave(id:number){
     this.illnesservice.getIllnessRecordsByPatientId(id).subscribe( (response:any) =>{
         this.dataSourceancient2.data = response
@@ -393,7 +448,7 @@ export class StaffAppointmentFormComponent implements OnInit {
     this.patientdiagnosticservice.getPatientDiagnosisByPatientId(id).subscribe( (response:any) => {
         this.dataSourcepatientdiagnostic.data = response
         console.log(this.dataSourcepatientdiagnostic.data)
-
+        
         for(var onediagnostic of this.dataSourcepatientdiagnostic.data){
           console.log(onediagnostic)
           let startdateformatselected = formatDate(onediagnostic.startDate,'YYYY-MM-dd','en_US')
@@ -408,7 +463,6 @@ export class StaffAppointmentFormComponent implements OnInit {
           onediagnostic.startDate = startdateformatselected
           onediagnostic.endDate = this.enddatediagnosticformatselected
         }
-
       }
 
     )
@@ -431,11 +485,9 @@ export class StaffAppointmentFormComponent implements OnInit {
           onetreatment.startDate = startdateformatselected
           onetreatment.endDate = this.enddatetreatmentformatselected
         }
-
       }
     )
   }
-
   getPatientTreatmentssave(id:number){
     this.patienttreatmentservice.getPatientTreatmentByPatientId(id).subscribe( (response:any) =>{
         this.dataSourcepatienttreatment2.data = response
@@ -465,7 +517,6 @@ export class StaffAppointmentFormComponent implements OnInit {
       console.log(result)
       
       this.patientdiagnosticservice.updatePatientDiagnosis(result.id,result).subscribe( (response:any) =>{
-
         this.dataSourcepatientdiagnostic2.data = this.dataSourcepatientdiagnostic2.data.map((o: PatientDiagnosisResource) => {
           if (o.id === response.id) {
             o = response;
@@ -488,7 +539,6 @@ export class StaffAppointmentFormComponent implements OnInit {
       console.log(result)
 
       this.patienttreatmentservice.updatePatientTreatment(result.id,result).subscribe( (response:any) =>{
-
         this.dataSourcepatienttreatment2.data = this.dataSourcepatienttreatment2.data.map((o: PatientTreatmentResource) => {
           if (o.id === response.id) {
             o = response;
@@ -499,5 +549,135 @@ export class StaffAppointmentFormComponent implements OnInit {
       });
 
     });
+  }
+
+  UpdateRenalDisease(){
+    console.log(this.renaldiseasetype)
+    this.renaldiseaseservice.getRenalDiseaseByName(this.renaldiseasetype.name).subscribe( (response:any) =>{
+      console.log(response)
+      this.renaldiseasetype = response 
+      this.updaterenaldisease.name = this.renaldiseasetype.name
+      this.updaterenaldisease.description = this.renaldiseasetype.description
+      console.log(this.updaterenaldisease)
+      this.renaldiseaseservice.updateRenalDisease(this.renaldiseasetype.id,this.updaterenaldisease).subscribe( (response:any) =>{
+        console.log("Entra a update")
+        this.dataSourceRenalDisease.data = this.dataSourceRenalDisease.data.map((o: RenalDiseaseResource) => {
+          if (o.id === response.id) {
+            o = response;
+          }
+          return o;
+        });
+      }) 
+    })
+  }
+
+  PutDialisis(){
+    console.log(this.patientobject.dialysisMaterial)
+
+    this.patientservice.getPatientById(this.patientobject.id).subscribe((response:PatientResource) =>{
+
+        this.patientupdate.birthday = response.birthday
+        this.patientupdate.documentType = response.documentType
+        this.patientupdate.email = response.email
+        this.patientupdate.gender= response.gender
+        this.patientupdate.lastname= response.lastname
+        this.patientupdate.name= response.name
+        this.patientupdate.phone= response.phone
+        this.patientupdate.username= response.username
+        this.patientupdate.password= response.password 
+        this.patientupdate.height = response.height
+        this.patientupdate.dialysisMaterial = this.patientobject.dialysisMaterial
+        
+        this.patientupdate.documentNumber = response.documentNumber
+        console.log(this.patientupdate)
+
+        this.patientservice.updatePatient(this.patientobject.id,this.patientupdate).subscribe( (response:any) =>{
+            console.log(response)
+            this.dataSource.data = this.dataSource.data.map((o: PatientResource) => {
+              if (o.id === response.id) {
+                o = response;
+              }
+              return o;
+            });
+        });
+
+    });
+  }
+
+  PredictionData(id:number){
+    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {
+      this.dataSourceSurveillance.data = response
+      console.log(this.dataSourceSurveillance.data)
+      let finalposition = this.dataSourceSurveillance.data.length - 1
+      this.surveillancepatientobject = this.dataSourceSurveillance.data[finalposition]
+      console.log(this.surveillancepatientobject)
+      
+      this.patientdiagnosticservice.getPatientDiagnosisByPatientId(id).subscribe( (response:any) => {
+        this.dataSourcepatientdiagnostic3.data = response
+        console.log(this.dataSourcepatientdiagnostic3.data)
+        /*let finalposition2 = this.dataSourcepatientdiagnostic3.data.length - 1
+        this.patientdiagnosispredictive = this.dataSourcepatientdiagnostic3.data[finalposition2]
+        console.log(this.patientdiagnosispredictive)*/
+        for(let i= 0; i< this.dataSourcepatientdiagnostic3.data.length;i++){
+
+          this.diagnosisservice.getDiagnosisById(this.dataSourcepatientdiagnostic3.data[i].diagnosis.id).subscribe( (response:any) => {
+            this.diagnosisobjectpredictive = response
+            console.log(this.diagnosisobjectpredictive)
+            if(this.diagnosisobjectpredictive.name == 'Hipertensión'){
+              console.log("Entra a if de hipertension")
+              this.predictionobj.hypertension = true
+            }
+            if(this.diagnosisobjectpredictive.name == "diabetes mellitus"){
+              this.predictionobj.diabetes_mellitus = true
+            }
+            if(this.diagnosisobjectpredictive.name == "enfermedad Coronaria"){
+              this.predictionobj.coronary_artery_disease = true
+            }
+            if(this.diagnosisobjectpredictive.name == "anemia"){
+              this.predictionobj.anemia = true
+            }
+            if(this.diagnosisobjectpredictive.name == "pedal Enema"){
+              this.predictionobj.pedal_edema = true
+            }
+            if(this.diagnosisobjectpredictive.name == "Apetito"){
+              this.predictionobj.appetite = true
+            }
+            console.log(this.predictionobj)
+          })
+        }
+        console.log(this.predictionobj)
+        this.predictionobj.blood_pressure = this.surveillancepatientobject.bloodPressure
+        this.predictionobj.specific_gravity = this.surveillancepatientobject.specificGravity
+        this.predictionobj.albumin = this.surveillancepatientobject.albumin
+        this.predictionobj.sugar = this.surveillancepatientobject.sugar
+        this.predictionobj.red_blood_cells = this.surveillancepatientobject.redBloodCells
+        this.predictionobj.pus_cell = this.surveillancepatientobject.pusCells
+        this.predictionobj.pus_cell_clumps = this.surveillancepatientobject.pusCellClumps
+        this.predictionobj.bacteria = this.surveillancepatientobject.bacteria
+        this.predictionobj.blood_glucose_random = this.surveillancepatientobject.bloodGlucoseRandom
+        this.predictionobj.blood_urea = this.surveillancepatientobject.bloodUrea
+        this.predictionobj.serum_creatinine = this.surveillancepatientobject.serumCreatinine
+        this.predictionobj.sodium = this.surveillancepatientobject.sodium
+        this.predictionobj.potassium = this.surveillancepatientobject.potassium
+        this.predictionobj.hemoglobin = this.surveillancepatientobject.hemoglobin
+        this.predictionobj.packed_cell_volume = this.surveillancepatientobject.packedCellVolume
+        this.predictionobj.white_blood_cell_count = this.surveillancepatientobject.whiteBloodCellCount
+        this.predictionobj.red_blood_cell_count = this.surveillancepatientobject.redBloodCellCount
+        
+        console.log(this.predictionobj)
+        this.predictionservice.createPrediction(this.predictionobj).subscribe( (response:any) => {
+          this.responseprediction = response
+          console.log(this.responseprediction)
+          if(this.responseprediction.outcome == 1){
+            this.result = "Si"
+          }else{
+            this.result = "No"
+          }
+          
+        })
+      });
+    
+    });  
+
   }
 }

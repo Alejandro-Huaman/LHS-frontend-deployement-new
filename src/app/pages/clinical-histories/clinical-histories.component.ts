@@ -28,10 +28,13 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
 import { ViewChild,ElementRef  } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { ASurveillanceResource } from 'src/app/models/antiguo-surveillance/ASurveillanceResource';
 export interface dataclinical {
-  Hematologicos: string;
-  Urologicos:string
-  Nutricion:string
+  ktv: string;
+  Clinic:string
+  Shared:string
+  Prediction:string
+  Legacy:string
 }
 const date=new Date()
 const paciente:Paciente[]=[
@@ -124,7 +127,7 @@ export class ClinicalHistoriesComponent implements OnInit {
   avaliblediagnosis!:boolean
   avaliblehistory!:boolean
   avaliblevigilant!:boolean
-  vigilantarray!: SurveillanceResource[]
+  vigilantarray!: ASurveillanceResource[]
   dataSourceb=tratamiento
   dataSourcec=DiagnosticoPaciente
   dataSourced=cita
@@ -139,7 +142,7 @@ export class ClinicalHistoriesComponent implements OnInit {
   displayedColumns2: string[] = ['Medicamento', 'Dosis Diarias', 'fecha inicio','fecha final'];
   displayedColumns3: string[] = ['Diagnostico', 'Fecha', 'Comentario'];
   displayedColumns4: string[] = ['Fecha','Notas'];
-  displayedColumns5: string[] = ['Hematologicos','Urologicos',"Nutrición"];
+  displayedColumns5: string[] = ['ktv','Clinic',"Shared","Prediction","Legacy"];
   constructor(public dialog: MatDialog,private formBuilder:FormBuilder,private PATIENTSERVICE:PatientService,private IllnessRecordService:IllnessRecordService
     ,private PatientTreatmentService:PatientTreatmentService,private PatientDiagnosticService:PatientDiagnosticService,private AppointmentService:AppointmentService,private SurveillanceService:SurveillanceService
     ,private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute,private Router:Router,private datePipe: DatePipe) { 
@@ -215,96 +218,160 @@ downloadAsPDF(){
 
 
    checkvigilant(){
+           
+                  
+            if(this.SurveillanceResource1.initWeight==null){
+              this.SurveillanceResource1.initWeight=0
+            } 
+            if(this.SurveillanceResource1.finalWeight==null){
+              this.SurveillanceResource1.finalWeight=0
+            } 
+            if(this.SurveillanceResource1.hdTime==null){
+              this.SurveillanceResource1.hdTime=0
+            } 
+            if(this.SurveillanceResource1.uf==null){
+              this.SurveillanceResource1.uf=0
+            } 
+            if(this.SurveillanceResource1.ureaPre==null){
+              this.SurveillanceResource1.ureaPre=0
+            } 
+            if(this.SurveillanceResource1.hematocrit==null){
+              this.SurveillanceResource1.hematocrit=0
+            } 
+            if(this.SurveillanceResource1.serumElectrolytes==null){
+              this.SurveillanceResource1.serumElectrolytes=0
+            } 
+            if(this.SurveillanceResource1.phosphorus==null){
+              this.SurveillanceResource1.phosphorus=0
+            } 
+            if(this.SurveillanceResource1.serumCalcium==null){
+              this.SurveillanceResource1.serumCalcium=0
+            } 
+            if(this.SurveillanceResource1.proteinElectrophoresis==null){
+              this.SurveillanceResource1.proteinElectrophoresis=0
+            } 
+            if(this.SurveillanceResource1.alkalinePhosphatase==null){
+              this.SurveillanceResource1.alkalinePhosphatase=0
+            } 
+            if(this.SurveillanceResource1.tgo==null){
+              this.SurveillanceResource1.tgo=0
+            } 
+            if(this.SurveillanceResource1.tgp==null){
+              this.SurveillanceResource1.tgp=0
+            } 
+            if(this.SurveillanceResource1.dayCreatinine==null){
+              this.SurveillanceResource1.dayCreatinine=0
+            } 
+            if(this.SurveillanceResource1.parathormone==null){
+              this.SurveillanceResource1.parathormone=0
+            } 
+            if(this.SurveillanceResource1.serumIron==null){
+              this.SurveillanceResource1.serumIron=0
+            }
+            if(this.SurveillanceResource1.serumFerritin==null){
+              this.SurveillanceResource1.serumFerritin=0
+            }
+            if(this.SurveillanceResource1.transferrinSaturation==null){
+              this.SurveillanceResource1.transferrinSaturation=0
+            }
+            if(this.SurveillanceResource1.transferrin==null){
+              this.SurveillanceResource1.transferrin=0
+            }
+            if(this.SurveillanceResource1.elisa==null){
+              this.SurveillanceResource1.elisa=false
+            }
+            if(this.SurveillanceResource1.vdrlAndRpr==null){
+              this.SurveillanceResource1.vdrlAndRpr=false
+            }
+            if(this.SurveillanceResource1.hepatitisBAntigen==null){
+              this.SurveillanceResource1.hepatitisBAntigen=false
+            }
+            if(this.SurveillanceResource1.hepatitisBAntibody==null){
+              this.SurveillanceResource1.hepatitisBAntibody=false
+            }
+
+            if(this.SurveillanceResource1.hepatitisCAntibody==null){
+              this.SurveillanceResource1.hepatitisCAntibody=false
+            }
+            if(this.SurveillanceResource1.ktv==null){
+              this.SurveillanceResource1.ktv=0
+            }
+            if(this.SurveillanceResource1.bloodUrea==null){
+              this.SurveillanceResource1.bloodUrea=0
+            }
+
+            if(this.SurveillanceResource1.serumCreatinine==null){
+              this.SurveillanceResource1.serumCreatinine=0
+            }
             if(this.SurveillanceResource1.hemoglobin==null){
-                 this.SurveillanceResource1.hemoglobin=0
+              this.SurveillanceResource1.hemoglobin=0
             }
-            if(this.SurveillanceResource1.segmented==null){
-              this.SurveillanceResource1.segmented=0
+            if(this.SurveillanceResource1.sodium==null){
+              this.SurveillanceResource1.sodium=0
             }
-            if(this.SurveillanceResource1.mvc==null){
-              this.SurveillanceResource1.mvc=0
+            if(this.SurveillanceResource1.potassium==null){
+              this.SurveillanceResource1.potassium=0
             }
-            if(this.SurveillanceResource1.lymphocytes==null){
-              this.SurveillanceResource1.lymphocytes=0
+            if(this.SurveillanceResource1.albumin==null){
+              this.SurveillanceResource1.albumin=0
             }
-            if(this.SurveillanceResource1.monocytes==null){
-              this.SurveillanceResource1.monocytes=0
+
+            if(this.SurveillanceResource1.bloodPressure==null){
+              this.SurveillanceResource1.bloodPressure=0
             }
-            if(this.SurveillanceResource1.mch==null){
-              this.SurveillanceResource1.mch=0
+            if(this.SurveillanceResource1.specificGravity==null){
+              this.SurveillanceResource1.specificGravity=0
             }
-            if(this.SurveillanceResource1.leukocytes==null){
-              this.SurveillanceResource1.leukocytes=0
-            }
-            if(this.SurveillanceResource1.glucose==null){
-              this.SurveillanceResource1.glucose=0
-            }
-            if(this.SurveillanceResource1.cholesterol==null){
-              this.SurveillanceResource1.cholesterol=0
-            }
-            if(this.SurveillanceResource1.triglycerides==null){
-              this.SurveillanceResource1.triglycerides=0
-            }  
-            if(this.SurveillanceResource1.erythrocytes==null){
-              this.SurveillanceResource1.erythrocytes=0
-            }   
-            if(this.SurveillanceResource1.urea==null){
-              this.SurveillanceResource1.urea=0
-            }
-            if(this.SurveillanceResource1.protein==null){
-              this.SurveillanceResource1.protein=0
-            }
-            if(this.SurveillanceResource1.nitrite==null){
-              this.SurveillanceResource1.nitrite=0
-            }
-            if(this.SurveillanceResource1.creatinine==null){
-              this.SurveillanceResource1.creatinine=0
-            }
-            if(this.SurveillanceResource1.ketone==null){
-              this.SurveillanceResource1.ketone=0
-            }
-            if(this.SurveillanceResource1.crystals==null){
-              this.SurveillanceResource1.crystals=0
-            }
-            if(this.SurveillanceResource1.density==null){
-              this.SurveillanceResource1.density=0
-            }
-            if(this.SurveillanceResource1.urobilinogen==null){
-              this.SurveillanceResource1.urobilinogen=0
-            }  
             if(this.SurveillanceResource1.sugar==null){
               this.SurveillanceResource1.sugar=0
-            } 
-            if(this.SurveillanceResource1.ph==null){
-              this.SurveillanceResource1.ph=0
-            } 
-            if(this.SurveillanceResource1.bilirubin==null){
-              this.SurveillanceResource1.bilirubin=0
-            } 
-            if(this.SurveillanceResource1.urineAppearance==null){
-              this.SurveillanceResource1.urineAppearance="No Regitrado"
-            } 
-            if(this.SurveillanceResource1.urineColor==null){
-              this.SurveillanceResource1.urineColor="No Regitrado"
-            }      
+            }
+            if(this.SurveillanceResource1.redBloodCells==null){
+              this.SurveillanceResource1.redBloodCells=false
+            }
+            if(this.SurveillanceResource1.pusCells==null){
+              this.SurveillanceResource1.pusCells=false
+            }
+            if(this.SurveillanceResource1.pusCellClumps==null){
+              this.SurveillanceResource1.pusCellClumps=false
+            }
+            if(this.SurveillanceResource1.bacteria==null){
+              this.SurveillanceResource1.bacteria=false
+            }
+            if(this.SurveillanceResource1.bloodGlucoseRandom==null){
+              this.SurveillanceResource1.bloodGlucoseRandom=0
+            }
+            if(this.SurveillanceResource1.packedCellVolume==null){
+              this.SurveillanceResource1.packedCellVolume=0
+            }
+            if(this.SurveillanceResource1.whiteBloodCellCount==null){
+              this.SurveillanceResource1.whiteBloodCellCount=0
+            }
+            if(this.SurveillanceResource1.redBloodCellCount==null){
+              this.SurveillanceResource1.redBloodCellCount=0
+            }
+            if(this.SurveillanceResource1.appetite==null){
+              this.SurveillanceResource1.appetite=false
+            }
+
+            if(this.SurveillanceResource1.pedalEdema==null){
+              this.SurveillanceResource1.pedalEdema=false
+            }
             if(this.SurveillanceResource1.planCalories==null){
               this.SurveillanceResource1.planCalories=0
-            } 
-            if(this.SurveillanceResource1.imc==null){
-              this.SurveillanceResource1.imc=0
-            } 
+            }
             if(this.SurveillanceResource1.consumedCalories==null){
               this.SurveillanceResource1.consumedCalories=0
-            } 
+            }
+            if(this.SurveillanceResource1.imc==null){
+              this.SurveillanceResource1.imc=0
+            }
+
             if(this.SurveillanceResource1.pain==null){
               this.SurveillanceResource1.pain="No Regitrado"
-            } 
-            if(this.SurveillanceResource1.appetite==null){
-              this.SurveillanceResource1.appetite="No Regitrado"
-            } 
+            }   
             if(this.SurveillanceResource1.otherSymptoms==null){
               this.SurveillanceResource1.otherSymptoms="No Regitrado"
-            }     
+            }  
 
                              
    }
@@ -312,20 +379,29 @@ downloadAsPDF(){
 
   arrayflow(){
     this.arrayclinical=[
-      {Hematologicos:`Hemoglobina: ${this.SurveillanceResource1.hemoglobin} g/dL`,Urologicos:`Urea:${this.SurveillanceResource1.urea} mg/ml`,Nutricion:`Cantidad de calorias:${this.SurveillanceResource1.planCalories}`},
-      {Hematologicos:`Segmentados: ${this.SurveillanceResource1.segmented} %`,Urologicos:`Proteinas:${this.SurveillanceResource1.protein} mg/dL`,Nutricion:`imc:${this.SurveillanceResource1.imc}`},
-      {Hematologicos:`VCM: ${this.SurveillanceResource1.mvc} fl`,Urologicos:`Nitrito:${this.SurveillanceResource1.nitrite}`,Nutricion:`Calorias consumidas:${this.SurveillanceResource1.consumedCalories}`},
-      {Hematologicos:`Linfoncitos: ${this.SurveillanceResource1.lymphocytes} %`,Urologicos:`Creatinina:${this.SurveillanceResource1.creatinine}  mg/dL`,Nutricion:`Dolor:${this.SurveillanceResource1.pain}`},
-      {Hematologicos:`Monocitos: ${this.SurveillanceResource1.monocytes} /L`,Urologicos:`Cetonas:${this.SurveillanceResource1.ketone}`,Nutricion:`Apetito:${this.SurveillanceResource1.appetite}`},
-      {Hematologicos:`Leucocitos: ${this.SurveillanceResource1.leukocytes} mg/ml`,Urologicos:`Cristales:${this.SurveillanceResource1.crystals}`,Nutricion:`Otros simtomas:${this.SurveillanceResource1.otherSymptoms}`},
-      {Hematologicos:`Glucosa: ${this.SurveillanceResource1.glucose} mg/dl`,Urologicos:`Densidad de Orina:${this.SurveillanceResource1.density}`,Nutricion:``},
-      {Hematologicos:`Colesterol: ${this.SurveillanceResource1.cholesterol} mg/dL`,Urologicos:`Urobilinogeno:${this.SurveillanceResource1.urobilinogen}  mg/dL`,Nutricion:``},
-      {Hematologicos:`Hematies: ${this.SurveillanceResource1.erythrocytes} células/mcL`,Urologicos:`Azucar:${this.SurveillanceResource1.sugar} mmol/l`,Nutricion:``},
-      {Hematologicos:`trigliceridos: ${this.SurveillanceResource1.triglycerides} células/mcL`,Urologicos:`PH:${this.SurveillanceResource1.ph}`,Nutricion:``},
-      {Hematologicos:``,Urologicos:`Billirubina:${this.SurveillanceResource1.bilirubin}`,Nutricion:``},
-      {Hematologicos:``,Urologicos:`Aspecto de Orina:${this.SurveillanceResource1.urineAppearance}`,Nutricion:``},
-      {Hematologicos:``,Urologicos:`Color de Orina:${this.SurveillanceResource1.urineColor}`,Nutricion:``}
-      
+      {ktv:`initWeight: ${this.SurveillanceResource1.initWeight} `,Clinic:`ureaPre:${this.SurveillanceResource1.ureaPre} `,Shared:`bloodUrea:${this.SurveillanceResource1.bloodUrea}`,Prediction:`bloodPressure:${this.SurveillanceResource1.bloodPressure}`,Legacy:`planCalories: ${this.SurveillanceResource1.planCalories}`},
+      {ktv:`finalWeight: ${this.SurveillanceResource1.finalWeight} `,Clinic:`hematocrit:${this.SurveillanceResource1.hematocrit} `,Shared:`serumCreatinine:${this.SurveillanceResource1.serumCreatinine}`,Prediction:`specificGravity:${this.SurveillanceResource1.specificGravity}`,Legacy:`consumedCalories: ${this.SurveillanceResource1.consumedCalories}`},
+      {ktv:`hdTime: ${this.SurveillanceResource1.hdTime} `,Clinic:`serumElectrolytes:${this.SurveillanceResource1.serumElectrolytes} `,Shared:`hemoglobin:${this.SurveillanceResource1.hemoglobin}`,Prediction:`sugar:${this.SurveillanceResource1.sugar}`,Legacy:`pain: ${this.SurveillanceResource1.pain}`},
+      {ktv:`uf: ${this.SurveillanceResource1.uf} `,Clinic:`chlorine:${this.SurveillanceResource1.chlorine} `,Shared:`sodium:${this.SurveillanceResource1.sodium}`,Prediction:`redBloodCells:${this.SurveillanceResource1.redBloodCells}`,Legacy:`otherSymptoms: ${this.SurveillanceResource1.otherSymptoms}`},
+      {ktv:``,Clinic:`phosphorus:${this.SurveillanceResource1.phosphorus} `,Shared:`potassium:${this.SurveillanceResource1.potassium}`,Prediction:`pusCells:${this.SurveillanceResource1.pusCells}`,Legacy:`otherSymptoms: ${this.SurveillanceResource1.imc}`},
+      {ktv:``,Clinic:`serumCalcium:${this.SurveillanceResource1.serumCalcium} `,Shared:`albumin:${this.SurveillanceResource1.albumin}`,Prediction:`pusCellClumps:${this.SurveillanceResource1.pusCellClumps}`,Legacy:``},
+      {ktv:``,Clinic:`proteinElectrophoresis:${this.SurveillanceResource1.proteinElectrophoresis} `,Shared:``,Prediction:`bacteria:${this.SurveillanceResource1.bacteria}`,Legacy:``},
+      {ktv:``,Clinic:`alkalinePhosphatase:${this.SurveillanceResource1.alkalinePhosphatase} `,Shared:``,Prediction:`bloodGlucoseRandom:${this.SurveillanceResource1.bloodGlucoseRandom}`,Legacy:``},
+      {ktv:``,Clinic:`tgo:${this.SurveillanceResource1.tgo} `,Shared:``,Prediction:`packedCellVolume:${this.SurveillanceResource1.packedCellVolume}`,Legacy:``},
+      {ktv:``,Clinic:`tgp:${this.SurveillanceResource1.tgp} `,Shared:``,Prediction:`whiteBloodCellCount:${this.SurveillanceResource1.whiteBloodCellCount}`,Legacy:``},
+      {ktv:``,Clinic:`dayCreatinine:${this.SurveillanceResource1.dayCreatinine} `,Shared:``,Prediction:`redBloodCellCount:${this.SurveillanceResource1.redBloodCellCount}`,Legacy:``},
+      {ktv:``,Clinic:`parathormone:${this.SurveillanceResource1.parathormone} `,Shared:``,Prediction:`appetite:${this.SurveillanceResource1.appetite}`,Legacy:``},
+      {ktv:``,Clinic:`serumIron:${this.SurveillanceResource1.serumIron} `,Shared:``,Prediction:`pedalEdema:${this.SurveillanceResource1.pedalEdema}`,Legacy:``},
+      {ktv:``,Clinic:`serumFerritin:${this.SurveillanceResource1.serumFerritin} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`transferrinSaturation:${this.SurveillanceResource1.transferrinSaturation} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`transferrin:${this.SurveillanceResource1.transferrin} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`elisa:${this.SurveillanceResource1.elisa} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`vdrlAndRpr:${this.SurveillanceResource1.vdrlAndRpr} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`hepatitisBAntigen:${this.SurveillanceResource1.hepatitisBAntigen} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`hepatitisBAntibody:${this.SurveillanceResource1.hepatitisBAntibody} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`hepatitisCAntibody:${this.SurveillanceResource1.hepatitisCAntibody} `,Shared:``,Prediction:``,Legacy:``},
+      {ktv:``,Clinic:`ktv:${this.SurveillanceResource1.ktv} `,Shared:``,Prediction:``,Legacy:``},
+
 
     ]
     this.dataSource6.data=this.arrayclinical
@@ -374,12 +450,12 @@ downloadAsPDF(){
         this.avaliblevigilant=true
         if(this.dataSource5.data.length==0){
              this.avaliblevigilant=false
-             this.SurveillanceResource1.weight=0
+             this.SurveillanceResource1.initWeight=0
 
         }else{
           this.SurveillanceResource1=this.dataSource5.data.pop() 
           this.vigilantarray=this.dataSource5.data.reverse()
-          if(this.SurveillanceResource1.appetite==null){
+          /*if(this.SurveillanceResource1.appetite==null){
                 for(let element in this.vigilantarray){
                        if(this.vigilantarray[element].appetite!=null){
                               this.SurveillanceResource1.planCalories=this.vigilantarray[element].planCalories
@@ -438,7 +514,7 @@ downloadAsPDF(){
                      
            }
 
-          } 
+          } */
           this.checkvigilant()
           this.arrayflow()
         }

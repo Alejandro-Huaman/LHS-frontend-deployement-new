@@ -34,8 +34,11 @@ import { UpdateDiagnosticDialogComponent } from '../../update-dialog/update-diag
 import { UpdateTreatmentDialogComponent } from '../../update-dialog/update-treatment-dialog/update-treatment-dialog.component';
 import { UpdatePatientResource } from 'src/app/models/patient/UpdatePatientResource';
 import { RenalDiseaseResource } from 'src/app/models/renal-disease/RenalDiseaseResource';
+import { UpdateRenalDiseaseResource } from 'src/app/models/renal-disease/UpdateRenalDiseaseResource';
 import { RenalDiseaseService } from 'src/app/services/patient/renal-disease.service';
-
+import { PredictionService } from 'src/app/services/prediction/prediction.service';
+import { PredictionResource } from 'src/app/models/prediction/PredictionResource';
+import { ResultPrediction } from 'src/app/models/prediction/ResultResource';
 @Component({
   selector: 'app-record-form',
   templateUrl: './record-form.component.html',
@@ -49,10 +52,11 @@ export class RecordFormComponent implements OnInit {
   iddoctorurl!:number
   patientupdate!:UpdatePatientResource
   surveillancepatient!:SurveillanceResource
+  surveillancepatientobject!:SurveillanceResource
   ancientpatient!:IllnessRecordResource
   patientdiagnostic!:CreatePatientDiagnosisResource
+  patientdiagnosispredictive!:PatientDiagnosisResource
   diagnosis!:DiagnosisResource
-  renal!:RenalDiseaseResource
   patienttreatment!:PatientTreatmentResource
   treatment!:TreatmentResource
   patientmedicine!:MedicineResource
@@ -61,7 +65,10 @@ export class RecordFormComponent implements OnInit {
   backrecordform!:FormGroup
   diagnosticform!:FormGroup
   treatmentform!:FormGroup
+  renalform!:FormGroup
+  dialisisform!:FormGroup
   treatmenttype!:String;
+  predictionobj!:PredictionResource
   treatmenttypes:TreatmentResource[] = []
   diagnostictypes:DiagnosisResource[] = []
   renaltypes:RenalDiseaseResource[] = []
@@ -69,12 +76,18 @@ export class RecordFormComponent implements OnInit {
   fechaactual:Date = new Date()
   pipedate:DatePipe = new DatePipe("en-US")
   todaydate:any
+  result!:string
+  diagnosisobjectpredictive:DiagnosisResource
   enddatetreatmentformatselected:any
   enddatediagnosticformatselected:any
+  renaldiseasetype!:RenalDiseaseResource
   dataSource = new MatTableDataSource<any>();
   dataSourceSurveillance = new MatTableDataSource<any>();
+  dataSourceRenalDisease = new MatTableDataSource<any>();
   dataSourcepatientdiagnostic = new MatTableDataSource<any>()
   dataSourcepatientdiagnostic2 = new MatTableDataSource<any>()
+  dataSourcepatientdiagnostic3 = new MatTableDataSource<any>()
+  dataSourcePrediction = new MatTableDataSource<any>()
   dataSourcediagnostic = new MatTableDataSource<any>()
   dataSourcepatienttreatment = new MatTableDataSource<any>()
   dataSourcepatienttreatment2 = new MatTableDataSource<any>()
@@ -84,14 +97,18 @@ export class RecordFormComponent implements OnInit {
   UpdateAppointmentResource!:UpdateAppointmentResource
   dataSourceancient = new MatTableDataSource<any>()
   dataSourceancient2 = new MatTableDataSource<any>()
+  updaterenaldisease!:UpdateRenalDiseaseResource
   displayedColumnsancient: string[] = ['id', 'description', 'diseasetype', 'date'];
   displayedColumnsdiagnostic: string[] = ['code', 'description', 'diagnostic', 'initdate','finishdate','update'];
   displayedColumnstreatment: string[] = ['code', 'typetreatment', 'medicine', 'doses','description','initdate','finishdate','update'];
   stat!:string;
   notes!:string
+  responseprediction!:ResultPrediction
   shecdule!:Date
   status:string[] = ["SCHEDULED","FINISHED","CANCELED"]
+  dialysislist:string[] = ["SIN_ESPECIFICAR","CATETER","FISTULA"] 
   setstatfrom!:FormGroup
+  descriptiondialisis!:any
   constructor(public dialog:MatDialog, private formBuilder:FormBuilder, 
     private patientservice:PatientService,private activeroute:ActivatedRoute, private route:Router, 
     private surveillanceservice:SurveillanceService,
@@ -104,7 +121,9 @@ export class RecordFormComponent implements OnInit {
     private doctorservice:DoctorService,
     private staffservice:StaffService,
     private AppointmentService:AppointmentService,
-    private renaldiseaseservice:RenalDiseaseService
+    private renaldiseaseservice:RenalDiseaseService,
+    private predictionservice:PredictionService,
+
     ) { 
       this.ancientpatient = {} as IllnessRecordResource,
       this.patientdiagnostic = {} as CreatePatientDiagnosisResource,
@@ -116,6 +135,11 @@ export class RecordFormComponent implements OnInit {
       this.surveillancepatient = {} as SurveillanceResource
       this.patientupdate={}as UpdatePatientResource
       this.UpdateAppointmentResource={}as UpdateAppointmentResource
+      this.renaldiseasetype = {} as RenalDiseaseResource
+      this.surveillancepatientobject = {} as SurveillanceResource
+      this.predictionobj = {} as PredictionResource
+      this.updaterenaldisease = {} as UpdateRenalDiseaseResource
+      this.responseprediction = {} as ResultPrediction
     }
 
   ngOnInit() {
@@ -147,6 +171,15 @@ export class RecordFormComponent implements OnInit {
       stat:['',Validators.required]
 
      })
+     this.renalform = this.formBuilder.group({
+      renalname:['',Validators.required]
+     })
+     this.dialisisform = this.formBuilder.group({
+      dialisistype:['']
+     })
+
+     this.dialisisform.controls['dialisistype'].setValue(this.patientobject.dialysisMaterial);
+
      this.displayvigilancy = false;
      this.todaydate = this.pipedate.transform(this.fechaactual, 'dd/MM/yyyy');
 
@@ -171,6 +204,7 @@ export class RecordFormComponent implements OnInit {
      this.getMedicines()
      this.getRenalDiseases()
      this.getappoint(urlstaffstatus)
+     this.PredictionData(this.idpatienturl)
   }
 
   RegisterMethod(){
@@ -204,6 +238,7 @@ export class RecordFormComponent implements OnInit {
   getRenalDiseases(){
     this.renaldiseaseservice.getAllRenalDisease().subscribe( (response:any) =>{
       this.renaltypes = response
+      this.dataSourceRenalDisease.data = response
       console.log(this.renaltypes)
     })
   }
@@ -246,10 +281,9 @@ export class RecordFormComponent implements OnInit {
 
   getRenalbyName(renalselected:any){
     console.log(renalselected)
-    this.renaldiseaseservice.getRenalDiseaseById(renalselected).subscribe( (response:any) =>{
-      this.dataSourcediagnostic.data = response
-      console.log(this.dataSourcediagnostic.data)
-      this.diagnosis = this.dataSourcediagnostic.data[0]
+    this.renaldiseaseservice.getRenalDiseaseByName(renalselected).subscribe( (response:any) =>{
+      console.log(response)
+      this.renaldiseasetype = response 
     })
   }
   
@@ -372,11 +406,14 @@ export class RecordFormComponent implements OnInit {
   }
 
   getSurveillanceByPatientId(id:number){
-    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {
+    console.log(this.surveillancepatient)
+    console.log(this.surveillancepatient.planCalories)
+    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {  
         this.dataSourceSurveillance.data = response
         console.log(this.dataSourceSurveillance.data)
         let finalposition = this.dataSourceSurveillance.data.length - 1
         this.surveillancepatient = this.dataSourceSurveillance.data[finalposition]
+        
         console.log(this.surveillancepatient)
       }
     );   
@@ -509,5 +546,135 @@ export class RecordFormComponent implements OnInit {
       });
 
     });
+  }
+
+  UpdateRenalDisease(){
+    console.log(this.renaldiseasetype)
+    this.renaldiseaseservice.getRenalDiseaseByName(this.renaldiseasetype.name).subscribe( (response:any) =>{
+      console.log(response)
+      this.renaldiseasetype = response 
+      this.updaterenaldisease.name = this.renaldiseasetype.name
+      this.updaterenaldisease.description = this.renaldiseasetype.description
+      console.log(this.updaterenaldisease)
+      this.renaldiseaseservice.updateRenalDisease(this.renaldiseasetype.id,this.updaterenaldisease).subscribe( (response:any) =>{
+        console.log("Entra a update")
+        this.dataSourceRenalDisease.data = this.dataSourceRenalDisease.data.map((o: RenalDiseaseResource) => {
+          if (o.id === response.id) {
+            o = response;
+          }
+          return o;
+        });
+      }) 
+    })
+  }
+
+  PutDialisis(){
+    console.log(this.patientobject.dialysisMaterial)
+
+    this.patientservice.getPatientById(this.patientobject.id).subscribe((response:PatientResource) =>{
+
+        this.patientupdate.birthday = response.birthday
+        this.patientupdate.documentType = response.documentType
+        this.patientupdate.email = response.email
+        this.patientupdate.gender= response.gender
+        this.patientupdate.lastname= response.lastname
+        this.patientupdate.name= response.name
+        this.patientupdate.phone= response.phone
+        this.patientupdate.username= response.username
+        this.patientupdate.password= response.password 
+        this.patientupdate.height = response.height
+        this.patientupdate.dialysisMaterial = this.patientobject.dialysisMaterial
+        
+        this.patientupdate.documentNumber = response.documentNumber
+        console.log(this.patientupdate)
+
+        this.patientservice.updatePatient(this.patientobject.id,this.patientupdate).subscribe( (response:any) =>{
+            console.log(response)
+            this.dataSource.data = this.dataSource.data.map((o: PatientResource) => {
+              if (o.id === response.id) {
+                o = response;
+              }
+              return o;
+            });
+        });
+
+    });
+  }
+
+  PredictionData(id:number){
+    this.surveillanceservice.getSurveillanceByPatientId(id).subscribe( (response:any) => {
+      this.dataSourceSurveillance.data = response
+      console.log(this.dataSourceSurveillance.data)
+      let finalposition = this.dataSourceSurveillance.data.length - 1
+      this.surveillancepatientobject = this.dataSourceSurveillance.data[finalposition]
+      console.log(this.surveillancepatientobject)
+      
+      this.patientdiagnosticservice.getPatientDiagnosisByPatientId(id).subscribe( (response:any) => {
+        this.dataSourcepatientdiagnostic3.data = response
+        console.log(this.dataSourcepatientdiagnostic3.data)
+        /*let finalposition2 = this.dataSourcepatientdiagnostic3.data.length - 1
+        this.patientdiagnosispredictive = this.dataSourcepatientdiagnostic3.data[finalposition2]
+        console.log(this.patientdiagnosispredictive)*/
+        for(let i= 0; i< this.dataSourcepatientdiagnostic3.data.length;i++){
+
+          this.diagnosisservice.getDiagnosisById(this.dataSourcepatientdiagnostic3.data[i].diagnosis.id).subscribe( (response:any) => {
+            this.diagnosisobjectpredictive = response
+            console.log(this.diagnosisobjectpredictive)
+            if(this.diagnosisobjectpredictive.name == 'Hipertensión'){
+              console.log("Entra a if de hipertension")
+              this.predictionobj.hypertension = true
+            }
+            if(this.diagnosisobjectpredictive.name == "diabetes mellitus"){
+              this.predictionobj.diabetes_mellitus = true
+            }
+            if(this.diagnosisobjectpredictive.name == "enfermedad Coronaria"){
+              this.predictionobj.coronary_artery_disease = true
+            }
+            if(this.diagnosisobjectpredictive.name == "anemia"){
+              this.predictionobj.anemia = true
+            }
+            if(this.diagnosisobjectpredictive.name == "pedal Enema"){
+              this.predictionobj.pedal_edema = true
+            }
+            if(this.diagnosisobjectpredictive.name == "Apetito"){
+              this.predictionobj.appetite = true
+            }
+            console.log(this.predictionobj)
+          })
+        }
+        console.log(this.predictionobj)
+        this.predictionobj.blood_pressure = this.surveillancepatientobject.bloodPressure
+        this.predictionobj.specific_gravity = this.surveillancepatientobject.specificGravity
+        this.predictionobj.albumin = this.surveillancepatientobject.albumin
+        this.predictionobj.sugar = this.surveillancepatientobject.sugar
+        this.predictionobj.red_blood_cells = this.surveillancepatientobject.redBloodCells
+        this.predictionobj.pus_cell = this.surveillancepatientobject.pusCells
+        this.predictionobj.pus_cell_clumps = this.surveillancepatientobject.pusCellClumps
+        this.predictionobj.bacteria = this.surveillancepatientobject.bacteria
+        this.predictionobj.blood_glucose_random = this.surveillancepatientobject.bloodGlucoseRandom
+        this.predictionobj.blood_urea = this.surveillancepatientobject.bloodUrea
+        this.predictionobj.serum_creatinine = this.surveillancepatientobject.serumCreatinine
+        this.predictionobj.sodium = this.surveillancepatientobject.sodium
+        this.predictionobj.potassium = this.surveillancepatientobject.potassium
+        this.predictionobj.hemoglobin = this.surveillancepatientobject.hemoglobin
+        this.predictionobj.packed_cell_volume = this.surveillancepatientobject.packedCellVolume
+        this.predictionobj.white_blood_cell_count = this.surveillancepatientobject.whiteBloodCellCount
+        this.predictionobj.red_blood_cell_count = this.surveillancepatientobject.redBloodCellCount
+        
+        console.log(this.predictionobj)
+        this.predictionservice.createPrediction(this.predictionobj).subscribe( (response:any) => {
+          this.responseprediction = response
+          console.log(this.responseprediction)
+          if(this.responseprediction.outcome == 1){
+            this.result = "Si"
+          }else{
+            this.result = "No"
+          }
+          
+        })
+      });
+    
+    });  
+
   }
 }

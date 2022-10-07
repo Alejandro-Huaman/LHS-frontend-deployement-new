@@ -59,6 +59,8 @@ import { SetPasswordComponent } from './pages/password/SetPassword/SetPassword.c
 import { AppointmentHistoryComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-history.component';
 import { AppointmentRatingComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-rating/appointment-rating.component';
 import { ResultDialogLoginComponent } from './pages/dialogs/result-dialog-login/result-dialog-login.component';
+import { AttentionComponent } from './pages/Attention/Attention.component';
+import { MedicineComponent } from './pages/Medicine/Medicine.component';
 
 @NgModule({
   declarations: [									
@@ -113,7 +115,9 @@ import { ResultDialogLoginComponent } from './pages/dialogs/result-dialog-login/
       SetPasswordComponent,
       AppointmentHistoryComponent,
       AppointmentRatingComponent,
-      ResultDialogLoginComponent
+      ResultDialogLoginComponent,
+      AttentionComponent,
+      MedicineComponent
 
    ],
   imports: [

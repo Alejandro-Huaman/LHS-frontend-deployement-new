@@ -7,7 +7,8 @@ import {catchError, retry} from "rxjs/operators";
   providedIn: 'root'
 })
 export class AppointmentService {
-  basePath ="http://lhs-api-363105.ue.r.appspot.com/api/v1"
+  basePath ="http://flash-rope-364617.rj.r.appspot.com/api/v1"
+  //basePath ="http://localhost:8080/api/v1"
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

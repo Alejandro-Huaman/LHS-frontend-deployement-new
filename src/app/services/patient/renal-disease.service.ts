@@ -10,7 +10,8 @@ import { UpdateRenalDiseaseResource } from 'src/app/models/renal-disease/UpdateR
 })
 export class RenalDiseaseService {
 
-  basePath = "http://lhs-api-363105.ue.r.appspot.com/api/v1/renal-diseases";
+  basePath = "http://flash-rope-364617.rj.r.appspot.com/api/v1/renal-diseases";
+  //basePath = "http://localhost:8080/api/v1/renal-diseases";
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -49,7 +50,7 @@ export class RenalDiseaseService {
       );
   }
   getRenalDiseaseByName(name:string) : Observable<RenalDiseaseResource>{
-    return this.http.get<RenalDiseaseResource>(`${this.basePath}/${name}`,this.httpOptions)
+    return this.http.get<RenalDiseaseResource>(`${this.basePath}/${name}/`,this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)

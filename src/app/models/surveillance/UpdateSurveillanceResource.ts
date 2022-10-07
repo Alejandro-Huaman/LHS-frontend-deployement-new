@@ -1,34 +1,53 @@
 export interface updateSurveillanceResource{
-    
-    weight:number;
+
+    initWeight:number;
+    finalWeight:number;
+    hdTime:number;
+    uf:number;
+    ureaPre:number;
+    hematocrit:number;
+    serumElectrolytes:number;
+    chlorine:number;
+    phosphorus:number;
+    serumCalcium:number;
+    proteinElectrophoresis:number;
+    alkalinePhosphatase:number;
+    tgo:number;
+    tgp:number;
+    dayCreatinine:number;
+    parathormone:number;
+    serumIron:number;
+    serumFerritin:number;
+    transferrinSaturation:number;
+    transferrin:number;
+    elisa:number;
+    vdrlAndRpr:number;
+    hepatitisBAntigen:number;
+    hepatitisBAntibody:number;
+    hepatitisCAntibody:number;
+    ktv:number;
+    bloodUrea:number; // este es el postUrea
+    serumCreatinine:number; // este es creatinina
     hemoglobin:number;
-    lymphocytes:number;
-    segmented:number;
-    monocytes:number;
-    mvc:number;
-    mch:number;
-    leukocytes:number;
-    erythrocytes:number;
-    glucose:number;
-    cholesterol:number;
-    urea:number;
-    creatinine:number;
-    density:number;
-    ph:number;
-    protein:number;
-    ketone:number;
-    urobilinogen:number;
-    bilirubin:number;
-    nitrite:number;
-    crystals:number;
+    sodium:number;
+    potassium:number;
+    albumin:number;
+    bloodPressure:number;
+    specificGravity:number;
     sugar:number;
-    urineAppearance:string;
-    urineColor:string;
+    redBloodCells:number;
+    pusCells:number;
+    pusCellClumps:number;
+    bacteria:number;
+    bloodGlucoseRandom:number;
+    packedCellVolume:number;
+    whiteBloodCellCount:number;
+    redBloodCellCount:number;
+    appetite:number;
+    pedalEdema:boolean;
     planCalories:number;
     consumedCalories:number;
-    appetite:string;
     pain:string;
-    hematies:number;
     otherSymptoms:string;
     imc:number;
 }

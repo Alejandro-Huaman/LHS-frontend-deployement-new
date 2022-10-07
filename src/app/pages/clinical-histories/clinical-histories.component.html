@@ -71,7 +71,7 @@ border border-solid border-gray-900
           
             <b class="text-[20px]">Peso:</b>
           
-            <p class="text-[20px]">{{SurveillanceResource1.weight}} kilos</p>
+            <p class="text-[20px]">{{SurveillanceResource1.initWeight}} kilos</p>
             
 
 
@@ -240,22 +240,31 @@ border border-solid border-gray-900
 
 
      <table  [dataSource]="dataSource6" mat-table class="w-full">
-      <ng-container matColumnDef="Hematologicos">
-        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Hematologicos</th>
-        <td mat-cell *matCellDef="let element">{{element.Hematologicos}}</td>
+      <ng-container matColumnDef="ktv">
+        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">ktv</th>
+        <td mat-cell *matCellDef="let element">{{element.ktv}}</td>
         
       </ng-container>
-      <ng-container matColumnDef="Urologicos" >
-        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Urologicos</th>
-        <td mat-cell *matCellDef="let element">{{element.Urologicos}}</td>
+      <ng-container matColumnDef="Clinic" >
+        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Clinic</th>
+        <td mat-cell *matCellDef="let element">{{element.Clinic}}</td>
 
       </ng-container>
-      <ng-container matColumnDef="Nutrición">
-        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Nutrición</th>
-        <td mat-cell *matCellDef="let element">{{element.Nutricion}}</td>
+      <ng-container matColumnDef="Shared">
+        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Shared</th>
+        <td mat-cell *matCellDef="let element">{{element.Shared}}</td>
        
       </ng-container>
-
+      <ng-container matColumnDef="Prediction">
+        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Prediction</th>
+        <td mat-cell *matCellDef="let element">{{element.Prediction}}</td>
+       
+      </ng-container>
+      <ng-container matColumnDef="Legacy">
+        <th mat-header-cell *matHeaderCellDef class="bg-slate-400">Legacy</th>
+        <td mat-cell *matCellDef="let element">{{element.Legacy}}</td>
+       
+      </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>

@@ -1,17 +1,22 @@
+import { DoctorResource } from 'src/app/models/doctor/DoctorResource';
+import { PatientResource } from './../../models/patient/PatientResource';
+import { PatientService } from 'src/app/services/patient/patient.service';
+import { CreateSurveillanceCSV } from './../../models/surveillance/CreateSurveillanceCSV';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from './../../services/doctor/doctor.service';
-import { DoctorResource } from './../../models/doctor/DoctorResource';
+
 import { SurveillanceService } from './../../services/surveillance/surveillance.service';
 import { CreateSurveillanceResource } from './../../models/surveillance/CreateSurveillanceResource';
 import { DocumentType } from './../../models/patient/DocumentType.enum';
-import { PatientResource } from 'src/app/models/patient/PatientResource';
-import { PatientService } from './../../services/patient/patient.service';
+
 import { Vigilancia } from './../../models/Vigilancia';
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators,FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {formatDate} from '@angular/common';
+import { CsvService } from 'src/app/services/csv/csv.service';
+import { response } from 'express';
 export interface DialogData {
   animal: string;
   name: string;
@@ -24,15 +29,15 @@ export interface DialogData {
   providers: [DatePipe]
 })
 export class VigilantComponent implements OnInit {
-  public vigilantform!:FormGroup;
-
-  public hematologyform!:FormGroup;
-  public urologyform!:FormGroup;
-  public nutricionalform!:FormGroup;
-
+  public vktform!:FormGroup;
+  public Clinicform!:FormGroup;
+  public Sharedform!:FormGroup;
+  public Predictionform!:FormGroup;
+  public Legacyform!:FormGroup;
 
 
   CreateSurveillanceResource!:CreateSurveillanceResource
+  csvvigilant!:CreateSurveillanceResource
   date!:Date;
   Patient!:PatientResource;
   DoctorResource!:DoctorResource;
@@ -40,14 +45,21 @@ export class VigilantComponent implements OnInit {
   home!:string
   id!:number
   finderror!:boolean
+
+  validatecsv=false
   documentnumber = new FormControl("", Validators.min(7))
   
-  checknutricional!:boolean
-  checkneurology!:boolean
-  checkhematology!:boolean
+  checkktv!:boolean
+  checkClinic!:boolean
+  checkShared!:boolean
+  checkPrediction!:boolean
+  checkLegacy!:boolean
+
+
   constructor(public dialog: MatDialog,private formBuilder:FormBuilder,private datePipe: DatePipe,private PATIENTSERVICE:PatientService,private surveillance:SurveillanceService,
-    private DoctorService:DoctorService,private ActivatedRoute:ActivatedRoute,private router:Router) { 
+    private ActivatedRoute:ActivatedRoute,private router:Router,private _csvService: CsvService, private PatientService:PatientService,private DoctorService:DoctorService,) { 
     this.CreateSurveillanceResource={}as CreateSurveillanceResource
+    this.csvvigilant={}as CreateSurveillanceResource
     this.date=new Date()
     this.Patient={}as PatientResource
   }
@@ -64,50 +76,91 @@ export class VigilantComponent implements OnInit {
     this.Patient.documentNumber="numero"
     this.Patient.gender="genero"
     this.Patient.height="altura"
-    this.vigilantform=this.formBuilder.group({
+    this.vktform=this.formBuilder.group({
      peso:['',Validators.required],
+     initWeight:['',Validators.required],
+    finalWeight:['',Validators.required],
+     hdTime:['',Validators.required],
+     uf:['',Validators.required]
      
 
      })
 
-     this.hematologyform=this.formBuilder.group({
+     this.Clinicform=this.formBuilder.group({
+      ureaPre:['',Validators.required],
+      hematocrit:['',Validators.required],
+      serumElectrolytes:['',Validators.required],
+      chlorine:['',Validators.required],
+      phosphorus:['',Validators.required],
+      serumCalcium:['',Validators.required],
+      proteinElectrophoresis:['',Validators.required],
+      alkalinePhosphatase:['',Validators.required],
+      tgo:['',Validators.required],
+      tgp:['',Validators.required],
+      dayCreatinine:['',Validators.required],
+      parathormone:['',Validators.required],
+      serumIron:['',Validators.required],
+      serumFerritin:['',Validators.required],
+      transferrinSaturation:['',Validators.required],
+      transferrin:['',Validators.required],
+      elisa:['',Validators.required],
+      vdrlAndRpr:['',Validators.required],
+      hepatitisBAntigen:['',Validators.required],
+      hepatitisBAntibody:['',Validators.required],
+      hepatitisCAntibody:['',Validators.required],
+      ktv:['',Validators.required],
 
-      hemoglobina:[0,[Validators.required,Validators.min(13.2),Validators.max(16.6)]],
-      linfocitos:[0,[Validators.required,Validators.min(20),Validators.max(40)]],
-      segmentados:[0,[Validators.required,Validators.min(38.3),Validators.max(48.6)]],
-      monocitos:[0,[Validators.required,Validators.min(4500),Validators.max(11000)]],
-      vcm:[0,[Validators.required,Validators.min(80),Validators.max(100)]],
-      hcm:[0,[Validators.required,Validators.min(27),Validators.max(31)]],
-      leucocitos:[0,[Validators.required,Validators.min(6),Validators.max(24)]],
-      hematies:[0,[Validators.required,Validators.min(4),Validators.max(5.9)]],
-      glucosa:[0,[Validators.required,Validators.min(70),Validators.max(140)]],
-      colesterol:[0,[Validators.required,Validators.min(0),Validators.max(170)]],
-      trigliceridos:[0,[Validators.required,Validators.min(4.7),Validators.max(6.1)]],
-
-     })
-     this.urologyform=this.formBuilder.group({
-
-     urea:[0,[Validators.required,Validators.min(0),Validators.max(40)]],
-     creatinina:[0,[Validators.required,Validators.min(0.59),Validators.max(1.04)]],
-     densidadOrina: [0,[Validators.required,Validators.min(1.005),Validators.max(1.03)]],
-     pH:[0,[Validators.required,Validators.min(4.6),Validators.max(8)]],
-     proteinas:[0,[Validators.required,Validators.min(0),Validators.max(14)]],
-     cetonas:[0,[Validators.required,Validators.min(0),Validators.max(1)]],
-     urobilinogeno:[0,[Validators.required,Validators.min(0),Validators.max(1)]],
-     bilirrubina :[0,[Validators.required,Validators.min(0),Validators.max(1.2)]],
-     nitrito :[0,[Validators.required,Validators.min(0),Validators.max(1)]],
-     cristales :[0,[Validators.required,Validators.min(0),Validators.max(1)]],
-     azucar :[0,[Validators.required,Validators.min(0),Validators.max(0.8)]],
-     aspectoOrina:[0,Validators.required],
-     colorOrina:[0,Validators.required],
+     
 
      })
-     this.nutricionalform=this.formBuilder.group({
-      caloriasPlan:['',Validators.required],
-      caloriasConsum:['',Validators.required],
-      apetito:['',Validators.required],
-      dolores:['',Validators.required],
-      otroSintoma:['',Validators.required],
+     this.Sharedform=this.formBuilder.group({
+
+      bloodUrea:['',Validators.required],
+      serumCreatinine:['',Validators.required],
+
+      hemoglobin:['',Validators.required],
+
+      kalbumintv:['',Validators.required],
+
+      sodium:['',Validators.required],
+
+      potassium:['',Validators.required],
+
+      albumin:['',Validators.required],
+
+
+     })
+     this.Predictionform=this.formBuilder.group({
+
+      bloodPressure:['',Validators.required],
+      specificGravity:['',Validators.required],
+
+      sugar:['',Validators.required],
+
+      redBloodCells:['',Validators.required],
+
+      pusCells:['',Validators.required],
+
+      pusCellClumps:['',Validators.required],
+      bacteria:['',Validators.required],
+      bloodGlucoseRandom:['',Validators.required],
+      packedCellVolume:['',Validators.required],
+      whiteBloodCellCount:['',Validators.required],
+      redBloodCellCount:['',Validators.required],
+
+      appetite:['',Validators.required],
+      pedalEdema:['',Validators.required],
+
+
+
+
+     })
+     this.Legacyform=this.formBuilder.group({
+    
+      planCalories:['',Validators.required],
+      consumedCalories:['',Validators.required],
+      pain:['',Validators.required],
+      otherSymptoms:['',Validators.required],
       imc:['',Validators.required],
  
       })
@@ -135,7 +188,7 @@ export class VigilantComponent implements OnInit {
   onSubmit(){
     console.log(this.CreateSurveillanceResource)
     this.openDialog()
-    this.surveillance.createSurveillance(this.Patient.id,this.DoctorResource.id,this.CreateSurveillanceResource).subscribe((response:any)=>{
+    this.surveillance.createSurveillance(this.Patient.id,this.CreateSurveillanceResource).subscribe((response:any)=>{
            
     })
     //this.CreateSurveillanceResource.=this.date
@@ -147,6 +200,8 @@ export class VigilantComponent implements OnInit {
          })
   }
 
+
+  /*
   hematologynull(){
    
     if(this.hematologyform.controls["hemoglobina"].value==undefined && 
@@ -225,19 +280,7 @@ export class VigilantComponent implements OnInit {
     }
     
     else{
-      /*console.log(this.urologyform.controls["urea"].value)
-      console.log(this.urologyform.controls["creatinina"].value)
-      console.log(this.urologyform.controls["densidadOrina"].value)
-      console.log(this.urologyform.controls["pH"].value)
-      console.log(this.urologyform.controls["proteinas"].value)
-      console.log(this.urologyform.controls["cetonas"].value)
-      console.log(this.urologyform.controls["urobilinogeno"].value)
-      console.log(this.urologyform.controls["bilirrubina"].value)
-      console.log(this.urologyform.controls["nitrito"].value)
-      console.log(this.urologyform.controls["cristales"].value)
-      console.log(this.urologyform.controls["azucar"].value)
-      console.log(this.urologyform.controls["aspectoOrina"].value)
-      console.log(this.urologyform.controls["colorOrina"].value)*/
+     
       this.checkneurology=false;
     }
 
@@ -273,42 +316,65 @@ export class VigilantComponent implements OnInit {
 
   }
 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   CanSave(){
 
-      let validatevigilant=false
+    /*  let validatevigilant=false
       let validatenutricinal=false
       let validateurology=false
       let validatehematology=false
       this.nutricionnull()
       this.urologynull()
       this.hematologynull()
-     console.log(this.urologyform.valid)
-     console.log(this.checkneurology)
-      if(this.vigilantform.valid){
+   
+      if(this.vktform.valid||this.checkktv){
          
           validatevigilant=true
       }
             
-      if(this.checknutricional || this.nutricionalform.valid){
+      if(this.checkClinic || this.Clinicform.valid){
         
         validatenutricinal=true
       }
-      if(this.checkneurology || this.urologyform.valid){
+      if(this.checkShared || this.Sharedform.valid){
         console.log("validado urologia")
         validateurology=true
       }
-      if(this.checkhematology || this.hematologyform.valid){
+      if(this.checkPrediction || this.Predictionform.valid){
         
          validatehematology=true
       }
+      if(this.checkLegacy || this.Legacyform.valid){
+        
+        validatehematology=true
+     }
       if(validatevigilant && validatenutricinal && validateurology && validatehematology && this.Patient.id!=undefined){ 
         return true
 
       }else{
         return false
       }
+   */
+      if(this.vktform.controls["initWeight"].value!=null &&this.Patient.id!=undefined){ 
+        return true
 
-
+      }else{
+        return false
+      }
 
 
 
@@ -340,6 +406,7 @@ export class VigilantComponent implements OnInit {
     return datform
     
     }
+    public importedData:Array<CreateSurveillanceCSV> = [];
   openDialog(): void {
     const dialogRef = this.dialog.open(vigilantAccept, {
       width: '250px',
@@ -355,10 +422,104 @@ export class VigilantComponent implements OnInit {
   checkheight(height:string){
      if(height!="altura"){
       let complete=`${height} m`
+      if(height==null){
+        return "sin altura"
+      }
       return complete;
      }
      return height
 
+  }
+  public async importDataFromCSVByType(event: any) {
+    let fileContent = await this.getTextFromFile(event);
+    this.validatecsv=true
+    this.importedData = this._csvService.importDataFromCSVByType(
+      fileContent,
+      new CreateSurveillanceCSV()
+    );
+
+
+  }
+  private async getTextFromFile(event:any){
+    const file: File = event.target.files[0];
+    let fileContent = await file.text();
+
+    return fileContent;
+  }
+  save(){
+    for (let element in this.importedData){
+        
+         let number;
+         let number2;
+         this.csvvigilant.albumin      =    this.importedData[element].albumin
+         this.csvvigilant.alkalinePhosphatase    =   this.importedData[element].alkaline_phosphatase
+         this. csvvigilant.appetite     =   Number(this.importedData[element].appetite)
+         this.csvvigilant.bacteria    =   Number(this.importedData[element].bacteria)
+         this.csvvigilant.bloodGlucoseRandom    =  this.importedData[element].blood_glucose_random
+         this.csvvigilant.bloodPressure     = this.importedData[element].blood_pressure
+         this.csvvigilant.bloodUrea   = this.importedData[element].blood_urea
+         this.csvvigilant.chlorine   = this.importedData[element].chlorine
+         this.csvvigilant.consumedCalories  = this.importedData[element].consumed_calories
+         this.csvvigilant.dayCreatinine    =  this.importedData[element].day_creatinine
+         this.csvvigilant.elisa  =  Number(this.importedData[element].elisa)
+         this. csvvigilant.finalWeight   =  this.importedData[element].final_weight
+         this. csvvigilant.hdTime  =  this.importedData[element].hd_time
+         this. csvvigilant.hematocrit    = this.importedData[element].hematocrit
+         this. csvvigilant.hemoglobin    =   this.importedData[element].hemoglobin
+         this. csvvigilant.hepatitisBAntibody   = Number(this.importedData[element].hepatitisbantibody)
+         this. csvvigilant.hepatitisCAntibody  =  Number(this.importedData[element].hepatitiscantibody)
+         this.csvvigilant.hepatitisBAntigen   =  Number(this.importedData[element].hepatitisbantigen)
+         this.csvvigilant.imc   =  this.importedData[element].imc
+         this. csvvigilant.initWeight  = this.importedData[element].init_weight
+         this.csvvigilant.ktv   = this.importedData[element].ktv
+         if(this.importedData[element].other_symptoms=="NULL"){
+          this.importedData[element].other_symptoms=null
+         }
+         this.csvvigilant.otherSymptoms    = this.importedData[element].other_symptoms
+         this. csvvigilant.packedCellVolume   = this.importedData[element].packed_cell_volume
+         if(this.importedData[element].pain=="NULL"){
+          this.importedData[element].pain=null
+         }
+         this. csvvigilant.pain  = this.importedData[element].pain
+         this.csvvigilant.parathormone   =  this.importedData[element].parathormone
+         this. csvvigilant.pedalEdema  =  Number(this.importedData[element].pedal_edema)
+         this.csvvigilant.phosphorus   =  this.importedData[element].phosphorus
+         this. csvvigilant.planCalories   = this.importedData[element].plan_calories
+         this. csvvigilant.potassium  =  this.importedData[element].potassium
+         this. csvvigilant.proteinElectrophoresis   =  this.importedData[element].protein_electrophoresis
+         this.csvvigilant.pusCellClumps    =  Number(this.importedData[element].pus_cell_clumps)
+         this.csvvigilant.pusCells   =  Number(this.importedData[element].pus_cells)
+         this. csvvigilant.redBloodCellCount =  this.importedData[element].red_blood_cell_count
+         this. csvvigilant.redBloodCells  =  Number(this.importedData[element].red_blood_cells)
+         this.csvvigilant.serumCalcium  =  this.importedData[element].serum_calcium
+         this.csvvigilant.serumCreatinine  =  this.importedData[element].serum_creatinine
+         this.csvvigilant.serumElectrolytes  =  this.importedData[element].serum_electrolytes
+         this.csvvigilant.serumFerritin =  this.importedData[element].serum_ferritin
+         this. csvvigilant.serumIron =  this.importedData[element].serum_iron
+         this.csvvigilant.sodium  =   this.importedData[element].sodium
+         this.csvvigilant.specificGravity  =   this.importedData[element].specific_gravity
+         this.csvvigilant.sugar =  this.importedData[element].sugar
+         this.csvvigilant.tgo =  this.importedData[element].tgo
+         this.csvvigilant.tgp   =  this.importedData[element].tgp
+         this. csvvigilant.transferrin  =  this.importedData[element].transferrin
+         this. csvvigilant.transferrin  =  this.importedData[element].transferrin_saturation
+         this. csvvigilant.uf  =  this.importedData[element].uf
+         this. csvvigilant.ureaPre  =  this.importedData[element].urea_pre
+         this. csvvigilant.vdrlAndRpr = Number(this.importedData[element].vdrl_and_rpr)
+         this. csvvigilant.whiteBloodCellCount  =  this.importedData[element].white_blood_cell_count
+         console.log(this.importedData[element].patient_dni)
+         this.PATIENTSERVICE.getPatientByDocumentNumber(this.importedData[element].patient_dni).subscribe((response:PatientResource)=>{
+             console.log("number")
+              number=response.id
+              console.log(number)
+              this.surveillance.createSurveillance(number,this.csvvigilant).subscribe((response:any)=>{
+                  console.log("enviado")
+               })
+              
+         })
+        
+        
+    }
   }
 
 }

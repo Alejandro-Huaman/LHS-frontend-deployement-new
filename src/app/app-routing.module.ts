@@ -33,6 +33,8 @@ import { MedicalScheduleStaffComponent } from './pages/appointments/appointment-
 import { StaffAppointmentFormComponent } from './pages/appointments/appointment-staff/staff-appointment-form/staff-appointment-form.component';
 import { AppointmentRegisterStaffComponent } from './pages/appointments/appointment-register-staff/appointment-register-staff.component';
 import { AppointmentHistoryComponent } from './pages/appointments/appointment-patient/appointment-history/appointment-history.component';
+import { AttentionComponent } from './pages/Attention/Attention.component';
+import { MedicineComponent } from './pages/Medicine/Medicine.component';
 
 const routes: Routes = [
   {path: "register-user",component: RegisterUserComponent},
@@ -70,6 +72,8 @@ const routes: Routes = [
   {path: "staff/:id/register-user",component: RegisterUserComponent},
   {path: "staff/:id/register-medical",component: RegisterMedicalComponent},
   {path: "staff/:id/register-staff",component: RegisterStaffComponent},
+  {path: "staff/:id/attention",component:AttentionComponent},
+  {path: "staff/:id/medicines",component:MedicineComponent},
 
   //Doctor
   {path: "doctor/:doctorid/appointment-form/patient/:patientid/appoint/:appointid",component: RecordFormComponent},
@@ -86,6 +90,8 @@ const routes: Routes = [
   {path: "doctor/:id/reporter-general-diagnostic",component:GeneralDiagnosticComponent},
   {path: "doctor/:id/reporter-diagnostic",component:DiagnosticComponent},
   {path: "doctor/:id/reporter-efficiency",component:EfficiencyComponent},
+  {path: "doctor/:id/attention",component:AttentionComponent},
+  {path: "doctor/:id/medicines",component:MedicineComponent},
 
 
 

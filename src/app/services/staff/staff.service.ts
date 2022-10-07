@@ -10,7 +10,8 @@ import { UpdateStaffResource } from 'src/app/models/staff/UpdateStaffResource';
 })
 export class StaffService {
 
-  basePath = "http://lhs-api-363105.ue.r.appspot.com/api/v1/admins";
+  basePath = "http://flash-rope-364617.rj.r.appspot.com/api/v1/admins";
+  //basePath = "http://localhost:8080/api/v1/admins";
 
   httpOptions = {
     headers: new HttpHeaders({

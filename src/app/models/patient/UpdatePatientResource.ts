@@ -1,3 +1,4 @@
+import { Dialysis } from "./DIalysis.enum";
 import { DocumentType } from "./DocumentType.enum";
 export interface UpdatePatientResource{
 
@@ -6,6 +7,8 @@ export interface UpdatePatientResource{
     lastname:string
 
     documentType:DocumentType
+
+    dialysisMaterial:Dialysis
 
     documentNumber:string
 
