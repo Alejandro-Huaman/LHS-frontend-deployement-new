@@ -20,7 +20,7 @@ export class AppointmentHistoryComponent implements OnInit {
   
   dataSource = new MatTableDataSource<any>();
   dataSource2 = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['id','dni','doctor', 'date', 'status','puntuacion'];
+  displayedColumns: string[] = ['id','dni','doctor','puntuacion'];
   urlid!:number
   patientobject!:PatientResource
   rating = 0

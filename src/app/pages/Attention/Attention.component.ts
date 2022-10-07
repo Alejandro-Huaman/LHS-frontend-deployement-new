@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { CreateMedicalCareResource } from 'src/app/models/medical-care/CreateMedicalCareResource';
+import { MedicalCareResource } from 'src/app/models/medical-care/MedicalCareResource';
 import { PatientResource } from 'src/app/models/patient/PatientResource';
+import { MedicalCareService } from 'src/app/services/patient/medical-care.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
+import { ResultDialogAttentionComponent } from './result-dialog-attention/result-dialog-attention.component';
 
 @Component({
   selector: 'app-Attention',
@@ -18,8 +24,13 @@ export class AttentionComponent implements OnInit {
   objpatient!:PatientResource;
   showform:boolean = false
   attentionform!:FormGroup
-  constructor(private ActivatedRoute:ActivatedRoute,private Router:Router, private patientservice:PatientService, private formBuilder: FormBuilder) { 
+  createattentionobject!:CreateMedicalCareResource
+  dataSource = new MatTableDataSource<any>();
+  constructor(private ActivatedRoute:ActivatedRoute,private Router:Router, private patientservice:PatientService, private formBuilder: FormBuilder, private medicalcareservice:MedicalCareService,
+    public dialog:MatDialog
+    ) { 
     this.objpatient = {} as PatientResource
+    this.createattentionobject = {} as CreateMedicalCareResource
   }
 
   ngOnInit() {
@@ -33,6 +44,7 @@ export class AttentionComponent implements OnInit {
       time:['',Validators.required],
       hemoglobine:['',Validators.required],
       hematocrite:['',Validators.required],
+      ktv:['',Validators.required],
      })
 
     let id=parseInt(this.ActivatedRoute.snapshot.paramMap.get('id')!)
@@ -53,7 +65,7 @@ export class AttentionComponent implements OnInit {
   }
 
   GotoMedicines(){
-    this.Router.navigate([this.whois,this.idurl,'medicines'])
+    this.Router.navigate([this.whois,this.idurl,'patient',this.objpatient.id,'medicines'])
   }
 
   findbyDNI(){
@@ -76,6 +88,18 @@ export class AttentionComponent implements OnInit {
       return false
     }
 
-}
+  }
+
+  PostAttention(){
+    console.log(this.createattentionobject)
+    this.createattentionobject.dialysisMaterial = 0
+    this.medicalcareservice.CreateMedicalCare(this.objpatient.id,this.createattentionobject).subscribe((response:any) =>{
+      this.dataSource.data.push( {...response});
+      this.dataSource.data = this.dataSource.data.map((o: any) => { return o; });
+      const dialogRef = this.dialog.open(ResultDialogAttentionComponent)
+    })
+
+    
+  }
 
 }

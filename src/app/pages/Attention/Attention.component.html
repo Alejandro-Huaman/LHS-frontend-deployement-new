@@ -65,7 +65,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Urea Pre</mat-label>
-          <input matInput formControlName="ureapre" placeholder="Ingrese su urea pre" required>
+          <input matInput type="number" formControlName="ureapre" placeholder="Ingrese su urea pre" required [(ngModel)]="createattentionobject.ureaPre">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -77,7 +77,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Urea Post</mat-label>
-          <input matInput formControlName="ureapost" placeholder="Ingrese su urea post" required>
+          <input matInput type="number" formControlName="ureapost" placeholder="Ingrese su urea post" required [(ngModel)]="createattentionobject.ureaPost">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -89,7 +89,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Peso Seco</mat-label>
-          <input matInput formControlName="weight" placeholder="Ingrese su peso seco" required>
+          <input matInput type="number" formControlName="weight" placeholder="Ingrese su peso seco" required [(ngModel)]="createattentionobject.dryWeight">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -101,7 +101,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Peso Inicial</mat-label>
-          <input matInput formControlName="initweight" placeholder="Ingrese su peso inicial" required>
+          <input matInput type="number" formControlName="initweight" placeholder="Ingrese su peso inicial" required [(ngModel)]="createattentionobject.initialWeight">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -113,7 +113,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Peso Final</mat-label>
-          <input matInput formControlName="finalweight" placeholder="Ingrese su peso final" required>
+          <input matInput type="number" formControlName="finalweight" placeholder="Ingrese su peso final" required [(ngModel)]="createattentionobject.finalWeight">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -125,7 +125,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>UF</mat-label>
-          <input matInput formControlName="uf" placeholder="Ingrese su UF" required>
+          <input matInput type="number" formControlName="uf" placeholder="Ingrese su UF" required [(ngModel)]="createattentionobject.uf">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -139,7 +139,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Tiempo de Hemodialisis</mat-label>
-          <input matInput formControlName="time" placeholder="Ingrese su tiempo" required>
+          <input matInput type="number" formControlName="time" placeholder="Ingrese su tiempo" required [(ngModel)]="createattentionobject.hdTime">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -151,7 +151,20 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Hemoglobina</mat-label>
-          <input matInput formControlName="hemoglobine" placeholder="Ingrese su hemoglobina" required>
+          <input matInput type="number" formControlName="hemoglobine" placeholder="Ingrese su hemoglobina" required [(ngModel)]="createattentionobject.hb">
+          <mat-error>Es requerido este campo!</mat-error>
+        </mat-form-field>
+      </form>
+  </div>
+  <br>
+  <div class="inline-flex">
+    <h1 class="pt-5">KTV:</h1>
+    <span class="pr-24"></span>
+    <span class="pr-2"></span>
+      <form [formGroup]="attentionform">
+        <mat-form-field appearance="outline" class="w-96">
+          <mat-label>KTV</mat-label>
+          <input matInput type="number" formControlName="ktv" placeholder="Ingrese su ktv" required [(ngModel)]="createattentionobject.ktv">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -164,7 +177,7 @@
       <form [formGroup]="attentionform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Hematocrito</mat-label>
-          <input matInput formControlName="hematocrite" placeholder="Ingrese su hematocrito" required>
+          <input matInput type="number" formControlName="hematocrite" placeholder="Ingrese su hematocrito" required [(ngModel)]="createattentionobject.hto">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -172,7 +185,7 @@
   <br>
   <br>
   <div class="inline-flex">
-    <button mat-raised-button class="butonnchange bg-[#15558D] text-white" [disabled]="attentionform.invalid">Guardar</button>
+    <button mat-raised-button class="butonnchange bg-[#15558D] text-white" [disabled]="attentionform.invalid" (click)="PostAttention()">Guardar</button>
     <div class="pr-72"></div>
     <button mat-raised-button (click)="GotoMedicines()" class="butonnchange bg-[#15558D] text-white">Registrar medicinas</button>
   </div>

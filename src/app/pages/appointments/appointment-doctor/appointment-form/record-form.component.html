@@ -6,23 +6,6 @@
     <span class="pr-5"></span>
     <h1 class="text-slate-800">Clinica de salud</h1>
     <span class="flex-auto"></span>
-    <h1 class="text-slate-800">Estado de Cita del Paciente:</h1>
-    <div class="pr-4"></div>
-    <div class="filed">
-      <form [formGroup]="setstatfrom">
-      <div class="flex space-x-4">
-       <mat-form-field appearance="fill" >
-         <mat-select formControlName="stat">
-           <div *ngFor="let stat of status">
-             <mat-option [value]="stat">{{stat}}</mat-option>
-           </div>
-         </mat-select>
-       </mat-form-field>
-       <button mat-raised-button (click)="cambiarstat()" class="butonnchange bg-[#15558D] text-white"> Cambiar Estado de cita</button>
-      </div>
-    </form> 
-    </div>
-    <span class="flex-auto"></span>
     <img src="../../assets/images/profile.png" class="w-10 h-10">
     <button>
       <img src="../../assets/images/options-arrow.png" class="w-20 h-12">
@@ -378,7 +361,12 @@
             <span class="pr-40"></span>
             <span class="pr-1"></span>
             <div *ngIf="surveillancepatient.appetite">
-              <h1 class="pt-5 font-normal">{{surveillancepatient.appetite}}</h1>
+              <div *ngIf="surveillancepatient.appetite == true">
+                <h1 class="pt-5 font-normal">Si</h1>
+              </div>
+              <div *ngIf="surveillancepatient.appetite != true">
+                <h1 class="pt-5 font-normal">No</h1>
+              </div>
             </div>
             <div *ngIf="surveillancepatient.appetite == null">
               <h1 class="pt-5 font-normal"></h1>

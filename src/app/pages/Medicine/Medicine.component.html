@@ -32,8 +32,8 @@
       <form [formGroup]="medicineform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Medicinas</mat-label>
-          <mat-select formControlName="medicine" (selectionChange)="getMedicinebyName($event.value)">
-            <mat-option *ngFor="let medicines of listmedicine" [value]="medicines">{{medicines}}</mat-option>
+          <mat-select formControlName="medicine" [(ngModel)]="objectmedicine.name">
+            <mat-option *ngFor="let medicines of listmedicine" [value]="medicines.name">{{medicines.name}}</mat-option>
           </mat-select>
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
@@ -47,7 +47,7 @@
       <form [formGroup]="medicineform">
         <mat-form-field appearance="outline" class="w-96">
           <mat-label>Frecuencia</mat-label>
-          <mat-select formControlName="frequency" (selectionChange)="getFrequencybyName($event.value)">
+          <mat-select formControlName="frequency" [(ngModel)]="frecuencyselected">
             <mat-option *ngFor="let frequencies of listfrequency" [value]="frequencies">{{frequencies}}</mat-option>
           </mat-select>
           <mat-error>Es requerido este campo!</mat-error>
@@ -56,13 +56,12 @@
   </div>
   <br>
   <div class="inline-flex">
-    <h1 class="pt-5">Dosis:</h1>
-    <span class="pr-24"></span>
-    <span class="pr-2"></span>
+    <h1 class="pt-5">Cantidad:</h1>
+    <span class="pr-20"></span>
       <form [formGroup]="medicineform">
         <mat-form-field appearance="outline" class="w-96">
-          <mat-label>Dosis</mat-label>
-          <input matInput type="number" formControlName="dose" placeholder="Ingrese su dosis" required>
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="dose" placeholder="Ingrese su dosis" required [(ngModel)]="dosesselected">
           <mat-error>Es requerido este campo!</mat-error>
         </mat-form-field>
       </form>
@@ -70,7 +69,7 @@
   <br>
   <br>
   <div class="text-right">
-    <button mat-raised-button class="butonnchange bg-[#15558D] text-white" [disabled]="medicineform.invalid">Guardar</button>
+    <button mat-raised-button class="butonnchange bg-[#15558D] text-white" [disabled]="medicineform.invalid" (click)="PostMedicine()">Guardar</button>
   </div>
   </table>
 </body>

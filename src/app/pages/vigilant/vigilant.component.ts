@@ -1,3 +1,6 @@
+import { StaffResource } from 'src/app/models/staff/StaffResource';
+import { StaffService } from './../../services/staff/staff.service';
+
 import { DoctorResource } from 'src/app/models/doctor/DoctorResource';
 import { PatientResource } from './../../models/patient/PatientResource';
 import { PatientService } from 'src/app/services/patient/patient.service';
@@ -41,6 +44,7 @@ export class VigilantComponent implements OnInit {
   date!:Date;
   Patient!:PatientResource;
   DoctorResource!:DoctorResource;
+  StaffResource!:StaffResource;
   whois=""
   home!:string
   id!:number
@@ -57,11 +61,12 @@ export class VigilantComponent implements OnInit {
 
 
   constructor(public dialog: MatDialog,private formBuilder:FormBuilder,private datePipe: DatePipe,private PATIENTSERVICE:PatientService,private surveillance:SurveillanceService,
-    private ActivatedRoute:ActivatedRoute,private router:Router,private _csvService: CsvService, private PatientService:PatientService,private DoctorService:DoctorService,) { 
+    private ActivatedRoute:ActivatedRoute,private router:Router,private _csvService: CsvService, private PatientService:PatientService,private DoctorService:DoctorService,private StaffService:StaffService) { 
     this.CreateSurveillanceResource={}as CreateSurveillanceResource
     this.csvvigilant={}as CreateSurveillanceResource
     this.date=new Date()
     this.Patient={}as PatientResource
+    this.StaffResource={}as StaffResource
   }
   
 
@@ -166,6 +171,7 @@ export class VigilantComponent implements OnInit {
       })
 
     this.findDoctor(doctorid)
+    this.findstaff(doctorid)
     if(this.whois=="doctor"){
        this.home="home-doctor"
     }
@@ -199,6 +205,13 @@ export class VigilantComponent implements OnInit {
                     this.DoctorResource=response           
          })
   }
+  
+  findstaff(id:number){
+    this.StaffService.getStaffById(id).subscribe((response:any)=>{
+               this.StaffResource=response           
+    })
+  }
+
 
 
   /*
@@ -415,7 +428,13 @@ export class VigilantComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.router.navigate(['/doctor',this.DoctorResource.id,'home-doctor'])
+      if(this.whois=="doctor"){
+        this.router.navigate(['/doctor',this.DoctorResource.id,'home-doctor'])
+     }
+     if(this.whois=="staff"){
+      this.router.navigate(['/staff',this.StaffResource.id,'home-staff'])
+    }
+     
 
     });
   }
@@ -453,22 +472,22 @@ export class VigilantComponent implements OnInit {
          let number2;
          this.csvvigilant.albumin      =    this.importedData[element].albumin
          this.csvvigilant.alkalinePhosphatase    =   this.importedData[element].alkaline_phosphatase
-         this. csvvigilant.appetite     =   Number(this.importedData[element].appetite)
-         this.csvvigilant.bacteria    =   Number(this.importedData[element].bacteria)
+         this. csvvigilant.appetite     =   (this.importedData[element].appetite)
+         this.csvvigilant.bacteria    =   (this.importedData[element].bacteria)
          this.csvvigilant.bloodGlucoseRandom    =  this.importedData[element].blood_glucose_random
          this.csvvigilant.bloodPressure     = this.importedData[element].blood_pressure
          this.csvvigilant.bloodUrea   = this.importedData[element].blood_urea
          this.csvvigilant.chlorine   = this.importedData[element].chlorine
          this.csvvigilant.consumedCalories  = this.importedData[element].consumed_calories
          this.csvvigilant.dayCreatinine    =  this.importedData[element].day_creatinine
-         this.csvvigilant.elisa  =  Number(this.importedData[element].elisa)
+         this.csvvigilant.elisa  =  (this.importedData[element].elisa)
          this. csvvigilant.finalWeight   =  this.importedData[element].final_weight
          this. csvvigilant.hdTime  =  this.importedData[element].hd_time
          this. csvvigilant.hematocrit    = this.importedData[element].hematocrit
          this. csvvigilant.hemoglobin    =   this.importedData[element].hemoglobin
-         this. csvvigilant.hepatitisBAntibody   = Number(this.importedData[element].hepatitisbantibody)
-         this. csvvigilant.hepatitisCAntibody  =  Number(this.importedData[element].hepatitiscantibody)
-         this.csvvigilant.hepatitisBAntigen   =  Number(this.importedData[element].hepatitisbantigen)
+         this. csvvigilant.hepatitisBAntibody   = (this.importedData[element].hepatitisbantibody)
+         this. csvvigilant.hepatitisCAntibody  =  (this.importedData[element].hepatitiscantibody)
+         this.csvvigilant.hepatitisBAntigen   =  (this.importedData[element].hepatitisbantigen)
          this.csvvigilant.imc   =  this.importedData[element].imc
          this. csvvigilant.initWeight  = this.importedData[element].init_weight
          this.csvvigilant.ktv   = this.importedData[element].ktv
@@ -482,15 +501,15 @@ export class VigilantComponent implements OnInit {
          }
          this. csvvigilant.pain  = this.importedData[element].pain
          this.csvvigilant.parathormone   =  this.importedData[element].parathormone
-         this. csvvigilant.pedalEdema  =  Number(this.importedData[element].pedal_edema)
+         this. csvvigilant.pedalEdema  =  (this.importedData[element].pedal_edema)
          this.csvvigilant.phosphorus   =  this.importedData[element].phosphorus
          this. csvvigilant.planCalories   = this.importedData[element].plan_calories
          this. csvvigilant.potassium  =  this.importedData[element].potassium
          this. csvvigilant.proteinElectrophoresis   =  this.importedData[element].protein_electrophoresis
-         this.csvvigilant.pusCellClumps    =  Number(this.importedData[element].pus_cell_clumps)
-         this.csvvigilant.pusCells   =  Number(this.importedData[element].pus_cells)
+         this.csvvigilant.pusCellClumps    =  (this.importedData[element].pus_cell_clumps)
+         this.csvvigilant.pusCells   =  (this.importedData[element].pus_cells)
          this. csvvigilant.redBloodCellCount =  this.importedData[element].red_blood_cell_count
-         this. csvvigilant.redBloodCells  =  Number(this.importedData[element].red_blood_cells)
+         this. csvvigilant.redBloodCells  =  (this.importedData[element].red_blood_cells)
          this.csvvigilant.serumCalcium  =  this.importedData[element].serum_calcium
          this.csvvigilant.serumCreatinine  =  this.importedData[element].serum_creatinine
          this.csvvigilant.serumElectrolytes  =  this.importedData[element].serum_electrolytes
@@ -505,7 +524,7 @@ export class VigilantComponent implements OnInit {
          this. csvvigilant.transferrin  =  this.importedData[element].transferrin_saturation
          this. csvvigilant.uf  =  this.importedData[element].uf
          this. csvvigilant.ureaPre  =  this.importedData[element].urea_pre
-         this. csvvigilant.vdrlAndRpr = Number(this.importedData[element].vdrl_and_rpr)
+         this. csvvigilant.vdrlAndRpr = (this.importedData[element].vdrl_and_rpr)
          this. csvvigilant.whiteBloodCellCount  =  this.importedData[element].white_blood_cell_count
          console.log(this.importedData[element].patient_dni)
          this.PATIENTSERVICE.getPatientByDocumentNumber(this.importedData[element].patient_dni).subscribe((response:PatientResource)=>{

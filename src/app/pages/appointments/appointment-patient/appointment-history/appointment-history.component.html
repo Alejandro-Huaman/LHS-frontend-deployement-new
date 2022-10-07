@@ -7,7 +7,7 @@
     <span class="pr-5"></span>
     <h1 class="text-slate-800">Clinica de salud</h1>
     <span class="flex-auto"></span>
-    <h1 class="text-slate-800">Historial de Citas de {{patientobject.name}}</h1>
+    <h1 class="text-slate-800">Historial de {{patientobject.name}}</h1>
     <span class="flex-auto"></span>
     <img src="../../assets/images/profile.png" class="w-10 h-10">
     <button>
@@ -25,7 +25,7 @@
                 <ng-container matColumnDef="id">
                   
                   <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Id</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element.doctor.id}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dni">
@@ -37,16 +37,6 @@
                 <ng-container matColumnDef="doctor">
                   <th mat-header-cell *matHeaderCellDef><h1 class="text-center font-bold">Doctor</h1> </th>
                   <td mat-cell *matCellDef="let element"> {{element.doctor.name}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="date">
-                  <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Fecha cita</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{getfecha(element.scheduledAt)}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="status">
-                  <th mat-header-cell *matHeaderCellDef> <h1 class="text-center font-bold">Estado</h1> </th>
-                  <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                 </ng-container>
                 
                 <ng-container matColumnDef="puntuacion">

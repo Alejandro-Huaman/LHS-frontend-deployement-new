@@ -68,6 +68,14 @@ export class PatientService {
       );
   }
 
+  updatePatientbyRenalDisease(id:number,renal:number,item:PatientResource) : Observable<UpdatePatientResource>{
+    return this.http.put<PatientResource>(`${this.basePath}/${id}/renal-diseases/${renal}`,JSON.stringify(item),this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      );
+  }
+
   deletePatient(id:any){
     return this.http.delete(`${this.basePath}/${id}`,this.httpOptions)
       .pipe(

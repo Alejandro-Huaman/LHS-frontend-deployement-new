@@ -61,6 +61,8 @@ import { AppointmentRatingComponent } from './pages/appointments/appointment-pat
 import { ResultDialogLoginComponent } from './pages/dialogs/result-dialog-login/result-dialog-login.component';
 import { AttentionComponent } from './pages/Attention/Attention.component';
 import { MedicineComponent } from './pages/Medicine/Medicine.component';
+import { ResultDialogAttentionComponent } from './pages/Attention/result-dialog-attention/result-dialog-attention.component';
+import { ResultDialogMedicineComponent } from './pages/Medicine/result-dialog-medicine/result-dialog-medicine.component';
 
 @NgModule({
   declarations: [									
@@ -117,7 +119,9 @@ import { MedicineComponent } from './pages/Medicine/Medicine.component';
       AppointmentRatingComponent,
       ResultDialogLoginComponent,
       AttentionComponent,
-      MedicineComponent
+      MedicineComponent,
+      ResultDialogAttentionComponent,
+      ResultDialogMedicineComponent
 
    ],
   imports: [

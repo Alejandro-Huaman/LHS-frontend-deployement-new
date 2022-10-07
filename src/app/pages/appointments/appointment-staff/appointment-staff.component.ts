@@ -37,7 +37,7 @@ export class AppointmentStaffComponent implements OnInit {
   doctorobject!:DoctorResource
   patients:string[] = ["Alayo Zavaleta, Alessandro Fabián","Almonacid Garrido, Viviana", "Benavides Castillo, Daniela"] 
   urlid!:number
-  displayedColumns: string[] = ['id','dni' ,'patient', 'date', 'status','doctor','button'];
+  displayedColumns: string[] = ['id','dni','patient','button'];
     dataSource !:MatTableDataSource<any>;
   staffobject!:StaffResource
 

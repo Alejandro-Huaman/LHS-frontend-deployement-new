@@ -437,14 +437,14 @@ downloadAsPDF(){
           this.avaliblediagnosis=false
       }
       })
-      this.AppointmentService.getAppointmentsByPatientIdAndDoctorId(this.Patient.id,this.DoctorResource.id).subscribe((response:any)=>{
+      this.AppointmentService.getAppointmentsByPatientId(this.Patient.id).subscribe((response:any)=>{
         this.dataSource4.data=response;
         this.avaliblehistory=true
         if(this.dataSource4.data.length==0){
           this.avaliblehistory=false
       }
       })
-      this.SurveillanceService.getSurveillanceByPatientandDoctorId(this.Patient.id,this.DoctorResource.id).subscribe((response:any)=>{
+      this.SurveillanceService.getSurveillanceByPatientId(this.Patient.id).subscribe((response:any)=>{
         this.dataSource5.data=response;
         console.log(this.dataSource5.data)
         this.avaliblevigilant=true

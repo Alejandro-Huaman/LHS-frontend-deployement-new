@@ -27,11 +27,11 @@ export class CreateSurveillanceResource {
      this.serumFerritin=0;
      this.transferrinSaturation=0;
      this.transferrin=0;
-     this. elisa=0;
-     this. vdrlAndRpr=0;
-     this.hepatitisBAntigen=0;
-     this.hepatitisBAntibody=0;
-     this.hepatitisCAntibody=0;
+     this. elisa=false;
+     this. vdrlAndRpr=false;
+     this.hepatitisBAntigen=false;
+     this.hepatitisBAntibody=false;
+     this.hepatitisCAntibody=false;
      this.ktv=0;
 
      this.bloodUrea=0; // este es el postUrea
@@ -45,16 +45,16 @@ export class CreateSurveillanceResource {
      this.bloodPressure=0;
      this. specificGravity=0;
      this.sugar=0;
-     this.redBloodCells=0;
-     this. pusCells=0;
-     this.pusCellClumps=0;
-     this. bacteria=0;
+     this.redBloodCells=false;
+     this. pusCells=false;
+     this.pusCellClumps=false;
+     this. bacteria=false;
      this.bloodGlucoseRandom=0;
      this.packedCellVolume=0;
      this.whiteBloodCellCount=0;
      this.redBloodCellCount=0;
-     this.appetite=0;
-     this. pedalEdema=0;
+     this.appetite=false;
+     this. pedalEdema=false;
 
 
      this. planCalories=0;
@@ -81,11 +81,11 @@ export class CreateSurveillanceResource {
     serumFerritin:number;
     transferrinSaturation:number;
      transferrin:number;
-     elisa:number;
-     vdrlAndRpr:number;
-    hepatitisBAntigen:number;
-    hepatitisBAntibody:number;
-     hepatitisCAntibody:number;
+     elisa:boolean;
+     vdrlAndRpr:boolean;
+    hepatitisBAntigen:boolean;
+    hepatitisBAntibody:boolean;
+     hepatitisCAntibody:boolean;
      ktv:number;
 
 
@@ -103,16 +103,16 @@ export class CreateSurveillanceResource {
  bloodPressure:number;
      specificGravity:number;
       sugar:number;
-      redBloodCells:number;
-      pusCells:number;
-      pusCellClumps:number;
-     bacteria:number;
+      redBloodCells:boolean;
+      pusCells:boolean;
+      pusCellClumps:boolean;
+     bacteria:boolean;
       bloodGlucoseRandom:number;
      packedCellVolume:number;
       whiteBloodCellCount:number;
       redBloodCellCount:number;
-     appetite:number;
-      pedalEdema:number;
+     appetite:boolean;
+      pedalEdema:boolean;
 
   // Legacy
   planCalories:number;
